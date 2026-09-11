@@ -2,662 +2,594 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Konnexys · De una frase a una aplicación, sin código</title>
-<meta name="description" content="Konnexys es la plataforma low-code de LATAM que convierte tus procesos en aplicaciones. Descríbelo en español y la IA lo construye: nodos, reglas, formularios y tableros.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F5F5F2">
+<meta name="description" content="Konnexys es la plataforma low-code de LATAM que compila una frase en español en una aplicación funcional: disparadores, formularios, reglas y aprobaciones, sin escribir código.">
+<title>Konnexys · Del lenguaje a la aplicación</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --orange:#FB5C1C; --orange-hover:#E84A0E; --orange-active:#BF3A0A;
-    --orange-50:#FFF1EA; --orange-100:#FFD9C4; --orange-200:#FFB594; --orange-300:#FF8C5C;
-    --cream:#F7F4EE; --surface:#FFFFFF; --muted:#F1EFE8; --sunken:#EEEAE0;
-    --ink-bg:#16110D; --stage:#1B1410;
-    --ink:#0F0F0F; --text-2:#6B6B6B; --text-3:#9A9A95;
-    --border:rgba(0,0,0,.10); --border-subtle:rgba(0,0,0,.06);
-    --info-bg:#E6F1FB; --info-fg:#0C447C;
-    --success-bg:#E1F5EE; --success-fg:#0F6E56;
-    --warning-bg:#FEF3C7; --warning-fg:#854F0B;
-    --danger-bg:#FCEBEB; --danger-fg:#A32D2D;
-    --shadow-md:0 4px 12px rgba(40,20,5,.06), 0 12px 28px rgba(40,20,5,.07);
-    --shadow-lg:0 8px 24px rgba(40,20,5,.08), 0 30px 60px rgba(40,20,5,.10);
-    --shadow-orange:0 10px 30px rgba(251,92,28,.28);
-    --r-sm:12px; --r-md:18px; --r-lg:26px; --r-pill:999px;
-    --maxw:1180px; --nav-h:74px;
+    --paper:#F5F5F2; --card:#FFFFFF; --wash:#EFEFEA;
+    --ink:#121210; --ink-2:#57564F; --ink-3:#8B8A80;
+    --line:#E3E2DC; --line-strong:#121210;
+    --orange:#FB5C1C; --orange-hover:#E84A0E; --orange-ink:#B03A08; --orange-wash:#FFF1EA;
+    --t-trigger-fg:#2C5573; --t-trigger-bg:#E9F1F8;
+    --t-form-fg:#B03A08;   --t-form-bg:#FFF1EA;
+    --t-rule-fg:#8A5A0B;   --t-rule-bg:#FBF0D6;
+    --t-approve-fg:#1C6B4C;--t-approve-bg:#E3F3EC;
+    --t-output-fg:#4B4A44; --t-output-bg:#ECEBE5;
+    --focus:#FB5C1C;
+    --r:10px; --r-sm:7px;
+    --maxw:1120px; --nav-h:64px;
+    --step:clamp(20px,4vw,32px);
   }
   *{box-sizing:border-box; margin:0; padding:0}
-
-  /* ====== SCROLL POR ESCENAS ====== */
-  html{scroll-behavior:smooth; scroll-padding-top:var(--nav-h)}
-  @media(min-width:901px){
-    html{scroll-snap-type:y mandatory}
+  html{scroll-behavior:smooth; scroll-padding-top:calc(var(--nav-h) + 12px); color-scheme:light; -webkit-text-size-adjust:100%}
+  @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} }
+  body{
+    font-family:"Archivo",system-ui,sans-serif; background:var(--paper); color:var(--ink);
+    font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased;
+    -webkit-tap-highlight-color:rgba(251,92,28,.18); overflow-x:hidden;
   }
-  body{font-family:"Hanken Grotesk",sans-serif; background:var(--cream); color:var(--ink); font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden}
-  body::before{content:""; position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.4;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E")}
-  h1,h2,h3,h4{font-family:"Bricolage Grotesque",sans-serif; font-weight:700; line-height:1.08; letter-spacing:-.02em}
+  /* papel cuadriculado muy sutil */
+  body::before{content:""; position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.6;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='t'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23t)' opacity='.085'/%3E%3C/svg%3E")}
+
+  h1,h2,h3{font-family:"Archivo",sans-serif; font-weight:800; line-height:1.04; letter-spacing:-.025em; text-wrap:balance}
+  p{text-wrap:pretty}
   a{color:inherit; text-decoration:none}
-  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px; position:relative; z-index:2; width:100%}
-  .accent{color:var(--orange)}
+  .mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+  .tnum{font-variant-numeric:tabular-nums}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 clamp(18px,4vw,28px); position:relative; z-index:1}
 
-  .scene{position:relative; z-index:2; scroll-snap-align:start}
-  @media(min-width:901px){
-    .scene{min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding:calc(var(--nav-h) + 24px) 0 44px; scroll-snap-stop:always}
-    .scene.hero-scene{height:100svh; min-height:100svh; justify-content:center; padding:0; overflow:hidden}
-    .scene.hero .wrap{height:100%; display:grid; grid-template-columns:.98fr 1.02fr; align-items:center; gap:48px; padding:calc(var(--nav-h) + 6px) 0 26px}
-    .scene.hero .hero-inner{order:1; text-align:left; max-width:none; margin:0}
-    .scene.hero .hero-actions{justify-content:flex-start}
-    .scene.hero p.sub{max-width:480px; margin:0 0 22px}
-    .scene.hero .graph-shell{order:2; width:100%; align-self:center; display:flex; flex-direction:column; aspect-ratio:1/1.04; max-height:calc(100svh - var(--nav-h) - 56px); margin:0}
-    .scene.hero .graph-stage{flex:1 1 auto; min-height:0; aspect-ratio:auto; margin-top:6px}
+  /* Foco visible + interacción (Web Interface Guidelines) */
+  a,button,input,textarea,summary,.btn{touch-action:manipulation}
+  :focus-visible{outline:2.5px solid var(--focus); outline-offset:2px; border-radius:4px}
+  .skip-link{position:fixed; top:calc(env(safe-area-inset-top) + 10px); left:12px; z-index:200; background:var(--ink); color:#fff; padding:10px 16px; border-radius:var(--r-sm); font-weight:600; font-size:14px; transform:translateY(-180%); transition:transform .18s ease}
+  .skip-link:focus{transform:none}
+  @media (prefers-reduced-motion:reduce){ .skip-link{transition:none} }
+
+  /* Botones — esquinas medidas, no pill */
+  .btn{display:inline-flex; align-items:center; gap:8px; font-family:"Archivo"; font-weight:600; font-size:15.5px; padding:11px 20px; border-radius:var(--r-sm); border:1.5px solid transparent; cursor:pointer; transition:background .16s ease, color .16s ease, border-color .16s ease, transform .16s ease}
+  .btn-primary{background:var(--orange); color:#fff}
+  .btn-primary:hover{background:var(--orange-hover)}
+  .btn-secondary{background:transparent; color:var(--ink); border-color:var(--line-strong)}
+  .btn-secondary:hover{background:var(--ink); color:var(--paper)}
+  .btn-ghost{background:transparent; color:var(--ink); border-color:var(--line)}
+  .btn-ghost:hover{border-color:var(--ink)}
+  @media (prefers-reduced-motion:reduce){ .btn{transition:none} }
+
+  /* eyebrow mono */
+  .eyebrow{font-family:"JetBrains Mono",monospace; font-size:12px; font-weight:500; letter-spacing:.12em; text-transform:uppercase; color:var(--orange-ink); display:inline-flex; align-items:center; gap:9px}
+  .eyebrow::before{content:""; width:22px; height:1.5px; background:var(--orange)}
+
+  /* HEADER */
+  header.nav{position:sticky; top:0; z-index:60; background:color-mix(in srgb, var(--paper) 88%, transparent); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); padding-top:env(safe-area-inset-top)}
+  .nav-in{max-width:var(--maxw); margin:0 auto; height:var(--nav-h); display:flex; align-items:center; justify-content:space-between; padding:0 clamp(18px,4vw,28px)}
+  .brand{display:inline-flex; align-items:center; gap:10px; font-weight:800; font-size:20px; letter-spacing:-.03em}
+  .brand-mark{width:28px; height:28px; border-radius:7px; background:var(--orange); color:#fff; display:grid; place-items:center; font-family:"JetBrains Mono"; font-weight:700; font-size:15px}
+  .nav-links{display:flex; align-items:center; gap:28px}
+  .nav-links a{font-family:"JetBrains Mono",monospace; font-size:13px; letter-spacing:.02em; color:var(--ink-2); transition:color .16s}
+  .nav-links a:hover{color:var(--ink)}
+  .nav-actions{display:flex; align-items:center; gap:12px}
+  .nav-toggle{display:none; background:transparent; border:1.5px solid var(--line-strong); border-radius:var(--r-sm); padding:8px 10px; cursor:pointer; font-family:"JetBrains Mono"; font-size:13px; color:var(--ink)}
+
+  /* HERO */
+  .hero{position:relative; z-index:1; isolation:isolate; overflow:hidden; background:var(--paper); min-height:calc(100svh - var(--nav-h)); display:flex; flex-direction:column; justify-content:center; padding:clamp(28px,4vw,52px) 0 clamp(56px,7vw,84px)}
+  .scroll-cue{position:absolute; left:50%; bottom:20px; transform:translateX(-50%); z-index:2; display:flex; flex-direction:column; align-items:center; gap:7px; color:var(--ink-2); font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase; text-decoration:none}
+  .scroll-cue:hover{color:var(--ink)}
+  .scroll-cue .sc-chev{font-size:16px; color:var(--orange)}
+  @media (prefers-reduced-motion:no-preference){ .scroll-cue .sc-chev{animation:bob 1.6s ease-in-out infinite} }
+  @keyframes bob{0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)}}
+  @media (max-width:900px){ .scroll-cue{display:none} }
+  .hero::before{content:""; position:absolute; inset:-28% -14% -10%; z-index:-2; pointer-events:none;
+    background:
+      radial-gradient(42% 48% at 24% 26%, rgba(251,92,28,.58), transparent 60%),
+      radial-gradient(40% 46% at 64% 15%, rgba(255,125,80,.52), transparent 58%),
+      radial-gradient(48% 54% at 86% 46%, rgba(255,95,60,.5), transparent 60%),
+      radial-gradient(46% 52% at 44% 66%, rgba(255,150,90,.48), transparent 62%),
+      radial-gradient(38% 46% at 9% 72%, rgba(255,180,70,.52), transparent 58%),
+      radial-gradient(36% 44% at 82% 80%, rgba(255,145,80,.48), transparent 60%);
+    filter:blur(58px) saturate(1.2);
+    -webkit-mask-image:linear-gradient(to bottom,#000 56%,transparent); mask-image:linear-gradient(to bottom,#000 56%,transparent)}
+  .hero::after{content:""; position:absolute; inset:0; z-index:-1; pointer-events:none; opacity:.55;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='.09'/%3E%3C/svg%3E")}
+  @media (prefers-reduced-motion:no-preference){ .hero::before{animation:aurora 17s ease-in-out infinite alternate} }
+  @keyframes aurora{
+    0%{transform:translate3d(0,0,0) scale(1) rotate(0deg); filter:blur(58px) saturate(1.15)}
+    50%{transform:translate3d(3.5%,-2.5%,0) scale(1.1) rotate(4deg); filter:blur(66px) saturate(1.3)}
+    100%{transform:translate3d(-2.5%,2%,0) scale(1.06) rotate(-3deg); filter:blur(60px) saturate(1.2)}
   }
-  @media(min-width:901px) and (max-height:800px){
-    .scene.hero h1{font-size:clamp(26px,3.2vw,38px); margin-bottom:8px}
-    .scene.hero p.sub{font-size:14.5px; max-width:460px; margin-bottom:12px}
-    .scene.hero .hero-actions .btn{padding:10px 20px; font-size:14.5px}
-    .scene.hero .pill-tag{margin-bottom:8px}
-    .scene.hero .graph-prompt{padding:9px 14px; margin-bottom:4px}
-  }
-  @media(max-width:900px){ .scene{padding:72px 0} }
+  .hero-grid{display:grid; grid-template-columns:1.02fr 1.1fr; gap:clamp(32px,5vw,64px); align-items:center}
+  .hero h1{font-size:clamp(38px,6vw,68px); margin:18px 0 20px}
+  .hero h1 .hl{color:var(--orange)}
+  .hero .lead{font-size:clamp(17px,1.9vw,20px); color:var(--ink-2); max-width:30ch; margin-bottom:28px}
+  .hero-cta{display:flex; gap:12px; flex-wrap:wrap}
+  .hero-note{margin-top:22px; font-family:"JetBrains Mono",monospace; font-size:12.5px; color:var(--ink-3); display:flex; align-items:center; gap:8px}
+  .hero-note .ok{color:var(--t-approve-fg)}
 
-  /* ====== REVEAL (se redescubre al entrar/salir) ====== */
-  .reveal{opacity:0; transform:translateY(38px); transition:opacity .85s cubic-bezier(.2,.7,.2,1), transform .85s cubic-bezier(.2,.7,.2,1)}
-  .scene.in-view .reveal{opacity:1; transform:none}
-  .scene.in-view .reveal.s1{transition-delay:.08s}
-  .scene.in-view .reveal.s2{transition-delay:.18s}
-  .scene.in-view .reveal.s3{transition-delay:.28s}
-  .scene.in-view .reveal.s4{transition-delay:.38s}
-  .scene.in-view .reveal.s5{transition-delay:.48s}
-
-  .btn{display:inline-flex; align-items:center; gap:9px; font-family:"Hanken Grotesk"; font-weight:600; font-size:16px; padding:14px 26px; border-radius:var(--r-pill); border:1.5px solid transparent; cursor:pointer; transition:transform .2s, box-shadow .25s, background .2s, color .2s, border-color .2s; white-space:nowrap; position:relative; overflow:hidden}
-  .btn-primary{background:var(--orange); color:#fff; box-shadow:var(--shadow-orange)}
-  .btn-primary:hover{background:var(--orange-hover); transform:translateY(-2px); box-shadow:0 14px 38px rgba(251,92,28,.42)}
-  .btn-primary::after{content:""; position:absolute; top:0; left:-130%; width:60%; height:100%; background:linear-gradient(120deg,transparent,rgba(255,255,255,.35),transparent); transform:skewX(-20deg); transition:left .6s}
-  .btn-primary:hover::after{left:130%}
-  .btn-ghost{background:transparent; color:var(--ink); border-color:var(--border)}
-  .btn-ghost:hover{border-color:var(--ink); transform:translateY(-2px)}
-  .btn-light{background:rgba(255,255,255,.08); color:#fff; border-color:rgba(255,255,255,.22); backdrop-filter:blur(6px)}
-  .btn-light:hover{background:rgba(255,255,255,.16); transform:translateY(-2px)}
-  .btn-sm{padding:10px 20px; font-size:15px}
-
-  /* ====== BARRA DE PROGRESO ====== */
-  .scroll-progress{position:fixed; top:0; left:0; height:3px; width:0; background:linear-gradient(90deg,var(--orange-300),var(--orange)); z-index:80; box-shadow:0 0 10px rgba(251,92,28,.6); transition:width .1s linear}
-
-  /* ====== NAVEGADOR DE ESCENAS ====== */
-  .scene-nav{position:fixed; right:22px; top:50%; transform:translateY(-50%); z-index:70; display:flex; flex-direction:column; gap:14px; align-items:flex-end}
-  .sn-dot{width:11px; height:11px; border-radius:50%; background:rgba(0,0,0,.22); position:relative; transition:all .3s; cursor:pointer}
-  .sn-dot::after{content:attr(data-label); position:absolute; right:22px; top:50%; transform:translateY(-50%) translateX(6px); background:var(--ink); color:#fff; font-size:12px; font-weight:600; padding:5px 11px; border-radius:var(--r-pill); white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .25s, transform .25s}
-  .sn-dot:hover::after{opacity:1; transform:translateY(-50%) translateX(0)}
-  .sn-dot:hover{background:var(--orange-300); transform:scale(1.25)}
-  .sn-dot.active{background:var(--orange); transform:scale(1.4); box-shadow:0 0 0 4px rgba(251,92,28,.18)}
-  body.nav-dark .sn-dot{background:rgba(255,255,255,.28)}
-  body.nav-dark .sn-dot.active{background:var(--orange)}
-  @media(max-width:900px){ .scene-nav{display:none} }
-
-  /* ====== NAV ====== */
-  header.nav{position:fixed; top:0; left:0; right:0; z-index:60; backdrop-filter:blur(12px); background:rgba(22,17,13,.55); transition:background .4s, box-shadow .4s, border-color .4s; border-bottom:1px solid rgba(255,255,255,.06)}
-  header.nav.light{background:rgba(247,244,238,.86); border-bottom:1px solid var(--border-subtle); box-shadow:0 4px 20px rgba(40,20,5,.05)}
-  .nav-inner{display:flex; align-items:center; justify-content:space-between; height:var(--nav-h)}
-  .wordmark{font-family:"Bricolage Grotesque"; font-weight:800; font-size:25px; letter-spacing:-.03em; display:flex; align-items:center; gap:10px; color:#fff; transition:color .4s}
-  header.nav.light .wordmark{color:var(--ink)}
-  .logo-dot{width:32px; height:32px; border-radius:9px; background:linear-gradient(135deg,var(--orange),var(--orange-active)); display:inline-flex; align-items:center; justify-content:center; color:#fff; font-size:18px; font-weight:800; box-shadow:var(--shadow-orange); transform:rotate(-6deg); position:relative}
-  .logo-dot::after{content:""; position:absolute; inset:-3px; border-radius:11px; border:1.5px solid var(--orange); opacity:.5; animation:ring 2.6s ease-out infinite}
-  @keyframes ring{0%{transform:scale(.9); opacity:.6} 100%{transform:scale(1.5); opacity:0}}
-  .nav-links{display:flex; align-items:center; gap:32px}
-  .nav-links a.lnk{font-weight:500; font-size:15.5px; color:rgba(255,255,255,.7); transition:color .25s}
-  header.nav.light .nav-links a.lnk{color:var(--text-2)}
-  .nav-links a.lnk:hover{color:var(--orange-300)}
-  header.nav.light .nav-links a.lnk:hover{color:var(--ink)}
-  .nav-cta{display:flex; align-items:center; gap:14px}
-  @media(max-width:900px){ .nav-links{display:none} }
-
-  /* ====== HERO ====== */
-  .hero{background:radial-gradient(120% 130% at 80% -10%, #2a1d12 0%, var(--stage) 42%, var(--ink-bg) 100%); color:#fff; overflow:hidden}
-  .hero .wrap{display:flex; flex-direction:column; justify-content:center}
-  #constellation{position:absolute; inset:0; z-index:0; opacity:.55}
-  .hero-glow{position:absolute; top:-40px; left:50%; transform:translateX(-50%); width:900px; height:520px; border-radius:50%; background:radial-gradient(circle, rgba(251,92,28,.22), transparent 65%); z-index:0; pointer-events:none; filter:blur(8px)}
-  .hero-inner{position:relative; z-index:2; text-align:center; max-width:840px; margin:0 auto}
-  .pill-tag{display:inline-flex; align-items:center; gap:9px; background:rgba(251,92,28,.12); color:var(--orange-200); border:1px solid rgba(251,92,28,.3); font-weight:600; font-size:13.5px; padding:8px 16px; border-radius:var(--r-pill); margin-bottom:14px; backdrop-filter:blur(6px)}
-  .pill-tag .dot{width:7px; height:7px; background:var(--orange); border-radius:50%; box-shadow:0 0 10px var(--orange); animation:pulse 1.8s infinite}
-  @keyframes pulse{0%,100%{opacity:1; transform:scale(1)} 50%{opacity:.4; transform:scale(.7)}}
-  .hero h1{font-size:clamp(30px,4.3vw,50px); margin-bottom:14px; color:#fff}
-  .hero h1 .accent{background:linear-gradient(120deg,var(--orange-300),var(--orange)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent}
-  .hero p.sub{font-size:clamp(15px,1.6vw,18px); color:rgba(255,255,255,.72); max-width:560px; margin:0 auto 22px}
-  .hero-actions{display:flex; gap:14px; justify-content:center; flex-wrap:wrap}
-
-  .fade-up{opacity:0; transform:translateY(22px); animation:fadeUp .9s cubic-bezier(.2,.7,.2,1) forwards}
-  .fade-up.d1{animation-delay:.05s}.fade-up.d2{animation-delay:.16s}.fade-up.d3{animation-delay:.28s}.fade-up.d4{animation-delay:.4s}.fade-up.d5{animation-delay:.54s}
-  @keyframes fadeUp{to{opacity:1; transform:none}}
-
-  /* GRAFO VIVO */
-  .graph-shell{position:relative; z-index:2; width:100%; max-width:900px; margin:0 auto; background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.10); border-radius:var(--r-lg); padding:16px 18px 12px; backdrop-filter:blur(8px); box-shadow:0 30px 80px rgba(0,0,0,.45)}
-  .graph-prompt{display:flex; align-items:center; gap:12px; background:rgba(0,0,0,.28); border:1px solid rgba(255,255,255,.10); border-radius:var(--r-pill); padding:12px 18px; margin-bottom:6px}
-  .graph-prompt .gp-ai{width:30px; height:30px; border-radius:50%; flex-shrink:0; background:linear-gradient(135deg,var(--orange),var(--orange-active)); display:flex; align-items:center; justify-content:center; font-size:15px; box-shadow:0 0 16px rgba(251,92,28,.5)}
-  .graph-prompt .gp-text{font-size:15.5px; color:#fff; font-weight:500; text-align:left; flex:1}
-  .graph-prompt .gp-text .lead{color:var(--orange-200); font-weight:600}
-  .gcaret{display:inline-block; width:2px; height:1.05em; background:var(--orange); margin-left:2px; vertical-align:-2px; animation:blink 1s step-end infinite}
+  /* SPEC / COMPILADOR (elemento signature) */
+  .spec{background:rgba(255,255,255,.5); backdrop-filter:blur(22px) saturate(1.5); -webkit-backdrop-filter:blur(22px) saturate(1.5); border:1px solid rgba(255,255,255,.65); border-radius:var(--r); box-shadow:inset 0 1px 0 rgba(255,255,255,.75), 0 1px 0 rgba(0,0,0,.03), 0 30px 62px -28px rgba(18,18,16,.42); overflow:hidden}
+  @supports not ((backdrop-filter:blur(2px)) or (-webkit-backdrop-filter:blur(2px))){ .spec{background:rgba(255,255,255,.92)} }
+  .spec-bar{display:flex; align-items:center; gap:8px; padding:11px 14px; border-bottom:1px solid rgba(255,255,255,.45); background:rgba(255,255,255,.28)}
+  .spec-bar .d{width:10px; height:10px; border-radius:50%; border:1px solid rgba(0,0,0,.12)}
+  .d1{background:#F0C0AE}.d2{background:#EFDDAE}.d3{background:#BEDFC7}
+  .spec-name{font-family:"JetBrains Mono",monospace; font-size:12px; color:var(--ink-2); margin-left:6px}
+  .spec-flag{margin-left:auto; font-family:"JetBrains Mono",monospace; font-size:11px; color:var(--orange-ink); background:var(--orange-wash); border:1px solid #F6D6C4; padding:3px 8px; border-radius:999px}
+  .spec-body{padding:16px 16px 18px}
+  .spec-prompt{font-family:"JetBrains Mono",monospace; font-size:14px; color:var(--ink); line-height:1.5; min-height:1.5em}
+  .spec-prompt .car{color:var(--orange); font-weight:700}
+  .caret-blink{display:inline-block; width:8px; height:1.05em; background:var(--orange); vertical-align:-2px; margin-left:1px; animation:blink 1.05s step-end infinite}
   @keyframes blink{50%{opacity:0}}
-  .gp-status{font-size:12.5px; color:rgba(255,255,255,.45); white-space:nowrap; display:flex; align-items:center; gap:7px}
-  .gp-status .sdot{width:6px; height:6px; border-radius:50%; background:#3aa66e; box-shadow:0 0 8px #3aa66e}
-  .gp-status.thinking .sdot{background:var(--orange); box-shadow:0 0 8px var(--orange); animation:pulse 1s infinite}
-  .graph-stage{position:relative; width:100%; aspect-ratio:1/1; margin-top:4px}
-  .graph-stage svg.edges{position:absolute; inset:0; width:100%; height:100%; overflow:visible}
-  .edge{fill:none; stroke:rgba(255,255,255,.16); stroke-width:2; stroke-dasharray:1; stroke-dashoffset:1; transition:stroke-dashoffset .65s cubic-bezier(.5,0,.2,1)}
-  .edge.on{stroke-dashoffset:0}
-  .edge-flow{fill:none; stroke:var(--orange); stroke-width:2.2; stroke-linecap:round; stroke-dasharray:3 12; opacity:0; filter:drop-shadow(0 0 4px rgba(251,92,28,.7)); transition:opacity .4s}
-  .edge-flow.on{opacity:.95; animation:flow 1.1s linear infinite}
-  @keyframes flow{to{stroke-dashoffset:-30}}
-  .spark{fill:#fff; opacity:0; filter:drop-shadow(0 0 6px var(--orange))}
-  .spark.on{opacity:1}
-  .gnode{position:absolute; transform:translate(-50%,-50%) scale(.75); opacity:0; transition:opacity .5s ease, transform .5s cubic-bezier(.2,1.35,.4,1); will-change:transform,opacity}
-  .gnode.on{opacity:1; transform:translate(-50%,-50%) scale(1)}
-  .gcard{display:flex; align-items:center; gap:10px; background:#fff; border-radius:14px; padding:9px 13px 9px 9px; box-shadow:0 8px 22px rgba(0,0,0,.35); border:1px solid rgba(0,0,0,.05); min-width:128px}
-  .gcard .gic{width:32px; height:32px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0}
-  .gcard .glabel{font-size:12px; font-weight:600; color:var(--ink); line-height:1.2}
-  .gcard .gkind{font-size:10px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; opacity:.55; display:block; margin-bottom:1px}
-  .k-trigger .gic{background:var(--info-bg)} .k-trigger .gkind{color:var(--info-fg)}
-  .k-form .gic{background:var(--orange-50)} .k-form .gkind{color:var(--orange-active)}
-  .k-cond .gic{background:var(--warning-bg)} .k-cond .gkind{color:var(--warning-fg)}
-  .k-appr .gic{background:var(--success-bg)} .k-appr .gkind{color:var(--success-fg)}
-  .k-out .gic{background:#ECECEC} .k-out .gkind{color:#444}
-  .gnode.on .gcard{animation:nodeglow .6s ease}
-  @keyframes nodeglow{0%{box-shadow:0 0 0 6px rgba(251,92,28,.35), 0 8px 22px rgba(0,0,0,.35)} 100%{box-shadow:0 0 0 0 rgba(251,92,28,0), 0 8px 22px rgba(0,0,0,.35)}}
-  .appchip{position:absolute; left:50%; bottom:-6px; transform:translateX(-50%) translateY(14px); opacity:0; transition:opacity .55s, transform .55s cubic-bezier(.2,1.2,.4,1); display:flex; align-items:center; gap:9px; background:linear-gradient(135deg,var(--orange),var(--orange-active)); color:#fff; padding:9px 18px; border-radius:var(--r-pill); font-size:13.5px; font-weight:600; box-shadow:0 14px 34px rgba(251,92,28,.5); white-space:nowrap}
-  .appchip.on{opacity:1; transform:translateX(-50%) translateY(0)}
-  .appchip .ac-ic{font-size:15px}
+  @media (prefers-reduced-motion:reduce){ .caret-blink{animation:none} }
+  .spec-sep{height:1px; background:var(--line); margin:14px 0}
+  .spec-out{list-style:none; display:flex; flex-direction:column; gap:7px}
+  .spec-row{display:grid; grid-template-columns:88px 1fr auto; align-items:center; gap:12px; opacity:0; transform:translateY(6px); transition:opacity .4s ease, transform .4s ease}
+  .spec-row.in{opacity:1; transform:none}
+  @media (prefers-reduced-motion:reduce){ .spec-row{opacity:1; transform:none; transition:none} }
+  .tag{font-family:"JetBrains Mono",monospace; font-size:11px; font-weight:700; letter-spacing:.04em; text-align:center; padding:4px 0; border-radius:5px}
+  .t-trigger{color:var(--t-trigger-fg); background:var(--t-trigger-bg)}
+  .t-form{color:var(--t-form-fg); background:var(--t-form-bg)}
+  .t-rule{color:var(--t-rule-fg); background:var(--t-rule-bg)}
+  .t-approve{color:var(--t-approve-fg); background:var(--t-approve-bg)}
+  .t-output{color:var(--t-output-fg); background:var(--t-output-bg)}
+  .spec-label{font-size:14.5px; font-weight:500; color:var(--ink); min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .spec-meta{font-family:"JetBrains Mono",monospace; font-size:11.5px; color:var(--ink-3); white-space:nowrap}
+  .spec-done{font-family:"JetBrains Mono",monospace; font-size:12.5px; color:var(--ink-2)}
+  .spec-done .ok{color:var(--t-approve-fg); font-weight:700}
 
-  /* PISTA DE SCROLL */
-  .scroll-cue{position:absolute; bottom:22px; left:50%; transform:translateX(-50%); z-index:3; color:rgba(255,255,255,.55); font-size:13px; font-weight:500; letter-spacing:.04em; display:flex; flex-direction:column; align-items:center; gap:6px; transition:opacity .4s}
-  .scroll-cue .chev{font-size:20px; animation:bob 1.6s ease-in-out infinite}
-  @keyframes bob{0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)}}
-  .scroll-cue.hide{opacity:0; pointer-events:none}
-  @media(max-width:900px){ .scroll-cue{display:none} }
+  /* SECCIONES */
+  main{position:relative; z-index:1}
+  .section{padding:clamp(56px,8vw,96px) 0; border-top:1px solid var(--line)}
+  .sec-head{max-width:62ch; margin-bottom:clamp(32px,5vw,48px)}
+  .sec-head h2{font-size:clamp(28px,3.8vw,42px); margin:14px 0 12px}
+  .sec-head p{color:var(--ink-2); font-size:clamp(16px,1.8vw,18.5px)}
 
-  /* SEC HEAD */
-  .eyebrow{font-weight:600; font-size:14px; letter-spacing:.08em; text-transform:uppercase; color:var(--orange); margin-bottom:14px}
-  .sec-head{max-width:700px; margin-bottom:40px}
-  .sec-head h2{font-size:clamp(30px,3.8vw,46px); margin-bottom:16px}
-  .sec-head p{font-size:18.5px; color:var(--text-2)}
-  .sec-head.center{margin-left:auto; margin-right:auto; text-align:center}
+  /* PROCESO (secuencia real 01–04) */
+  .steps{display:grid; grid-template-columns:repeat(4,1fr); gap:14px}
+  .step{padding:26px 22px; display:flex; flex-direction:column; gap:10px; border-radius:var(--r); background:rgba(255,255,255,.5); backdrop-filter:blur(16px) saturate(1.4); -webkit-backdrop-filter:blur(16px) saturate(1.4); border:1px solid rgba(255,255,255,.6); box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 0 18px 44px -26px rgba(18,18,16,.38)}
+  .step .idx{font-family:"JetBrains Mono",monospace; font-size:13px; font-weight:700; color:var(--orange); letter-spacing:.05em}
+  .step h3{font-size:19px; font-weight:700; letter-spacing:-.01em}
+  .step p{font-size:14.5px; color:var(--ink-2)}
 
-  /* PIPELINE */
-  .pipeline{background:var(--surface); border-top:1px solid var(--border-subtle); border-bottom:1px solid var(--border-subtle); overflow:hidden}
-  .pipeline::before{content:""; position:absolute; inset:0; opacity:.5; background-image:radial-gradient(circle, rgba(0,0,0,.05) 1px, transparent 1.4px); background-size:26px 26px; -webkit-mask-image:linear-gradient(to bottom, transparent, #000 25%, #000 75%, transparent); mask-image:linear-gradient(to bottom, transparent, #000 25%, #000 75%, transparent)}
-  .pipe-track{position:relative; display:grid; grid-template-columns:repeat(4,1fr); align-items:start; margin-top:20px}
-  .pipe-step{position:relative; text-align:center; padding:0 14px}
-  .pipe-ic{width:78px; height:78px; margin:0 auto 20px; border-radius:22px; display:flex; align-items:center; justify-content:center; font-size:32px; background:var(--cream); border:1px solid var(--border-subtle); box-shadow:var(--shadow-md); position:relative; z-index:2; transition:transform .55s cubic-bezier(.2,1.3,.4,1), opacity .55s, box-shadow .4s; opacity:0; transform:scale(.6)}
-  .scene.in-view .pipe-step:nth-child(1) .pipe-ic{transition-delay:.05s}
-  .scene.in-view .pipe-step:nth-child(2) .pipe-ic{transition-delay:.22s}
-  .scene.in-view .pipe-step:nth-child(3) .pipe-ic{transition-delay:.39s}
-  .scene.in-view .pipe-step:nth-child(4) .pipe-ic{transition-delay:.56s}
-  .scene.in-view .pipe-ic{opacity:1; transform:scale(1)}
-  .pipe-step:hover .pipe-ic{transform:translateY(-6px) scale(1.05); box-shadow:var(--shadow-orange)}
-  .pipe-ic.hot{background:linear-gradient(135deg,var(--orange),var(--orange-active)); border-color:transparent; box-shadow:var(--shadow-orange)}
-  .pipe-step h3{font-size:20px; margin-bottom:8px}
-  .pipe-step p{font-size:15px; color:var(--text-2)}
-  .pipe-connect{position:absolute; top:39px; left:60%; width:80%; height:3px; z-index:1; pointer-events:none}
-  .pipe-connect svg{width:100%; height:14px; overflow:visible; margin-top:-6px}
-  .pipe-line{stroke:var(--orange-100); stroke-width:2.5; fill:none}
-  .pipe-flow2{stroke:var(--orange); stroke-width:2.5; fill:none; stroke-dasharray:4 10; stroke-linecap:round; opacity:0}
-  .scene.in-view .pipe-flow2{opacity:1; animation:flow2 1.2s linear infinite}
-  @keyframes flow2{to{stroke-dashoffset:-28}}
-  .pipe-step:last-child .pipe-connect{display:none}
+  /* CAPACIDADES */
+  .caps{display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
+  .cap{padding:24px; display:flex; flex-direction:column; gap:12px; border-radius:var(--r); background:rgba(255,255,255,.5); backdrop-filter:blur(16px) saturate(1.4); -webkit-backdrop-filter:blur(16px) saturate(1.4); border:1px solid rgba(255,255,255,.6); box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 0 18px 44px -26px rgba(18,18,16,.38)}
+  .cap-ic{width:34px; height:34px; color:var(--orange)}
+  .cap-ic svg{width:100%; height:100%; display:block}
+  .cap h3{font-size:16.5px; font-weight:700}
+  .cap p{font-size:14px; color:var(--ink-2)}
+  .cap .lbl{font-family:"JetBrains Mono",monospace; font-size:11px; color:var(--ink-3); letter-spacing:.06em; text-transform:uppercase}
 
-  /* PROBLEMA */
-  .prob-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px}
-  .prob-card{padding:30px; border-radius:var(--r-md); background:var(--surface); border:1px solid var(--border-subtle); transition:transform .3s, box-shadow .3s}
-  .prob-card:hover{transform:translateY(-5px); box-shadow:var(--shadow-md)}
-  .prob-card .pic{font-size:24px; margin-bottom:16px; display:inline-flex; width:54px; height:54px; align-items:center; justify-content:center; background:var(--danger-bg); color:var(--danger-fg); border-radius:14px}
-  .prob-card h3{font-size:20px; margin-bottom:9px}
-  .prob-card p{color:var(--text-2); font-size:16px}
+  /* OPERACIÓN (log) */
+  .ops-grid{display:grid; grid-template-columns:1fr 1.15fr; gap:clamp(28px,5vw,56px); align-items:center}
+  .ops-copy .points{list-style:none; margin-top:20px; display:flex; flex-direction:column; gap:12px}
+  .ops-copy .points li{display:flex; gap:12px; align-items:flex-start; font-size:15.5px; color:var(--ink-2)}
+  .ops-copy .points .pk{font-family:"JetBrains Mono",monospace; color:var(--orange); font-weight:700; flex-shrink:0}
+  .log{background:rgba(15,12,9,.9); backdrop-filter:blur(20px) saturate(1.2); -webkit-backdrop-filter:blur(20px) saturate(1.2); border:1px solid rgba(255,255,255,.14); border-radius:var(--r); overflow:hidden; box-shadow:inset 0 1px 0 rgba(255,255,255,.1), 0 30px 60px -28px rgba(0,0,0,.7)}
+  .log-bar{display:flex; align-items:center; gap:10px; padding:11px 14px; border-bottom:1px solid rgba(255,255,255,.1)}
+  .log-bar .live{width:8px; height:8px; border-radius:50%; background:#4BD08A; box-shadow:0 0 9px #4BD08A}
+  @media (prefers-reduced-motion:no-preference){ .log-bar .live{animation:pulse 1.7s ease-in-out infinite} }
+  @keyframes pulse{50%{opacity:.35}}
+  .log-title{font-family:"JetBrains Mono",monospace; font-size:12.5px; color:#EDEDEA}
+  .log-meta{margin-left:auto; font-family:"JetBrains Mono",monospace; font-size:11px; color:rgba(255,255,255,.5)}
+  .log-body{padding:8px; display:flex; flex-direction:column}
+  .log-row{display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:12px; padding:9px 10px; border-radius:7px; font-family:"JetBrains Mono",monospace; opacity:0; transform:translateY(6px); transition:opacity .4s ease, transform .4s ease}
+  .log-row.in{opacity:1; transform:none}
+  @media (prefers-reduced-motion:reduce){ .log-row{opacity:1; transform:none; transition:none} }
+  .log-time{font-size:11.5px; color:rgba(255,255,255,.4)}
+  .log-text{font-size:13px; color:#F1F1EE; font-family:"Archivo"; font-weight:500; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .log-badge{font-size:10.5px; font-weight:700; padding:3px 8px; border-radius:5px; white-space:nowrap}
+  .lb-info{color:#9CC2E0; background:rgba(60,110,150,.22)}
+  .lb-ok{color:#7FDDB0; background:rgba(40,150,100,.2)}
+  .lb-warn{color:#E7C77A; background:rgba(160,120,30,.22)}
+  .lb-run{color:#F4A77E; background:rgba(251,92,28,.2)}
 
-  /* CÓMO FUNCIONA */
-  .how{background:var(--muted)}
-  .steps-wrap{position:relative}
-  .steps-line{position:absolute; top:21px; left:14%; right:14%; height:2px; z-index:1}
-  .steps-line svg{width:100%; height:20px; overflow:visible; margin-top:-9px}
-  .sl-base{stroke:var(--orange-100); stroke-width:2.5; fill:none}
-  .sl-flow{stroke:var(--orange); stroke-width:2.5; stroke-dasharray:4 10; stroke-linecap:round; fill:none; opacity:0}
-  .scene.in-view .sl-flow{opacity:1; animation:flow2 1.3s linear infinite}
-  .steps{position:relative; z-index:2; display:grid; grid-template-columns:repeat(3,1fr); gap:30px; counter-reset:step}
-  .step{text-align:center; padding:0 10px}
-  .step .num{counter-increment:step; font-family:"Bricolage Grotesque"; font-weight:800; font-size:16px; width:44px; height:44px; border-radius:50%; background:var(--orange); color:#fff; display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow-orange); margin:0 auto 20px; border:4px solid var(--muted)}
-  .step .num::before{content:"0" counter(step)}
-  .step h3{font-size:22px; margin-bottom:10px}
-  .step p{color:var(--text-2); font-size:16.5px}
-
-  /* FEATURES */
-  .features{background:var(--ink-bg); color:#fff; overflow:hidden}
-  .features::before{content:""; position:absolute; inset:0; opacity:.4; background-image:radial-gradient(circle, rgba(255,255,255,.06) 1px, transparent 1.4px); background-size:30px 30px}
-  .features .eyebrow{color:var(--orange-200)}
-  .features h2{color:#fff}
-  .features .sec-head p{color:rgba(255,255,255,.6)}
-  .feat-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px}
-  .feat{background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.09); border-radius:var(--r-md); padding:24px; transition:transform .3s, background .3s, border-color .3s}
-  .feat:hover{transform:translateY(-6px); background:rgba(251,92,28,.10); border-color:rgba(251,92,28,.42)}
-  .feat .fic{width:46px; height:46px; border-radius:12px; background:linear-gradient(135deg,var(--orange),var(--orange-active)); display:flex; align-items:center; justify-content:center; font-size:21px; margin-bottom:16px; box-shadow:var(--shadow-orange)}
-  .feat h3{color:#fff; font-size:18px; margin-bottom:8px}
-  .feat p{color:rgba(255,255,255,.58); font-size:14.5px; line-height:1.5}
-
-  /* POR QUÉ */
-  .why-grid{display:grid; grid-template-columns:.85fr 1.15fr; gap:50px; align-items:center}
-  .compare{background:var(--surface); border:1px solid var(--border-subtle); border-radius:var(--r-lg); overflow:hidden; box-shadow:var(--shadow-md)}
-  .compare-row{display:grid; grid-template-columns:1.4fr 1fr 1fr; align-items:center; padding:15px 22px; font-size:15px; border-bottom:1px solid var(--border-subtle)}
-  .compare-row:last-child{border-bottom:none}
-  .compare-row.head{background:var(--muted); font-weight:600; font-size:13px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-2)}
-  .compare-row .kx{font-weight:600; color:var(--orange-active); display:flex; align-items:center; gap:7px}
-  .compare-row .other{color:var(--text-3); display:flex; align-items:center; gap:7px}
-  .compare-row .feat-name{color:var(--ink); font-weight:500}
-  .chk{color:var(--success-fg); font-weight:700}
-  .why-list{list-style:none; display:flex; flex-direction:column; gap:20px}
-  .why-list li{display:flex; gap:15px}
-  .why-list .wi{flex-shrink:0; width:40px; height:40px; border-radius:11px; background:var(--orange-50); color:var(--orange); display:flex; align-items:center; justify-content:center; font-size:19px}
-  .why-list h4{font-size:18px; margin-bottom:3px}
-  .why-list p{color:var(--text-2); font-size:15.5px}
-
-  /* PILOTO */
-  .pilot{background:linear-gradient(135deg,var(--orange),var(--orange-active)); border-radius:var(--r-lg); padding:56px 52px; color:#fff; position:relative; overflow:hidden; box-shadow:var(--shadow-lg)}
-  .pilot::after{content:""; position:absolute; top:-60px; right:-40px; width:320px; height:320px; border-radius:50%; background:rgba(255,255,255,.10)}
-  .pilot::before{content:""; position:absolute; bottom:-90px; left:-50px; width:260px; height:260px; border-radius:50%; background:rgba(0,0,0,.08)}
-  .pilot-inner{position:relative; z-index:1; display:grid; grid-template-columns:1.1fr .9fr; gap:48px; align-items:center}
-  .pilot .badge{display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.3); padding:6px 14px; border-radius:var(--r-pill); font-size:13.5px; font-weight:600; margin-bottom:18px}
-  .pilot h2{color:#fff; font-size:clamp(28px,3.4vw,40px); margin-bottom:14px}
-  .pilot p{color:rgba(255,255,255,.92); font-size:17.5px}
-  .pilot ul{list-style:none; margin-top:16px; display:flex; flex-direction:column; gap:10px}
-  .pilot ul li{display:flex; gap:10px; align-items:center; font-size:16px; color:rgba(255,255,255,.95)}
-  .pilot ul li .tick{background:rgba(255,255,255,.2); width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0}
-  .form-card{background:#fff; border-radius:var(--r-md); padding:28px; box-shadow:var(--shadow-lg)}
-  .form-card h3{font-size:21px; margin-bottom:6px; color:var(--ink)}
-  .form-card .fsub{color:var(--text-2); font-size:14.5px; margin-bottom:18px}
-  .field{margin-bottom:13px}
-  .field label{display:block; font-size:13px; font-weight:600; color:var(--text-2); margin-bottom:5px}
-  .field input,.field textarea{width:100%; font-family:inherit; font-size:15px; padding:11px 14px; border:1.5px solid var(--border); border-radius:var(--r-sm); background:var(--cream); color:var(--ink); transition:border-color .2s, box-shadow .2s}
-  .field input:focus,.field textarea:focus{outline:none; border-color:var(--orange); box-shadow:0 0 0 3px rgba(251,92,28,.15); background:#fff}
-  .field textarea{resize:vertical; min-height:66px}
-  .form-card .btn-primary{width:100%; justify-content:center; margin-top:4px}
-  .form-note{font-size:12px; color:var(--text-3); text-align:center; margin-top:11px}
+  /* PILOTO / FORM */
+  .cta-grid{display:grid; grid-template-columns:1fr 1fr; gap:clamp(28px,5vw,56px); align-items:start}
+  .cta-copy h2{font-size:clamp(30px,4vw,46px); margin:14px 0 14px}
+  .cta-copy p{color:var(--ink-2); font-size:17.5px; margin-bottom:20px}
+  .cta-list{list-style:none; display:flex; flex-direction:column; gap:11px}
+  .cta-list li{display:flex; gap:11px; align-items:center; font-size:15.5px}
+  .cta-list .ck{color:var(--orange); font-weight:700; font-family:"JetBrains Mono"}
+  .form{border-radius:var(--r); padding:clamp(22px,3vw,30px); background:rgba(255,255,255,.5); backdrop-filter:blur(18px) saturate(1.4); -webkit-backdrop-filter:blur(18px) saturate(1.4); border:1px solid rgba(255,255,255,.6); box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 0 20px 50px -28px rgba(18,18,16,.4)}
+  .form h3{font-size:19px; margin-bottom:4px}
+  .form .fnote{font-family:"JetBrains Mono",monospace; font-size:12px; color:var(--ink-3); margin-bottom:20px}
+  .field{margin-bottom:15px}
+  .field label{display:block; font-size:14px; font-weight:600; margin-bottom:6px}
+  .field .req{color:var(--orange-ink); font-family:"JetBrains Mono"}
+  .field input,.field textarea{width:100%; font-family:"Archivo"; font-size:15.5px; color:var(--ink); background:var(--paper); border:1.5px solid var(--line); border-radius:var(--r-sm); padding:11px 13px; transition:border-color .16s ease, box-shadow .16s ease}
+  .field input:hover,.field textarea:hover{border-color:#CFCEC7}
+  .field input:focus-visible,.field textarea:focus-visible{outline:none; border-color:var(--orange); box-shadow:0 0 0 3px rgba(251,92,28,.16)}
+  .field textarea{resize:vertical; min-height:74px}
+  .field[data-invalid="true"] input,.field[data-invalid="true"] textarea{border-color:#C6402F; box-shadow:0 0 0 3px rgba(198,64,47,.14)}
+  .err{display:none; font-size:13px; color:#B23524; margin-top:6px}
+  .field[data-invalid="true"] .err{display:block}
+  .form .btn-primary{width:100%; justify-content:center; margin-top:4px}
+  .form-status{font-family:"JetBrains Mono",monospace; font-size:12.5px; color:var(--t-approve-fg); margin-top:12px; min-height:1.2em}
+  .form .legal{font-size:12px; color:var(--ink-3); text-align:center; margin-top:10px}
 
   /* FOOTER */
-  footer{background:var(--ink-bg); color:rgba(255,255,255,.7); padding:56px 0 32px; position:relative; z-index:2}
-  .foot-top{display:flex; justify-content:space-between; gap:40px; flex-wrap:wrap; padding-bottom:34px; border-bottom:1px solid rgba(255,255,255,.1)}
-  .foot-brand{max-width:320px}
-  .foot-brand .wordmark{color:#fff; margin-bottom:14px}
-  .foot-brand p{font-size:15px; color:rgba(255,255,255,.55)}
-  .foot-cols{display:flex; gap:60px; flex-wrap:wrap}
-  .foot-col h5{color:#fff; font-size:14px; font-weight:600; margin-bottom:14px; font-family:"Hanken Grotesk"}
-  .foot-col a{display:block; font-size:14.5px; color:rgba(255,255,255,.6); margin-bottom:9px; transition:color .2s}
-  .foot-col a:hover{color:var(--orange-200)}
-  .foot-bottom{padding-top:22px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-size:13.5px; color:rgba(255,255,255,.4)}
+  footer{border-top:1px solid var(--line); padding:44px 0 calc(28px + env(safe-area-inset-bottom)); position:relative; z-index:1}
+  .foot-in{display:flex; justify-content:space-between; gap:24px; flex-wrap:wrap; align-items:center}
+  .foot-brand{display:flex; align-items:center; gap:10px; font-weight:800}
+  .foot-links{display:flex; gap:22px; flex-wrap:wrap}
+  .foot-links a{font-family:"JetBrains Mono",monospace; font-size:13px; color:var(--ink-2)}
+  .foot-links a:hover{color:var(--ink)}
+  .foot-meta{width:100%; margin-top:22px; padding-top:18px; border-top:1px solid var(--line); font-family:"JetBrains Mono",monospace; font-size:11.5px; color:var(--ink-3); display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap}
+
+  /* Reveal */
+  .reveal{opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease}
+  .reveal.in{opacity:1; transform:none}
+  @media (prefers-reduced-motion:reduce){ .reveal{opacity:1; transform:none; transition:none} }
+
+  /* Aparición escalonada: los ítems del contenedor aparecen uno por uno */
+  .stagger > *{opacity:0; transform:translateY(20px); transition:opacity .55s ease, transform .55s ease}
+  .stagger.in > *{opacity:1; transform:none}
+  .stagger.in > *:nth-child(1){transition-delay:.04s}
+  .stagger.in > *:nth-child(2){transition-delay:.11s}
+  .stagger.in > *:nth-child(3){transition-delay:.18s}
+  .stagger.in > *:nth-child(4){transition-delay:.25s}
+  .stagger.in > *:nth-child(5){transition-delay:.32s}
+  .stagger.in > *:nth-child(6){transition-delay:.39s}
+  @media (prefers-reduced-motion:reduce){ .stagger > *{opacity:1; transform:none; transition:none} }
+
+  @supports not ((backdrop-filter:blur(2px)) or (-webkit-backdrop-filter:blur(2px))){ .step,.cap,.form{background:rgba(255,255,255,.92)} .log{background:#151009} }
+
+  /* Aurora también en la sección del piloto */
+  #piloto{position:relative; isolation:isolate; overflow:hidden; background:var(--paper); border-top:0}
+  #piloto::before{content:""; position:absolute; inset:0 -12% -18% -12%; z-index:-2; pointer-events:none;
+    background:
+      radial-gradient(34% 56% at 16% 40%, rgba(251,92,28,.5), transparent 62%),
+      radial-gradient(32% 52% at 40% 82%, rgba(255,150,90,.46), transparent 60%),
+      radial-gradient(38% 58% at 74% 34%, rgba(255,110,80,.46), transparent 62%),
+      radial-gradient(34% 54% at 90% 70%, rgba(255,145,80,.44), transparent 60%),
+      radial-gradient(30% 50% at 58% 58%, rgba(255,180,80,.4), transparent 62%);
+    filter:blur(60px) saturate(1.2);
+    -webkit-mask-image:linear-gradient(to bottom, transparent 0%, #000 34%, #000 86%, transparent 100%);
+    mask-image:linear-gradient(to bottom, transparent 0%, #000 34%, #000 86%, transparent 100%)}
+  #piloto::after{content:""; position:absolute; inset:0; z-index:-1; pointer-events:none; opacity:.55;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g2)' opacity='.09'/%3E%3C/svg%3E")}
+  @media (prefers-reduced-motion:no-preference){ #piloto::before{animation:aurora 17s ease-in-out infinite alternate} }
 
   /* RESPONSIVE */
-  @media(max-width:900px){
-    .why-grid,.pilot-inner{grid-template-columns:1fr; gap:36px}
-    .prob-grid,.steps{grid-template-columns:1fr}
-    .feat-grid{grid-template-columns:repeat(2,1fr)}
-    .pipe-track{grid-template-columns:1fr 1fr; gap:34px 0}
-    .pipe-connect,.steps-line{display:none}
-    .pilot{padding:40px 26px}
-    .graph-shell{padding:14px 12px 10px}
-    .gcard{min-width:0; padding:7px 10px 7px 7px}
-    .gcard .glabel{font-size:10.5px}
+  @media (max-width:860px){
+    .hero{min-height:auto; justify-content:flex-start; padding:calc(var(--nav-h) + 22px) 0 44px}
+    .hero-grid,.ops-grid,.cta-grid{grid-template-columns:1fr}
+    .hero-grid{gap:30px}
+    .hero h1 br{display:none}
+    .hero .lead{max-width:none}
+    .caps{grid-template-columns:repeat(2,1fr)}
+    .steps{grid-template-columns:1fr 1fr}
+    .section{padding:clamp(48px,10vw,72px) 0}
+    .nav-links{display:none}
+    .nav-toggle{display:inline-flex}
+    header.nav[data-open="true"] .nav-links{display:flex; position:absolute; top:calc(var(--nav-h) + env(safe-area-inset-top)); left:0; right:0; flex-direction:column; align-items:flex-start; gap:2px; background:var(--paper); border-bottom:1px solid var(--line); padding:8px clamp(18px,4vw,28px) 14px; box-shadow:0 14px 30px -18px rgba(18,18,16,.4)}
+    header.nav[data-open="true"] .nav-links a{padding:12px 0; width:100%; font-size:15px}
   }
-  @media(max-width:560px){
-    .feat-grid{grid-template-columns:1fr}
-    body{font-size:16px}
-    .compare-row{padding:13px 12px; font-size:13px}
-    .nav-cta .btn-ghost,.nav-cta .btn-light{display:none}
-    .graph-stage{aspect-ratio:1/1}
-    .gp-status{display:none}
-  }
-  @media(prefers-reduced-motion:reduce){
-    *{animation:none !important; transition-duration:.01ms !important}
-    html{scroll-snap-type:none !important; scroll-behavior:auto}
-    .reveal,.fade-up{opacity:1 !important; transform:none !important}
-    .edge{stroke-dashoffset:0} .gnode{opacity:1; transform:translate(-50%,-50%) scale(1)}
-    .pipe-ic{opacity:1; transform:none}
+  @media (max-width:520px){
+    .caps,.steps{grid-template-columns:1fr}
+    .spec-row{grid-template-columns:74px 1fr}
+    .spec-meta{display:none}
+    .spec-body{padding:14px}
+    .spec-prompt{font-size:13px}
+    .nav-actions .btn-ghost{display:none}
+    .nav-actions .btn-primary{padding:9px 15px; font-size:14px}
+    .brand{font-size:19px}
+    .hero-cta{flex-direction:column; align-items:stretch; width:100%}
+    .hero-cta .btn{width:100%; justify-content:center}
+    .cta-copy h2,.hero h1{overflow-wrap:break-word}
   }
 </style>
 </head>
-<body class="nav-dark">
+<body>
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
 
-<div class="scroll-progress" id="prog"></div>
-
-<!-- NAVEGADOR DE ESCENAS -->
-<nav class="scene-nav" id="sceneNav" aria-label="Secciones">
-  <a class="sn-dot" href="#top" data-label="Inicio"></a>
-  <a class="sn-dot" href="#proceso" data-label="De una frase a una app"></a>
-  <a class="sn-dot" href="#problema" data-label="El problema"></a>
-  <a class="sn-dot" href="#como" data-label="Cómo funciona"></a>
-  <a class="sn-dot" href="#capacidades" data-label="Capacidades"></a>
-  <a class="sn-dot" href="#porque" data-label="Por qué Konnexys"></a>
-  <a class="sn-dot" href="#piloto" data-label="Piloto"></a>
-</nav>
-
-<!-- NAV -->
-<header class="nav" id="nav">
-  <div class="wrap nav-inner">
-    <a href="#top" class="wordmark"><span class="logo-dot">K</span>Konnexys</a>
-    <nav class="nav-links">
-      <a class="lnk" href="#proceso">Cómo funciona</a>
-      <a class="lnk" href="#capacidades">Capacidades</a>
-      <a class="lnk" href="#porque">Por qué Konnexys</a>
-      <a class="lnk" href="#piloto">Piloto</a>
+<header class="nav" id="nav" data-open="false">
+  <div class="nav-in">
+    <a class="brand" href="#top" translate="no"><span class="brand-mark" aria-hidden="true">K</span>Konnexys</a>
+    <nav class="nav-links" id="navLinks" aria-label="Principal">
+      <a href="#proceso">proceso</a>
+      <a href="#capacidades">capacidades</a>
+      <a href="#operacion">operación</a>
+      <a href="#piloto">piloto</a>
     </nav>
-    <div class="nav-cta">
-      <a class="btn btn-light btn-sm" href="#piloto">Iniciar sesión</a>
-      <a class="btn btn-primary btn-sm" href="#contacto">Solicitar piloto</a>
+    <div class="nav-actions">
+      <a class="btn btn-ghost" href="#piloto">Iniciar sesión</a>
+      <a class="btn btn-primary" href="#piloto">Solicitar acceso</a>
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Abrir menú">menú</button>
     </div>
   </div>
 </header>
 
-<!-- ESCENA 1 · HERO -->
-<section class="scene hero-scene hero" id="top" data-theme="dark">
-  <canvas id="constellation"></canvas>
-  <div class="hero-glow"></div>
-  <div class="wrap">
-    <div class="hero-inner">
-      <span class="pill-tag fade-up d1"><span class="dot"></span> Plataforma low-code con IA · hecha para LATAM</span>
-      <h1 class="fade-up d2">De una frase<br>a una <span class="accent">aplicación</span>.</h1>
-      <p class="sub fade-up d3">Descríbelo en español y la IA lo convierte en una app funcional —formularios, reglas y aprobaciones—, <strong>sin escribir código</strong>.</p>
-      <div class="hero-actions fade-up d4">
-        <a class="btn btn-primary" href="#contacto">Solicitar acceso al piloto →</a>
-        <a class="btn btn-light" href="#proceso">Ver cómo funciona</a>
-      </div>
-    </div>
-    <div class="graph-shell fade-up d5">
-      <div class="graph-prompt">
-        <span class="gp-ai">✦</span>
-        <span class="gp-text"><span class="lead">¿Qué creamos hoy?</span> <span id="gType"></span><span class="gcaret"></span></span>
-        <span class="gp-status" id="gStatus"><span class="sdot"></span><span id="gStatusTxt">listo</span></span>
-      </div>
-      <div class="graph-stage">
-        <svg class="edges" viewBox="0 0 520 520" preserveAspectRatio="none">
-          <path id="p1" class="edge" pathLength="1" d="M146 47 C 146 100, 374 90, 374 146"/>
-          <path id="p2" class="edge" pathLength="1" d="M374 146 C 374 200, 146 190, 146 244"/>
-          <path id="p3" class="edge" pathLength="1" d="M146 244 C 146 300, 374 290, 374 343"/>
-          <path id="p4" class="edge" pathLength="1" d="M374 343 C 374 395, 166 387, 166 437"/>
-          <path id="f1" class="edge-flow" d="M146 47 C 146 100, 374 90, 374 146"/>
-          <path id="f2" class="edge-flow" d="M374 146 C 374 200, 146 190, 146 244"/>
-          <path id="f3" class="edge-flow" d="M146 244 C 146 300, 374 290, 374 343"/>
-          <path id="f4" class="edge-flow" d="M374 343 C 374 395, 166 387, 166 437"/>
-          <circle r="3.6" class="spark" id="s1"><animateMotion dur="2.1s" repeatCount="indefinite"><mpath href="#f1"/></animateMotion></circle>
-          <circle r="3.6" class="spark" id="s2"><animateMotion dur="2.1s" repeatCount="indefinite"><mpath href="#f2"/></animateMotion></circle>
-          <circle r="3.6" class="spark" id="s3"><animateMotion dur="2.1s" repeatCount="indefinite"><mpath href="#f3"/></animateMotion></circle>
-          <circle r="3.6" class="spark" id="s4"><animateMotion dur="2.1s" repeatCount="indefinite"><mpath href="#f4"/></animateMotion></circle>
-        </svg>
-        <div class="gnode k-trigger" id="n1" style="left:28%; top:9%"><div class="gcard"><span class="gic">📩</span><div><span class="gkind">Disparador</span><span class="glabel" data-n="1"></span></div></div></div>
-        <div class="gnode k-form" id="n2" style="left:71.9%; top:28%"><div class="gcard"><span class="gic">📝</span><div><span class="gkind">Formulario</span><span class="glabel" data-n="2"></span></div></div></div>
-        <div class="gnode k-cond" id="n3" style="left:28%; top:46.9%"><div class="gcard"><span class="gic">🔀</span><div><span class="gkind">Condición</span><span class="glabel" data-n="3"></span></div></div></div>
-        <div class="gnode k-appr" id="n4" style="left:71.9%; top:65.9%"><div class="gcard"><span class="gic">✅</span><div><span class="gkind">Aprobación</span><span class="glabel" data-n="4"></span></div></div></div>
-        <div class="gnode k-out" id="n5" style="left:31.9%; top:84%"><div class="gcard"><span class="gic">📄</span><div><span class="gkind">Salida</span><span class="glabel" data-n="5"></span></div></div></div>
-        <div class="appchip" id="appChip"><span class="ac-ic">🚀</span> App generada y lista para tu equipo</div>
-      </div>
-    </div>
-  </div>
-  <div class="scroll-cue" id="scrollCue">Desplázate para descubrir<span class="chev">⌄</span></div>
-</section>
+<main id="contenido">
 
-<!-- ESCENA 2 · PIPELINE -->
-<section class="scene pipeline" id="proceso" data-theme="light">
-  <div class="wrap">
-    <div class="sec-head center reveal">
-      <div class="eyebrow">El recorrido</div>
-      <h2>De una frase a una aplicación</h2>
-      <p>Cuatro pasos. Tú aportas la idea; la IA hace el trabajo pesado de estructurarla, conectarla y publicarla.</p>
-    </div>
-    <div class="pipe-track">
-      <div class="pipe-step"><div class="pipe-ic">✍️</div><h3>Lo describes</h3><p>Cuéntale a Konnexys el proceso en español, como a un colega.</p><div class="pipe-connect"><svg viewBox="0 0 200 14" preserveAspectRatio="none"><path class="pipe-line" d="M0 7 H200"/><path class="pipe-flow2" d="M0 7 H200"/></svg></div></div>
-      <div class="pipe-step"><div class="pipe-ic hot">🧠</div><h3>La IA lo entiende</h3><p>Detecta disparadores, tareas, responsables, datos y reglas.</p><div class="pipe-connect"><svg viewBox="0 0 200 14" preserveAspectRatio="none"><path class="pipe-line" d="M0 7 H200"/><path class="pipe-flow2" d="M0 7 H200"/></svg></div></div>
-      <div class="pipe-step"><div class="pipe-ic">🔗</div><h3>Se arma el flujo</h3><p>Los pasos aparecen como nodos conectados que puedes ajustar.</p><div class="pipe-connect"><svg viewBox="0 0 200 14" preserveAspectRatio="none"><path class="pipe-line" d="M0 7 H200"/><path class="pipe-flow2" d="M0 7 H200"/></svg></div></div>
-      <div class="pipe-step"><div class="pipe-ic">🚀</div><h3>App lista</h3><p>Tu equipo opera con formularios, tablero y aprobaciones.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ESCENA 3 · PROBLEMA -->
-<section class="scene" id="problema" data-theme="light">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="eyebrow">El problema</div>
-      <h2>Tus procesos viven en correos, Excel y la cabeza de alguien.</h2>
-      <p>Cada solicitud, aprobación o seguimiento depende de planillas dispersas, mensajes sueltos y de esperar a que TI tenga tiempo.</p>
-    </div>
-    <div class="prob-grid">
-      <div class="prob-card reveal s1"><div class="pic">📨</div><h3>Todo por correo y planillas</h3><p>Información duplicada, versiones que no coinciden y cero trazabilidad de quién hizo qué y cuándo.</p></div>
-      <div class="prob-card reveal s2"><div class="pic">⏳</div><h3>Dependes siempre de TI</h3><p>Cada cambio mínimo entra a una cola de desarrollo. Lo que el negocio necesita hoy llega en meses.</p></div>
-      <div class="prob-card reveal s3"><div class="pic">💸</div><h3>Herramientas caras y complejas</h3><p>Las plataformas tradicionales exigen consultores, licencias altas y meses de implementación.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ESCENA 4 · CÓMO FUNCIONA -->
-<section class="scene how" id="como" data-theme="light">
-  <div class="wrap">
-    <div class="sec-head center reveal">
-      <div class="eyebrow">Cómo funciona</div>
-      <h2>Sin diagramas raros ni jerga técnica</h2>
-      <p>Konnexys habla tu idioma —literalmente— y convierte tus palabras en operación.</p>
-    </div>
-    <div class="steps-wrap">
-      <div class="steps-line"><svg viewBox="0 0 1000 20" preserveAspectRatio="none"><path class="sl-base" d="M0 10 H1000"/><path class="sl-flow" d="M0 10 H1000"/></svg></div>
-      <div class="steps">
-        <div class="step reveal s1"><div class="num"></div><h3>Descríbelo en español</h3><p>Cuéntale el proceso a la plataforma. La IA detecta disparadores, tareas, responsables y datos.</p></div>
-        <div class="step reveal s2"><div class="num"></div><h3>Revisa con tarjetas</h3><p>El flujo aparece como nodos de colores fáciles de entender. Ajusta formularios, reglas y SLAs arrastrando.</p></div>
-        <div class="step reveal s3"><div class="num"></div><h3>Publica y opera</h3><p>Tu app queda lista: tablero diario, notificaciones, aprobaciones y reportes —en minutos, no meses.</p></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ESCENA 5 · CAPACIDADES -->
-<section class="scene features" id="capacidades" data-theme="dark">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="eyebrow">Capacidades</div>
-      <h2>Todo lo que tu proceso necesita, en una plataforma.</h2>
-      <p>Construido sobre un motor de procesos robusto, con la simplicidad de una herramienta hecha para el negocio.</p>
-    </div>
-    <div class="feat-grid">
-      <div class="feat reveal s1"><div class="fic">💬</div><h3>Entrada conversacional</h3><p>Describe el proceso en lenguaje natural y la IA lo estructura por ti.</p></div>
-      <div class="feat reveal s1"><div class="fic">🧩</div><h3>Constructor de formularios</h3><p>Arrastra y suelta campos, con sugerencias inteligentes de IA.</p></div>
-      <div class="feat reveal s2"><div class="fic">⚙️</div><h3>Motor de reglas y SLA</h3><p>Condiciones, validaciones, fórmulas y plazos relativos sin programar.</p></div>
-      <div class="feat reveal s2"><div class="fic">🔄</div><h3>Diagramas de proceso</h3><p>Visualiza el flujo completo de extremo a extremo, siempre editable.</p></div>
-      <div class="feat reveal s3"><div class="fic">📋</div><h3>Tablero diario</h3><p>Cada equipo ve sus tareas pendientes, con estado y responsables.</p></div>
-      <div class="feat reveal s3"><div class="fic">🔗</div><h3>Integraciones y webhooks</h3><p>Conecta Konnexys con tus sistemas y dispara eventos en tiempo real.</p></div>
-      <div class="feat reveal s4"><div class="fic">📄</div><h3>Generación de PDF</h3><p>Documentos, comprobantes y reportes generados automáticamente.</p></div>
-      <div class="feat reveal s4"><div class="fic">🏢</div><h3>Multi-tenant y RBAC</h3><p>Onboarding self-service y permisos por rol, seguro desde el día uno.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ESCENA 6 · POR QUÉ -->
-<section class="scene" id="porque" data-theme="light">
-  <div class="wrap">
-    <div class="sec-head center reveal">
-      <div class="eyebrow">Por qué Konnexys</div>
-      <h2>La potencia del enterprise, sin su complejidad.</h2>
-    </div>
-    <div class="why-grid">
-      <ul class="why-list reveal s1">
-        <li><span class="wi">🌎</span><div><h4>Pensado para LATAM</h4><p>En español, con soporte cercano y precios al alcance de empresas de la región.</p></div></li>
-        <li><span class="wi">⚡</span><div><h4>Implementación en semanas</h4><p>No meses de consultoría. Pasas de la idea a producción en tiempo récord.</p></div></li>
-        <li><span class="wi">🧠</span><div><h4>IA que entiende el negocio</h4><p>La conversación reemplaza al manual técnico. Cualquiera puede crear procesos.</p></div></li>
-        <li><span class="wi">🔒</span><div><h4>Listo para producción</h4><p>Autenticación, roles, cifrado y trazabilidad de nivel empresarial.</p></div></li>
-      </ul>
-      <div class="compare reveal s2">
-        <div class="compare-row head"><div>Característica</div><div>Konnexys</div><div>Tradicional</div></div>
-        <div class="compare-row"><div class="feat-name">Crear un proceso</div><div class="kx"><span class="chk">✓</span> En español</div><div class="other">Modelado BPMN</div></div>
-        <div class="compare-row"><div class="feat-name">Tiempo a producción</div><div class="kx"><span class="chk">✓</span> Semanas</div><div class="other">Meses</div></div>
-        <div class="compare-row"><div class="feat-name">Requiere consultores</div><div class="kx"><span class="chk">✓</span> No</div><div class="other">Sí</div></div>
-        <div class="compare-row"><div class="feat-name">Lo usa el negocio</div><div class="kx"><span class="chk">✓</span> Sí</div><div class="other">Solo TI</div></div>
-        <div class="compare-row"><div class="feat-name">Soporte regional</div><div class="kx"><span class="chk">✓</span> LATAM</div><div class="other">Limitado</div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ESCENA 7 · PILOTO -->
-<section class="scene" id="piloto" data-theme="light">
-  <div class="wrap">
-    <div class="pilot reveal" id="contacto">
-      <div class="pilot-inner">
-        <div>
-          <span class="badge">🚀 Programa piloto · cupos limitados</span>
-          <h2>Sé de los primeros en operar con Konnexys</h2>
-          <p>Estamos abriendo un grupo reducido de empresas para implementar Konnexys con acompañamiento directo del equipo fundador.</p>
-          <ul>
-            <li><span class="tick">✓</span> Implementación guiada de tu primer proceso</li>
-            <li><span class="tick">✓</span> Acompañamiento directo, sin intermediarios</li>
-            <li><span class="tick">✓</span> Condiciones preferenciales por ser early adopter</li>
-          </ul>
+  <!-- HERO -->
+  <section class="hero" id="top" aria-labelledby="hero-h">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">Konnexys · plataforma low-code</span>
+        <h1 id="hero-h">Del lenguaje<br>a la <span class="hl">aplicación</span>.</h1>
+        <p class="lead">Escribe tu proceso en español. Konnexys lo compila en una app funcional —disparadores, formularios, reglas y aprobaciones— sin una línea de código.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#piloto">Solicitar acceso</a>
+          <a class="btn btn-secondary" href="#proceso">Ver cómo funciona</a>
         </div>
-        <div class="form-card">
-          <h3>Solicita tu piloto</h3>
-          <p class="fsub">Déjanos tus datos y te contactamos en menos de 48 h.</p>
-          <div class="field"><label for="nombre">Nombre</label><input id="nombre" type="text" placeholder="Tu nombre"></div>
-          <div class="field"><label for="empresa">Empresa</label><input id="empresa" type="text" placeholder="Nombre de tu empresa"></div>
-          <div class="field"><label for="email">Correo</label><input id="email" type="email" placeholder="tu@empresa.com"></div>
-          <div class="field"><label for="proceso2">¿Qué proceso quieres automatizar?</label><textarea id="proceso2" placeholder="Ej.: aprobación de facturas de proveedores…"></textarea></div>
-          <button class="btn btn-primary" onclick="enviarSolicitud()">Solicitar piloto →</button>
-          <p class="form-note">Al enviar se abrirá tu correo con la solicitud lista. Sin compromiso.</p>
+        <p class="hero-note mono"><span class="ok" aria-hidden="true">✓</span> Una alternativa a Appian, Kissflow y Bizagi, hecha para LATAM.</p>
+      </div>
+
+      <!-- SIGNATURE: el compilador -->
+      <div class="spec" aria-label="Ejemplo: una frase compilada en un proceso">
+        <div class="spec-bar">
+          <span class="d d1" aria-hidden="true"></span><span class="d d2" aria-hidden="true"></span><span class="d d3" aria-hidden="true"></span>
+          <span class="spec-name" translate="no">konnexys › editor</span>
+          <span class="spec-flag" id="specFlag">compilado</span>
+        </div>
+        <div class="spec-body">
+          <p class="spec-prompt"><span class="car" aria-hidden="true">›</span> <span id="specType"></span><span class="caret-blink" id="specCaret" aria-hidden="true"></span></p>
+          <div class="spec-sep" role="presentation"></div>
+          <ol class="spec-out" id="specOut">
+            <li class="spec-row"><span class="tag t-trigger">TRIGGER</span><span class="spec-label">Factura recibida</span><span class="spec-meta">correo</span></li>
+            <li class="spec-row"><span class="tag t-form">FORM</span><span class="spec-label">Datos del proveedor</span><span class="spec-meta tnum">6 campos</span></li>
+            <li class="spec-row"><span class="tag t-rule">RULE</span><span class="spec-label">Monto &gt; $5.000</span><span class="spec-meta">condición</span></li>
+            <li class="spec-row"><span class="tag t-approve">APPROVE</span><span class="spec-label">Gerencia</span><span class="spec-meta">SLA 48&nbsp;h</span></li>
+            <li class="spec-row"><span class="tag t-output">OUTPUT</span><span class="spec-label">Notificar + PDF</span><span class="spec-meta">automático</span></li>
+          </ol>
+          <div class="spec-sep" role="presentation"></div>
+          <p class="spec-done"><span class="ok" aria-hidden="true">✓</span> app generada · <span class="tnum">5</span> pasos · <span class="tnum">0</span> líneas de código</p>
         </div>
       </div>
     </div>
-  </div>
-</section>
+    <a class="scroll-cue" href="#proceso" aria-label="Ir a la siguiente sección"><span>Desliza para descubrir</span><span class="sc-chev" aria-hidden="true">↓</span></a>
+  </section>
 
-<!-- FOOTER -->
+  <!-- PROCESO (secuencia real) -->
+  <section class="section" id="proceso" aria-labelledby="proceso-h">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">El proceso</span>
+        <h2 id="proceso-h">Cuatro pasos, cero jerga técnica</h2>
+        <p>Tú aportas la idea en tu idioma. La plataforma la estructura, la conecta y la publica.</p>
+      </div>
+      <div class="steps stagger">
+        <div class="step"><span class="idx mono">01</span><h3>Descríbelo</h3><p>Cuéntale el proceso a Konnexys como se lo explicarías a un colega.</p></div>
+        <div class="step"><span class="idx mono">02</span><h3>Se compila</h3><p>La IA detecta disparadores, tareas, responsables, datos y reglas.</p></div>
+        <div class="step"><span class="idx mono">03</span><h3>Se ajusta</h3><p>Revisas el resultado como nodos editables y afinas formularios y SLA.</p></div>
+        <div class="step"><span class="idx mono">04</span><h3>Se publica</h3><p>Tu equipo opera con tablero, notificaciones y aprobaciones.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAPACIDADES -->
+  <section class="section" id="capacidades" aria-labelledby="cap-h">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Capacidades</span>
+        <h2 id="cap-h">Lo que tu proceso necesita, en una plataforma</h2>
+        <p>La potencia de un motor de procesos robusto, con la simplicidad de una herramienta hecha para el negocio.</p>
+      </div>
+      <div class="caps stagger">
+        <div class="cap"><span class="cap-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 5h16v11H8l-4 3z"/></svg></span><span class="lbl">nlp</span><h3>Entrada conversacional</h3><p>Describe el proceso en lenguaje natural y la IA lo estructura.</p></div>
+        <div class="cap"><span class="cap-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h5"/></svg></span><span class="lbl">forms</span><h3>Constructor de formularios</h3><p>Arrastra y suelta campos, con sugerencias de IA.</p></div>
+        <div class="cap"><span class="cap-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v6m0 0l3-2m-3 2L9 7M6 21a3 3 0 100-6 3 3 0 000 6zm12 0a3 3 0 100-6 3 3 0 000 6z"/></svg></span><span class="lbl">rules</span><h3>Motor de reglas y SLA</h3><p>Condiciones, validaciones y plazos, sin programar.</p></div>
+        <div class="cap"><span class="cap-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="10" width="6" height="4" rx="1"/><rect x="15" y="4" width="6" height="4" rx="1"/><rect x="15" y="16" width="6" height="4" rx="1"/><path d="M9 12h3m0-6v12"/></svg></span><span class="lbl">flow</span><h3>Diagrama de proceso</h3><p>Visualiza el flujo completo, siempre editable.</p></div>
+        <div class="cap"><span class="cap-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M8 6l-4 6 4 6M16 6l4 6-4 6"/></svg></span><span class="lbl">api</span><h3>Integraciones y webhooks</h3><p>Conecta con tus sistemas y dispara eventos en tiempo real.</p></div>
+        <div class="cap"><span class="cap-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span><span class="lbl">docs</span><h3>Generación de PDF</h3><p>Comprobantes y reportes generados automáticamente.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OPERACIÓN -->
+  <section class="section" id="operacion" aria-labelledby="ops-h">
+    <div class="wrap ops-grid">
+      <div class="ops-copy reveal">
+        <span class="eyebrow">En operación</span>
+        <h2 id="ops-h" style="font-size:clamp(28px,3.6vw,40px);margin:14px 0 12px">Tus procesos, corriendo solos</h2>
+        <p style="color:var(--ink-2);font-size:17.5px">Publicada la app, Konnexys ejecuta cada paso, avisa a las personas correctas y deja registro de todo, en tiempo real.</p>
+        <ul class="points">
+          <li><span class="pk" aria-hidden="true">›</span> Cada tarea avanza sola, sin recordatorios manuales.</li>
+          <li><span class="pk" aria-hidden="true">›</span> Trazabilidad completa: quién, qué y cuándo.</li>
+          <li><span class="pk" aria-hidden="true">›</span> Notificaciones y aprobaciones automáticas.</li>
+        </ul>
+      </div>
+      <div class="log reveal" id="opsLog" aria-label="Registro de ejecución en vivo (ejemplo)">
+        <div class="log-bar">
+          <span class="live" aria-hidden="true"></span>
+          <span class="log-title" translate="no">konnexys › run</span>
+          <span class="log-meta">proceso · facturas</span>
+        </div>
+        <div class="log-body">
+          <div class="log-row"><span class="log-time tnum">09:41</span><span class="log-text">Factura recibida</span><span class="log-badge lb-info">registrada</span></div>
+          <div class="log-row"><span class="log-time tnum">09:41</span><span class="log-text">Datos extraídos</span><span class="log-badge lb-run">completado</span></div>
+          <div class="log-row"><span class="log-time tnum">09:42</span><span class="log-text">Validación de monto</span><span class="log-badge lb-warn">en revisión</span></div>
+          <div class="log-row"><span class="log-time tnum">09:43</span><span class="log-text">Enviado a aprobación</span><span class="log-badge lb-info">en curso</span></div>
+          <div class="log-row"><span class="log-time tnum">09:45</span><span class="log-text">Aprobado por gerencia</span><span class="log-badge lb-ok">aprobado</span></div>
+          <div class="log-row"><span class="log-time tnum">09:46</span><span class="log-text">Comprobante generado</span><span class="log-badge lb-ok">listo</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PILOTO -->
+  <section class="section" id="piloto" aria-labelledby="piloto-h">
+    <div class="wrap cta-grid">
+      <div class="cta-copy reveal">
+        <span class="eyebrow">Empezar</span>
+        <h2 id="piloto-h">Sé de los primeros en operar con Konnexys</h2>
+        <p>Abrimos un grupo reducido de empresas para implementar Konnexys con acompañamiento directo del equipo fundador.</p>
+        <ul class="cta-list">
+          <li><span class="ck" aria-hidden="true">+</span> Implementación guiada de tu primer proceso</li>
+          <li><span class="ck" aria-hidden="true">+</span> Acompañamiento directo, sin intermediarios</li>
+          <li><span class="ck" aria-hidden="true">+</span> Condiciones preferenciales por entrar temprano</li>
+        </ul>
+      </div>
+      <div class="form reveal">
+        <h3>Solicita tu piloto</h3>
+        <p class="fnote">respuesta en menos de 48&nbsp;h</p>
+        <form id="pilotForm" novalidate>
+          <div class="field" id="f-nombre">
+            <label for="nombre">Nombre <span class="req" aria-hidden="true">*</span></label>
+            <input id="nombre" name="nombre" type="text" autocomplete="name" required aria-required="true" aria-describedby="e-nombre" placeholder="Ej.: Fernando Zárate">
+            <p class="err" id="e-nombre">Escribe tu nombre.</p>
+          </div>
+          <div class="field" id="f-empresa">
+            <label for="empresa">Empresa</label>
+            <input id="empresa" name="empresa" type="text" autocomplete="organization" placeholder="Ej.: Konnexys">
+          </div>
+          <div class="field" id="f-email">
+            <label for="email">Correo <span class="req" aria-hidden="true">*</span></label>
+            <input id="email" name="email" type="email" autocomplete="email" inputmode="email" spellcheck="false" required aria-required="true" aria-describedby="e-email" placeholder="Ej.: nombre@empresa.com">
+            <p class="err" id="e-email">Escribe un correo válido, por ejemplo nombre@empresa.com.</p>
+          </div>
+          <div class="field" id="f-proceso">
+            <label for="proceso">¿Qué proceso quieres automatizar?</label>
+            <textarea id="proceso" name="proceso" placeholder="Ej.: aprobación de facturas de proveedores…"></textarea>
+          </div>
+          <button class="btn btn-primary" type="submit">Enviar solicitud</button>
+          <p class="form-status mono" id="formStatus" role="status" aria-live="polite"></p>
+          <p class="legal">Sin compromiso. Al enviar se abrirá tu correo con la solicitud lista.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
 <footer>
   <div class="wrap">
-    <div class="foot-top">
-      <div class="foot-brand">
-        <a href="#top" class="wordmark"><span class="logo-dot">K</span>Konnexys</a>
-        <p>La plataforma low-code que convierte una frase en una aplicación —descríbelo en español, la IA lo construye.</p>
-      </div>
-      <div class="foot-cols">
-        <div class="foot-col"><h5>Producto</h5><a href="#proceso">El recorrido</a><a href="#capacidades">Capacidades</a><a href="#porque">Por qué Konnexys</a></div>
-        <div class="foot-col"><h5>Empresa</h5><a href="#piloto">Programa piloto</a><a href="#contacto">Contacto</a></div>
-        <div class="foot-col"><h5>Legal</h5><a href="#">Privacidad</a><a href="#">Términos</a></div>
-      </div>
+    <div class="foot-in">
+      <a class="foot-brand" href="#top" translate="no"><span class="brand-mark" aria-hidden="true">K</span>Konnexys</a>
+      <nav class="foot-links" aria-label="Pie de página">
+        <a href="#proceso">Proceso</a>
+        <a href="#capacidades">Capacidades</a>
+        <a href="#piloto">Piloto</a>
+        <a href="#top">Privacidad</a>
+      </nav>
     </div>
-    <div class="foot-bottom"><span>© 2026 Konnexys. Todos los derechos reservados.</span><span>Hecho en LATAM 🌎</span></div>
+    <div class="foot-meta">
+      <span id="footCopy" translate="no">© Konnexys</span>
+      <span>Hecho en LATAM · <span id="footStamp"></span></span>
+    </div>
   </div>
 </footer>
 
 <script>
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const scenes = [...document.querySelectorAll('.scene')];
-  const dots = [...document.querySelectorAll('.sn-dot')];
-  const nav = document.getElementById('nav');
-  const body = document.body;
-  const hero = document.getElementById('top');
 
-  /* ---- Barra de progreso ---- */
-  const prog = document.getElementById('prog');
-  function updateProgress(){
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    prog.style.width = (max>0 ? (window.scrollY/max)*100 : 0) + '%';
-  }
-  window.addEventListener('scroll', updateProgress, {passive:true}); updateProgress();
-
-  /* ---- Pista de scroll: se oculta al primer desplazamiento ---- */
-  const cue = document.getElementById('scrollCue');
-  window.addEventListener('scroll', ()=>{ if(window.scrollY>40) cue && cue.classList.add('hide'); }, {passive:true});
-
-  /* ---- Escena activa: maneja reveals, tema de nav y puntitos ---- */
-  function setActive(idx){
-    scenes.forEach((s,i)=>s.classList.toggle('in-view', i===idx));
-    dots.forEach((d,i)=>d.classList.toggle('active', i===idx));
-    const theme = scenes[idx].dataset.theme;
-    nav.classList.toggle('light', theme==='light');
-    body.classList.toggle('nav-dark', theme==='dark');
-  }
-  // Detecta cuál escena cruza el centro del viewport
-  const spy = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){
-        const idx = scenes.indexOf(e.target);
-        if(idx>=0) setActive(idx);
-      }
-    });
-  }, { rootMargin:'-40% 0px -40% 0px', threshold:0 });
-  scenes.forEach(s=>spy.observe(s));
-  setActive(0); // hero visible al cargar
-
-  /* ====== GRAFO VIVO ====== */
-  const scenarios = [
-    { prompt:"Aprobar facturas de proveedores", labels:["Llega una factura","Datos del proveedor","¿Monto > $5.000?","Gerencia aprueba","Notificar + PDF"], status:"Proceso de pagos" },
-    { prompt:"Gestionar solicitudes de vacaciones", labels:["Solicitud enviada","Fechas y motivo","¿Quedan días?","Jefatura aprueba","Avisar a RR. HH."], status:"Proceso de RR. HH." },
-    { prompt:"Dar de alta nuevos empleados", labels:["Ingreso confirmado","Datos y documentos","¿Requiere equipo?","TI lo asigna","Generar contrato"], status:"Onboarding" },
-    { prompt:"Registrar siniestros de seguros", labels:["Reporte del cliente","Datos del siniestro","¿Cobertura vigente?","Perito evalúa","Resolución + PDF"], status:"Siniestros" }
-  ];
-  const gType=document.getElementById('gType'), gStatus=document.getElementById('gStatus'), gStatusTxt=document.getElementById('gStatusTxt');
-  const nodes=['n1','n2','n3','n4','n5'].map(id=>document.getElementById(id));
-  const glabels=[...document.querySelectorAll('.glabel')];
-  const edges=['p1','p2','p3','p4'].map(id=>document.getElementById(id));
-  const flows=['f1','f2','f3','f4'].map(id=>document.getElementById(id));
-  const sparks=['s1','s2','s3','s4'].map(id=>document.getElementById(id));
-  const appChip=document.getElementById('appChip');
-  const edgeOrder=[{edge:0,node:1},{edge:1,node:2},{edge:2,node:3},{edge:3,node:4}];
-  const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-  async function typeText(t){ gType.textContent=''; for(let i=0;i<t.length;i++){ gType.textContent+=t[i]; await sleep(34);} }
-  function resetGraph(){ nodes.forEach(n=>n.classList.remove('on')); edges.forEach(e=>e.classList.remove('on')); flows.forEach(f=>f.classList.remove('on')); sparks.forEach(s=>s.classList.remove('on')); appChip.classList.remove('on'); }
-  function setLabels(a){ glabels.forEach((l,i)=>l.textContent=a[i]||''); }
-  async function runScenario(sc){
-    resetGraph(); setLabels(sc.labels);
-    gStatus.classList.add('thinking'); gStatusTxt.textContent='analizando…';
-    await typeText(sc.prompt); await sleep(450);
-    nodes[0].classList.add('on'); await sleep(380);
-    for(const step of edgeOrder){
-      edges[step.edge].classList.add('on'); flows[step.edge].classList.add('on'); sparks[step.edge].classList.add('on');
-      await sleep(280); nodes[step.node].classList.add('on'); await sleep(360);
-    }
-    gStatus.classList.remove('thinking'); gStatusTxt.textContent=sc.status;
-    await sleep(420); appChip.classList.add('on'); await sleep(3000);
-    appChip.classList.remove('on');
-    nodes.forEach((n,i)=>setTimeout(()=>n.classList.remove('on'), i*70));
-    flows.forEach(f=>f.classList.remove('on')); sparks.forEach(s=>s.classList.remove('on'));
-    await sleep(500); edges.forEach(e=>e.classList.remove('on')); await sleep(450);
-  }
-  async function loopGraph(){
-    if(reduce){ const sc=scenarios[0]; setLabels(sc.labels); gType.textContent=sc.prompt; gStatusTxt.textContent=sc.status; nodes.forEach(n=>n.classList.add('on')); edges.forEach(e=>e.classList.add('on')); appChip.classList.add('on'); return; }
-    let i=0; while(true){ await runScenario(scenarios[i%scenarios.length]); i++; }
-  }
-  let started=false;
-  new IntersectionObserver((es)=>{es.forEach(e=>{ if(e.isIntersecting && !started){ started=true; loopGraph(); } })},{threshold:.2}).observe(document.querySelector('.graph-shell'));
-
-  /* ====== CONSTELACIÓN ====== */
+  /* Menú móvil accesible */
   (function(){
-    if(reduce) return;
-    const cv=document.getElementById('constellation'), ctx=cv.getContext('2d');
-    let w,h,pts,running=true,raf; const N=34;
-    function resize(){ w=cv.width=hero.offsetWidth; h=cv.height=hero.offsetHeight; }
-    function init(){ pts=Array.from({length:N},()=>({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,r:Math.random()*1.6+.6})); }
-    function draw(){
-      ctx.clearRect(0,0,w,h);
-      for(const p of pts){ p.x+=p.vx; p.y+=p.vy; if(p.x<0||p.x>w)p.vx*=-1; if(p.y<0||p.y>h)p.vy*=-1; }
-      for(let i=0;i<pts.length;i++) for(let j=i+1;j<pts.length;j++){
-        const a=pts[i],b=pts[j],d=Math.hypot(a.x-b.x,a.y-b.y);
-        if(d<140){ ctx.strokeStyle='rgba(251,92,28,'+(1-d/140)*.18+')'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); }
-      }
-      for(const p of pts){ ctx.fillStyle='rgba(255,160,90,.55)'; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill(); }
-      if(running) raf=requestAnimationFrame(draw);
-    }
-    resize(); init(); draw();
-    window.addEventListener('resize',()=>{ resize(); init(); });
-    new IntersectionObserver((es)=>{es.forEach(e=>{ if(e.isIntersecting){ if(!running){running=true; draw();} } else { running=false; cancelAnimationFrame(raf); } })},{threshold:0}).observe(hero);
+    const nav=document.getElementById('nav'), btn=document.getElementById('navToggle');
+    if(!btn) return;
+    btn.addEventListener('click', ()=>{
+      const open = nav.getAttribute('data-open')==='true';
+      nav.setAttribute('data-open', String(!open));
+      btn.setAttribute('aria-expanded', String(!open));
+      btn.setAttribute('aria-label', open ? 'Abrir menú' : 'Cerrar menú');
+    });
+    document.getElementById('navLinks').addEventListener('click', e=>{
+      if(e.target.tagName==='A'){ nav.setAttribute('data-open','false'); btn.setAttribute('aria-expanded','false'); btn.setAttribute('aria-label','Abrir menú'); }
+    });
   })();
 
-  /* ---- Solicitud vía mailto (cambia el correo o conéctalo a Formspree) ---- */
-  function enviarSolicitud(){
-    const v=id=>(document.getElementById(id).value||'').trim();
-    const destino="hola@konnexys.com"; // <-- cambia por tu correo real
-    const asunto=encodeURIComponent("Solicitud de piloto Konnexys"+(v('empresa')?" — "+v('empresa'):""));
-    const cuerpo=encodeURIComponent("Nombre: "+v('nombre')+"\nEmpresa: "+v('empresa')+"\nCorreo: "+v('email')+"\n\nProceso a automatizar:\n"+v('proceso2'));
-    window.location.href="mailto:"+destino+"?subject="+asunto+"&body="+cuerpo;
-  }
-  window.enviarSolicitud=enviarSolicitud;
+  /* Reveal on scroll */
+  (function(){
+    const els=[...document.querySelectorAll('.reveal, .stagger')];
+    if(reduce){ els.forEach(e=>e.classList.add('in')); return; }
+    const io=new IntersectionObserver((es)=>{es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } })},{threshold:.16});
+    els.forEach(e=>io.observe(e));
+  })();
+
+  /* Compilador del hero: teclea la frase y compila; rota entre procesos */
+  (function(){
+    const typeEl=document.getElementById('specType');
+    const flag=document.getElementById('specFlag');
+    const rows=[...document.querySelectorAll('#specOut .spec-row')];
+    const labels=rows.map(r=>r.querySelector('.spec-label'));
+    const metas=rows.map(r=>r.querySelector('.spec-meta'));
+    const scenarios=[
+      {p:"Aprobar facturas de proveedores", r:[["Factura recibida","correo"],["Datos del proveedor","6 campos"],["Monto > $5.000","condición"],["Gerencia","SLA 48 h"],["Notificar + PDF","automático"]]},
+      {p:"Gestionar solicitudes de vacaciones", r:[["Solicitud enviada","portal"],["Fechas y motivo","4 campos"],["¿Quedan días?","condición"],["Jefatura aprueba","SLA 24 h"],["Avisar a RR. HH.","automático"]]},
+      {p:"Dar de alta nuevos empleados", r:[["Ingreso confirmado","portal"],["Datos y documentos","8 campos"],["¿Requiere equipo?","condición"],["TI lo asigna","SLA 72 h"],["Generar contrato","PDF"]]},
+      {p:"Registrar siniestros de seguros", r:[["Reporte del cliente","app"],["Datos del siniestro","7 campos"],["¿Cobertura vigente?","condición"],["Perito evalúa","SLA 5 d"],["Resolución + PDF","automático"]]}
+    ];
+    const setRows=sc=>sc.r.forEach((t,i)=>{ if(labels[i]) labels[i].textContent=t[0]; if(metas[i]) metas[i].textContent=t[1]; });
+    if(reduce){ const sc=scenarios[0]; typeEl.textContent=sc.p; setRows(sc); rows.forEach(r=>r.classList.add('in')); if(flag) flag.textContent='compilado'; return; }
+    const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+    async function type(txt){ typeEl.textContent=''; for(let i=0;i<txt.length;i++){ typeEl.textContent+=txt[i]; await sleep(36); } }
+    async function loop(){
+      let k=0;
+      while(true){
+        const sc=scenarios[k%scenarios.length];
+        rows.forEach(r=>r.classList.remove('in'));
+        setRows(sc);
+        if(flag) flag.textContent='compilando';
+        await type(sc.p);
+        await sleep(220);
+        for(let i=0;i<rows.length;i++){ rows[i].classList.add('in'); await sleep(230); }
+        if(flag) flag.textContent='compilado';
+        await sleep(2800);
+        rows.forEach((r,i)=>setTimeout(()=>r.classList.remove('in'), i*60));
+        await sleep(560);
+        k++;
+      }
+    }
+    let started=false;
+    const io=new IntersectionObserver((es)=>{es.forEach(e=>{ if(e.isIntersecting && !started){ started=true; loop(); io.disconnect(); } })},{threshold:.4});
+    io.observe(document.querySelector('.spec'));
+  })();
+
+  /* Log de operación: filas en cascada al entrar en vista */
+  (function(){
+    const log=document.getElementById('opsLog'); if(!log) return;
+    const rows=[...log.querySelectorAll('.log-row')];
+    if(reduce){ rows.forEach(r=>r.classList.add('in')); return; }
+    let timers=[];
+    const play=()=>{ stop(); rows.forEach((r,i)=>timers.push(setTimeout(()=>r.classList.add('in'), 200+i*320))); };
+    const stop=()=>{ timers.forEach(clearTimeout); timers=[]; rows.forEach(r=>r.classList.remove('in')); };
+    new IntersectionObserver((es)=>{es.forEach(e=>{ e.isIntersecting?play():stop(); })},{threshold:.35}).observe(log);
+  })();
+
+  /* Formulario: validación accesible + mailto */
+  (function(){
+    const form=document.getElementById('pilotForm'); if(!form) return;
+    const status=document.getElementById('formStatus');
+    const nombre=document.getElementById('nombre'), email=document.getElementById('email');
+    const emailOk = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    function setInvalid(fieldId, invalid){
+      const f=document.getElementById(fieldId);
+      f.setAttribute('data-invalid', String(invalid));
+      f.querySelector('input,textarea').setAttribute('aria-invalid', String(invalid));
+    }
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      status.textContent='';
+      let firstBad=null;
+      const nBad = nombre.value.trim()==='';
+      const eBad = !emailOk(email.value.trim());
+      setInvalid('f-nombre', nBad); if(nBad && !firstBad) firstBad=nombre;
+      setInvalid('f-email', eBad); if(eBad && !firstBad) firstBad=email;
+      if(firstBad){ firstBad.focus(); status.style.color='#B23524'; status.textContent='Revisa los campos marcados.'; return; }
+      const v=id=>(document.getElementById(id).value||'').trim();
+      const asunto=encodeURIComponent('Solicitud de piloto Konnexys'+(v('empresa')?' — '+v('empresa'):''));
+      const cuerpo=encodeURIComponent('Nombre: '+v('nombre')+'\nEmpresa: '+v('empresa')+'\nCorreo: '+v('email')+'\n\nProceso a automatizar:\n'+v('proceso'));
+      status.style.color='var(--t-approve-fg)'; status.textContent='Abriendo tu correo…';
+      window.location.href='mailto:hola@konnexys.com?subject='+asunto+'&body='+cuerpo; // cambia el correo o conéctalo a Formspree
+    });
+    // limpia el error al corregir
+    [nombre,email].forEach(inp=>inp.addEventListener('input', ()=>{
+      const f=inp.closest('.field'); if(f.getAttribute('data-invalid')==='true'){ f.setAttribute('data-invalid','false'); inp.setAttribute('aria-invalid','false'); }
+    }));
+  })();
+
+  /* Fechas con Intl (no hardcodear formatos) */
+  (function(){
+    const y=new Intl.DateTimeFormat('es',{year:'numeric'}).format(new Date());
+    const copy=document.getElementById('footCopy'); if(copy) copy.textContent='© '+y+' Konnexys';
+    const stamp=document.getElementById('footStamp');
+    if(stamp) stamp.textContent=new Intl.DateTimeFormat('es',{dateStyle:'long'}).format(new Date());
+  })();
 </script>
 </body>
 </html>
