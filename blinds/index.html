@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Blinds, demo del piloto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F7F3EE; --surface:#FFFAF6; --surface-2:#FBEFE7;
+  --fg:#121210; --muted:#5A554E; --border:#EADDD2; --border-strong:#9A9088;
+  --brand:#E8622F; --accent:#A8421F; --accent-hover:#B5430F; --accent-btn:#CC4A18; --accent-fg:#FFFFFF; --accent-soft:#FCE4D8;
+  --coin:#7A4E00; --coin-bg:#FBEBC8;
+  --ok:#1B6E47; --ok-bg:#DDF1E6; --warn:#7A4E00; --warn-bg:#FBEBC8;
+  --danger:#B3261E; --danger-bg:#FBE4E2;
+  --slat:#121210; --overlay:rgba(40,24,14,.5);
+  --glow-1:rgba(248,150,110,.55); --glow-2:rgba(250,190,160,.5); --glow-3:rgba(247,214,190,.7);
+  --shadow:0 28px 56px -28px rgba(176,80,32,.35),0 2px 6px rgba(120,60,20,.06);
+  --glass-a:rgba(255,255,255,.66); --glass-b:rgba(255,255,255,.30); --glass-line:rgba(255,255,255,.85); --glass-hi:rgba(255,255,255,.75); --glass-solid:#FFFAF6;
+  --display:"Geist","Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --body:"Geist","Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"Geist Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  --r-sm:8px; --r-md:10px; --r-lg:16px;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#171310; --surface:#231D19; --surface-2:#2C2520;
+    --fg:#F3ECE6; --muted:#B8ADA3; --border:#3A302A; --border-strong:#7D7268;
+    --brand:#FF8A5C; --accent:#FF9466; --accent-hover:#FFA67F; --accent-btn:#FF9466; --accent-fg:#1A1512; --accent-soft:#40261A;
+    --coin:#F2C261; --coin-bg:#3A2E12;
+    --ok:#7AD3A4; --ok-bg:#153526; --warn:#F2C261; --warn-bg:#3A2E12;
+    --danger:#FF8A80; --danger-bg:#3D1917;
+    --slat:#0B0907; --overlay:rgba(0,0,0,.65);
+    --glow-1:rgba(232,98,47,.22); --glow-2:rgba(232,98,47,.12); --glow-3:rgba(120,60,30,.18);
+    --shadow:0 28px 56px -28px rgba(0,0,0,.6);
+    --glass-a:rgba(255,255,255,.11); --glass-b:rgba(255,255,255,.04); --glass-line:rgba(255,255,255,.18); --glass-hi:rgba(255,255,255,.14); --glass-solid:#231D19;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#171310; --surface:#231D19; --surface-2:#2C2520;
+    --fg:#F3ECE6; --muted:#B8ADA3; --border:#3A302A; --border-strong:#7D7268;
+    --brand:#FF8A5C; --accent:#FF9466; --accent-hover:#FFA67F; --accent-btn:#FF9466; --accent-fg:#1A1512; --accent-soft:#40261A;
+    --coin:#F2C261; --coin-bg:#3A2E12;
+    --ok:#7AD3A4; --ok-bg:#153526; --warn:#F2C261; --warn-bg:#3A2E12;
+    --danger:#FF8A80; --danger-bg:#3D1917;
+    --slat:#0B0907; --overlay:rgba(0,0,0,.65);
+    --glow-1:rgba(232,98,47,.22); --glow-2:rgba(232,98,47,.12); --glow-3:rgba(120,60,30,.18);
+    --shadow:0 28px 56px -28px rgba(0,0,0,.6);
+    --glass-a:rgba(255,255,255,.11); --glass-b:rgba(255,255,255,.04); --glass-line:rgba(255,255,255,.18); --glass-hi:rgba(255,255,255,.14); --glass-solid:#231D19;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:radial-gradient(60rem 40rem at -5% -10%,var(--glow-1),transparent 60%),radial-gradient(50rem 36rem at 105% 20%,var(--glow-2),transparent 60%),radial-gradient(60rem 40rem at 40% 110%,var(--glow-3),transparent 60%),var(--bg);background-attachment:fixed;color:var(--fg);font:400 16px/1.5 var(--body);-webkit-text-size-adjust:100%}
+h1,h2,h3{font-family:var(--display);line-height:1.1;margin:0;font-weight:800;letter-spacing:-.03em}
+h2,h3{font-weight:600;letter-spacing:-.015em}
+h1{font-size:clamp(1.6rem,1.2rem + 1.6vw,2.25rem)}
+h2{font-size:1.375rem} h3{font-size:1.0625rem}
+p{margin:0} ul{margin:0;padding:0;list-style:none}
+.num{font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)} .small{font-size:.875rem}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:3px solid var(--brand);outline-offset:2px;border-radius:var(--r-sm)}
+
+/* Barra superior */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 82%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.top-in{max-width:1120px;margin:0 auto;padding:12px 16px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.brand{font-family:var(--display);font-weight:800;letter-spacing:-.03em;font-size:1.375rem;display:flex;align-items:center;gap:8px;margin-right:auto}
+.brand-mark{width:28px;height:28px;display:grid;gap:3px;padding:4px 0}
+.brand-mark i{display:block;background:var(--brand);border-radius:2px}
+.brand-mark i:nth-child(2){width:70%} .brand-mark i:nth-child(3){width:45%}
+.roles{display:flex;max-width:100%;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:4px}
+.roles button{min-height:40px;padding:0 12px;flex:1 1 auto;border:0;border-radius:8px;background:transparent;color:var(--muted);font:600 .9375rem var(--body);cursor:pointer}
+.roles button:hover{color:var(--fg)}
+.roles button[aria-selected="true"]{background:var(--fg);color:var(--surface)}
+.wrap{max-width:1120px;margin:0 auto;padding:24px 16px 64px}
+.wrap.narrow{max-width:460px}
+.subnav{display:flex;gap:4px;border-bottom:1px solid var(--border);margin-bottom:24px;overflow-x:auto}
+.subnav button{min-height:44px;padding:0 16px;border:0;background:none;color:var(--muted);font:500 .875rem var(--mono);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap}
+.subnav button:hover{color:var(--fg)}
+.subnav button[aria-current="page"]{color:var(--fg);border-bottom-color:var(--brand)}
+
+/* Botones */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 20px;border-radius:var(--r-md);border:2px solid transparent;font:600 1rem var(--body);letter-spacing:-.01em;cursor:pointer;text-decoration:none;transition:background .15s,transform .1s}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--accent-btn);color:var(--accent-fg)} .btn-primary:hover{background:var(--accent-hover)}
+.btn-ghost{background:transparent;color:var(--fg);border-color:var(--fg)} .btn-ghost:hover{background:var(--surface-2)}
+.btn-text{background:none;color:var(--accent);padding:0 8px} .btn-text:hover{text-decoration:underline}
+.btn-danger{background:transparent;color:var(--danger);border-color:var(--danger)} .btn-danger:hover{background:var(--danger-bg)}
+.btn[disabled]{opacity:.6;cursor:not-allowed}
+.pill{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 16px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-weight:500;border:0;cursor:pointer;font-family:var(--mono);font-size:.875rem}
+.pill:hover{filter:brightness(.96)}
+.coin{width:14px;height:14px;border-radius:50%;border:3px solid currentColor;display:inline-block}
+
+/* Superficies */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;box-shadow:var(--shadow)}
+.card .card{box-shadow:none}
+.head-row{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between;margin-bottom:24px}
+.head-row p{max-width:60ch}
+.grid{display:grid;gap:16px}
+.grid>*{min-width:0}
+@media (min-width:760px){.grid.c3{grid-template-columns:repeat(3,1fr)}.grid.c2{grid-template-columns:repeat(2,1fr)}.grid.c4{grid-template-columns:repeat(4,1fr)}}
+.vac{display:flex;flex-direction:column;gap:12px;text-align:left;width:100%;cursor:pointer;font:inherit;color:inherit}
+.vac:hover{border-color:var(--brand)}
+.vac-meta{display:flex;flex-wrap:wrap;gap:4px 16px;color:var(--muted);font-size:.9375rem}
+.vac-foot{display:flex;gap:16px;margin-top:auto;padding-top:12px;border-top:1px solid var(--border);font-size:.9375rem}
+.vac-foot b{font:800 1.375rem var(--display);letter-spacing:-.02em;display:block}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:6px;font:500 .78125rem/1.4 var(--mono);background:var(--surface-2);color:var(--fg);border:1px solid var(--border)}
+.tag.ok{background:var(--ok-bg);color:var(--ok);border-color:transparent}
+.tag.warn{background:var(--warn-bg);color:var(--warn);border-color:transparent}
+.tag.accent{background:var(--accent-soft);color:var(--accent);border-color:transparent}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:40px;padding:0 14px;border-radius:8px;border:1px solid var(--border-strong);background:transparent;color:var(--fg);font:500 .8125rem var(--mono);cursor:pointer}
+.chip:hover{background:var(--surface-2)}
+.chip[aria-pressed="true"]{background:var(--fg);color:var(--surface);border-color:var(--fg)}
+
+/* Tarjeta de candidato */
+.cand{display:grid;gap:16px}
+.cand + .cand{margin-top:16px}
+.cand-head{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center}
+.rank{width:40px;height:40px;border-radius:10px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font:500 1rem var(--mono)}
+.aff{text-align:right;line-height:1.1}
+.aff b{font:800 1.875rem var(--display);letter-spacing:-.03em;display:block}
+.aff span{font-family:var(--mono)}
+.ident{position:relative;min-height:56px;border-radius:var(--r-sm);overflow:hidden;display:flex;flex-direction:column;justify-content:center;max-width:340px}
+.ident .real{padding:4px 0}
+.ident .real strong{font-size:1.125rem;display:block;line-height:1.2}
+.slats{position:absolute;inset:0;display:grid;grid-template-rows:repeat(4,1fr);gap:3px}
+.slats i{background:var(--slat);border-radius:2px;transform-origin:center}
+.slats i:nth-child(2){width:82%}.slats i:nth-child(3){width:64%}.slats i:nth-child(4){width:40%}
+.slats.opening i{animation:slat .32s cubic-bezier(.4,0,.2,1) forwards}
+.slats.opening i:nth-child(2){animation-delay:.05s}.slats.opening i:nth-child(3){animation-delay:.1s}.slats.opening i:nth-child(4){animation-delay:.15s}
+@keyframes slat{to{transform:scaleY(0);opacity:0}}
+.code{font:400 .8125rem var(--mono);color:var(--muted);margin-top:4px}
+.bars{display:grid;gap:8px}
+@media (min-width:620px){.bars{grid-template-columns:repeat(2,1fr);gap:8px 24px}}
+.bar{display:grid;grid-template-columns:1fr auto;gap:2px 8px;font-size:.875rem}
+.meter{grid-column:1/-1;height:6px;border-radius:3px;background:var(--surface-2);border:1px solid var(--border);overflow:hidden}
+.meter span{display:block;height:100%;background:var(--brand)}
+.actions{display:flex;flex-wrap:wrap;gap:8px;padding-top:16px;border-top:1px solid var(--border)}
+.contact{display:grid;gap:4px;background:var(--surface-2);border-radius:var(--r-md);padding:12px 16px;font-size:.9375rem}
+
+/* Tablas */
+.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--r-md);background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:.9375rem}
+th,td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--border);vertical-align:middle}
+th{font:500 .8125rem var(--mono);color:var(--muted);background:var(--surface-2)} tr:last-child td{border-bottom:0}
+td.r,th.r{text-align:right}
+.kpi b{font:800 2rem var(--display);letter-spacing:-.03em;display:block;line-height:1.1;margin-top:4px}
+.empty{text-align:center;padding:48px 24px;border:1px dashed var(--border-strong);border-radius:var(--r-lg);color:var(--muted)}
+.empty h3{color:var(--fg);margin-bottom:8px}
+.skel{border-radius:var(--r-lg);height:188px;background:linear-gradient(90deg,var(--surface) 0%,var(--surface-2) 50%,var(--surface) 100%);background-size:200% 100%;animation:sk 1.2s linear infinite;border:1px solid var(--border)}
+.skel + .skel{margin-top:16px}
+@keyframes sk{to{background-position:-200% 0}}
+
+/* Formularios y modales */
+.field{display:grid;gap:6px;margin-bottom:16px}
+.field label,.field legend{font-weight:700;padding:0}
+.field input,.field select,.field textarea{min-height:44px;padding:10px 12px;border-radius:var(--r-sm);border:1px solid var(--border-strong);background:var(--surface);color:var(--fg);font:400 1rem var(--body);width:100%}
+.field textarea{min-height:88px;resize:vertical}
+.field [aria-invalid="true"]{border-color:var(--danger);border-width:2px}
+.err{color:var(--danger);font-size:.875rem;font-weight:700}
+fieldset{border:0;padding:0;margin:0 0 16px}
+.opt{display:flex;gap:12px;align-items:center;min-height:44px;padding:8px 12px;border:1px solid var(--border);border-radius:var(--r-sm);margin-top:8px;cursor:pointer}
+.opt:hover{background:var(--surface-2)}
+.opt input{width:20px;height:20px;accent-color:var(--accent-btn);flex:none}
+.overlay{position:fixed;inset:0;background:var(--overlay);display:grid;place-items:center;padding:16px;z-index:20;overflow-y:auto}
+.modal{box-shadow:var(--shadow);background:var(--surface);border-radius:var(--r-lg);padding:24px;width:100%;max-width:480px;max-height:100%;overflow-y:auto;animation:pop .18s ease-out}
+.modal h2{margin-bottom:8px} .modal .actions{margin-top:24px;border:0;padding:0;justify-content:flex-end}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:30;max-width:calc(100% - 32px)}
+#toast div{background:var(--fg);color:var(--surface);padding:12px 20px;border-radius:var(--r-md);font-weight:700;animation:pop .18s ease-out}
+.note{display:flex;gap:12px;padding:12px 16px;border-radius:var(--r-md);background:var(--accent-soft);color:var(--fg);font-size:.9375rem}
+.note.coin-note{background:var(--coin-bg)}
+.notif{display:grid;gap:2px;padding:12px 0;border-bottom:1px solid var(--border)}
+.notif:last-child{border:0;padding-bottom:0}
+.stack{display:grid;gap:16px}
+.badge{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 6px;border-radius:6px;background:var(--accent-soft);color:var(--accent);font-size:.8125rem;margin-left:4px}
+.demo-bar{background:var(--fg);color:var(--bg);font:400 .8125rem var(--mono)}
+.demo-bar div{max-width:1120px;margin:0 auto;padding:8px 16px;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between}
+.demo-bar button{background:none;border:1px solid currentColor;color:inherit;border-radius:999px;min-height:32px;padding:0 12px;font:500 .75rem var(--mono);cursor:pointer}
+.demo-bar button:hover{background:rgba(127,127,127,.3)}
+
+/* Guía al pie, paneles tipo vidrio */
+.guide{position:relative;isolation:isolate;padding-top:0}
+.guide::before{content:"";position:absolute;inset:48px 4% 48px;z-index:-1;filter:blur(36px);background:radial-gradient(circle at 12% 30%,var(--glow-1),transparent 45%),radial-gradient(circle at 88% 55%,var(--glow-1),transparent 42%),radial-gradient(circle at 50% 95%,var(--glow-2),transparent 50%)}
+.guide-head{margin-bottom:24px;padding-top:32px;border-top:1px solid var(--border)}
+.guide-head h2{font-size:1.5rem;font-weight:800;letter-spacing:-.03em;margin-top:4px}
+.glass{position:relative;overflow:hidden;border-radius:24px;padding:24px;background:var(--glass-solid);border:1px solid var(--glass-line);box-shadow:inset 0 1px 0 var(--glass-hi),inset 0 -1px 0 var(--glass-b),var(--shadow)}
+@supports ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){.glass{background:linear-gradient(135deg,var(--glass-a),var(--glass-b));-webkit-backdrop-filter:blur(22px) saturate(1.7);backdrop-filter:blur(22px) saturate(1.7)}}
+.glass::before{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:radial-gradient(120% 80% at 0% 0%,var(--glass-hi),transparent 42%),linear-gradient(315deg,var(--glass-b),transparent 35%)}
+.glass>*{position:relative}
+.glass p,.guide-list{max-width:68ch}
+.glass-label{font:500 .75rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 12px}
+.glass-accent{border-color:var(--brand)}
+.glass-wide{margin-top:16px}
+.guide-list{display:grid;gap:8px}
+.guide-list li{position:relative;padding-left:20px}
+.guide-list li::before{content:"›";position:absolute;left:0;color:var(--accent);font-family:var(--mono)}
+@media (max-width:420px){.roles{width:100%;order:3}.roles button{font-size:.875rem}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-delay:0s!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="modal-root"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ============ Datos de ejemplo (todo es ficticio) ============ */
+const ME = 'BL-4821';
+const CLIENT = 'Distribuidora Andina S.A.S.';
+const SLOTS = ['Miércoles 23 de septiembre, 9:00 a. m.','Miércoles 23 de septiembre, 3:00 p. m.','Jueves 24 de septiembre, 10:30 a. m.'];
+const POOL = [
+  ['Brayan Stiven Rojas','300 555 0142'],['Luz Dary Cardona','301 555 0187'],['Kevin Andrés Valencia','302 555 0111'],
+  ['Paola Andrea Giraldo','310 555 0164'],['Wilmer Hurtado Caicedo','311 555 0129'],['Sandra Milena Zapata','312 555 0175'],
+  ['Duván Esteban Mejía','313 555 0108'],['Yesica Tatiana Bedoya','314 555 0193'],['Óscar Iván Quintero','315 555 0156'],
+  ['Natalia Andrea Ospina','316 555 0137'],['Cristian Camilo Arango','317 555 0119'],['Diana Marcela Lozano','318 555 0181']
+];
+const ZONES = {Bogotá:['Kennedy','Bosa','Fontibón','Engativá','Suba','Soacha'],Medellín:['Belén','Robledo','Bello','Itagüí','Aranjuez'],Cali:['Aguablanca','Siloé','Meléndez','Alfonso López'],Barranquilla:['Soledad','El Bosque','Las Nieves']};
+const SUMMARIES = [
+  'Experiencia estable en cargos similares, con permanencias de más de un año. Referencias laborales confirmadas.',
+  'Perfil con buena disposición a turnos rotativos y fines de semana. Cuenta con curso certificado afín al cargo.',
+  'Ha trabajado en empresas del mismo sector. Destaca en puntualidad y cumplimiento según sus referencias.',
+  'Perfil junior con alto puntaje en pruebas. Busca estabilidad y vive cerca de la sede.'
+];
+let seed = 7;
+const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const between = (a,b) => Math.round(a + rnd() * (b - a));
+const affinity = (s,t) => { const w = S.weights[t] || S.weights.logistica; return Math.round((s.exp*w.exp + s.comp*w.comp + s.disp*w.disp + s.cerca*w.cerca)/100); };
+const esc = t => String(t).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const cop = n => '$ ' + Math.round(n).toLocaleString('es-CO');
+
+function genCands(n, city, top){
+  const used = new Set(), out = [];
+  for(let i=0;i<n;i++){
+    let p; do { p = between(0, POOL.length-1); } while(used.has(p)); used.add(p);
+    const z = ZONES[city] || ZONES.Bogotá, hi = top - i*between(4,7);
+    out.push({code:'BL-'+between(1000,9899),name:POOL[p][0],phone:'+57 '+POOL[p][1],zone:z[between(0,z.length-1)],years:between(1,7),
+      summary:SUMMARIES[i%SUMMARIES.length],
+      scores:{exp:Math.min(98,hi+between(-4,4)),comp:Math.min(98,hi+between(-6,3)),disp:Math.min(99,hi+between(-3,6)),cerca:Math.min(97,hi+between(-10,4))},
+      checks:{ant:rnd()>.25?'ok':'pendiente',prueba:between(70,93),ref:rnd()>.3},stage:'sugerido',backup:false,interview:null,confirmed:false});
+  }
+  return out;
+}
+function initialState(){
+  seed = 7;
+  const v1 = [
+    {code:ME,name:'Yuliana Restrepo Marín',phone:'+57 320 555 0148',zone:'Kennedy',years:4,summary:'4 años en bodegas de consumo masivo. Maneja radiofrecuencia y picking por voz. Disponible para turnos rotativos.',scores:{exp:94,comp:82,disp:95,cerca:88},checks:{ant:'ok',prueba:null,ref:true}},
+    {code:'BL-3307',name:'Jhon Fredy Castaño',phone:'+57 321 555 0172',zone:'Bosa',years:6,summary:'6 años en logística y despachos. Certificado vigente de montacargas. Ha liderado cuadrillas de cargue.',scores:{exp:96,comp:86,disp:80,cerca:84},checks:{ant:'pendiente',prueba:86,ref:true}},
+    {code:'BL-5112',name:'Leidy Johana Pérez',phone:'+57 322 555 0116',zone:'Fontibón',years:2,summary:'2 años en alistamiento de pedidos para comercio electrónico. Alto puntaje en atención al detalle.',scores:{exp:78,comp:91,disp:88,cerca:93},checks:{ant:'ok',prueba:92,ref:true}},
+    {code:'BL-2954',name:'Andrés Felipe Mosquera',phone:'+57 323 555 0133',zone:'Soacha',years:3,summary:'3 años en bodega de materiales de construcción. Disponible de inmediato, turno de noche incluido.',scores:{exp:82,comp:76,disp:97,cerca:62},checks:{ant:'ok',prueba:77,ref:false}},
+    {code:'BL-6038',name:'María Camila Ortiz',phone:'+57 324 555 0190',zone:'Engativá',years:1,summary:'1 año como auxiliar de inventarios. Técnica en logística del SENA. Busca su primer contrato a término indefinido.',scores:{exp:64,comp:84,disp:86,cerca:79},checks:{ant:'ok',prueba:85,ref:true}}
+  ].map(c => ({...c,stage:'sugerido',backup:false,interview:null,confirmed:false}));
+  return {
+    role:'empresa', view:'vacantes', vacId:null, filter:'todos', credits:3, price:35000,
+    vacancies:[
+      {id:'v1',type:'logistica',title:'Auxiliar de bodega',city:'Bogotá',salary:'$ 1.750.000 más auxilio de transporte',shift:'Turnos rotativos',openings:4,cands:v1},
+      {id:'v2',type:'callcenter',title:'Asesor de servicio al cliente (call center)',city:'Medellín',salary:'$ 1.750.000 más comisiones',shift:'Lunes a sábado, diurno',openings:10,cands:genCands(4,'Medellín',90)},
+      {id:'v3',type:'seguridad',title:'Guarda de seguridad',city:'Cali',salary:'$ 1.950.000 con recargos',shift:'Turnos 12 por 12',openings:2,cands:genCands(3,'Cali',87)},
+      {id:'v4',type:'logistica',title:'Operario de cargue y descargue',city:'Bogotá',salary:'$ 1.800.000 más recargos nocturnos',shift:'Turno de noche',openings:6,cands:genCands(3,'Bogotá',86)}
+    ],
+    log:[], cview:'inicio', testDone:false, quizErr:false,
+    notifs:[{t:'Tu perfil quedó en el ranking de Auxiliar de bodega',d:'Hace 2 días'}],
+    cityOnly:false,
+    market:[
+      {id:'x1',title:'Operaria de empaque',company:'Empresa de alimentos',city:'Bogotá',type:'logistica',salary:'$ 1.750.000 más auxilio de transporte',shift:'Lunes a sábado, diurno',applied:true},
+      {id:'x2',title:'Auxiliar de inventarios',company:'Cadena de droguerías',city:'Bogotá',type:'logistica',salary:'$ 1.850.000',shift:'Turnos rotativos',applied:false}
+    ],
+    bview:'resumen', wtype:'logistica', threshold:70, vrule:'top',
+    weights:{logistica:{exp:35,comp:30,disp:20,cerca:15},callcenter:{exp:20,comp:45,disp:25,cerca:10},seguridad:{exp:40,comp:25,disp:25,cerca:10}},
+    errors:[
+      {id:'e1',code:'BL-3307',svc:'Proveedor de antecedentes',what:'El proveedor no respondió después de 3 intentos. El candidato sigue con la consulta en curso.',action:'Reintentar la consulta'},
+      {id:'e2',code:'BL-8841',svc:'Transcripción de audios',what:'Audio de WhatsApp de 9 segundos con mucho ruido. No se pudo transcribir.',action:'Pedir un nuevo audio'},
+      {id:'e3',code:'BL-6120',svc:'Extracción de hoja de vida con IA',what:'Faltan las fechas de la última experiencia. El perfil quedó incompleto.',action:'Enviar la repregunta'}
+    ],
+    cases:[
+      {id:'c1',kind:'Disputa de un candidato',title:'BL-7720 dice que el hallazgo de antecedentes no es suyo',detail:'Afirma que el registro es de un homónimo. La consulta original se hizo solo con nombre y número de cédula.',opts:[['Reconsultar con fecha de expedición','Se reconsultó con un segundo identificador: el hallazgo era de un homónimo y se retiró del perfil.'],['Mantener el resultado','Se mantuvo el resultado y se le informó al candidato cómo escalar su reclamo.']]},
+      {id:'c2',kind:'Alerta de fraude',title:'La misma cédula aparece en dos cuentas: BL-6415 y BL-6416',detail:'Las dos cuentas se crearon con 4 días de diferencia desde números de celular distintos. Los puntajes de prueba no coinciden.',opts:[['Suspender la cuenta duplicada','Se suspendió BL-6416 y se conservó la cuenta más antigua.'],['Descartar la alerta','Alerta descartada sin cambios.']]},
+      {id:'c3',kind:'Reclamo de una empresa',title:CLIENT+' reclama un crédito por BL-5590',detail:'Reveló al candidato la semana pasada y dice que el celular no existe. Comprobación automática: el número no tiene WhatsApp activo.',opts:[['Devolver 1 crédito','Se devolvió 1 crédito a la empresa y se le pidió al candidato actualizar su celular.'],['Rechazar el reclamo','Reclamo rechazado.']]}
+    ],
+    company:{state:'pendiente'}, flagged:{state:'pendiente'},
+    audit:[{when:'Hoy, 8:12 a. m.',who:'Sistema',what:'Consulta automática de antecedentes',code:'BL-5112'},{when:'Ayer, 4:40 p. m.',who:'Laura M., operaciones',what:'Vio datos personales para atender una disputa',code:'BL-4409'},{when:'Ayer, 11:05 a. m.',who:'Contacto Total BPO',what:'Reveló datos personales',code:'BL-2217'}]
+  };
+}
+let S = initialState();
+const vac = id => S.vacancies.find(v => v.id === id);
+const findCand = code => { const cur = S.role === 'empresa' && S.vacId ? vac(S.vacId) : null; for(const v of (cur ? [cur, ...S.vacancies] : S.vacancies)){ const c = v.cands.find(x => x.code === code); if(c) return {v,c}; } return null; };
+const sorted = v => [...v.cands].sort((a,b) => affinity(b.scores,v.type) - affinity(a.scores,v.type));
+
+/* ============ Utilidades de interfaz ============ */
+let toastTimer;
+function toast(msg){ const t = document.getElementById('toast'); t.innerHTML = '<div>'+esc(msg)+'</div>'; clearTimeout(toastTimer); toastTimer = setTimeout(() => t.innerHTML = '', 3200); }
+let lastTrigger = null;
+function openModal(html){
+  lastTrigger = document.activeElement;
+  const root = document.getElementById('modal-root');
+  root.innerHTML = '<div class="overlay" data-a="overlay"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="m-title">'+html+'</div></div>';
+  const f = root.querySelector('input,select,textarea,button'); if(f) f.focus();
+}
+function closeModal(){ document.getElementById('modal-root').innerHTML = ''; if(lastTrigger && document.contains(lastTrigger)) lastTrigger.focus(); }
+document.addEventListener('keydown', e => {
+  const m = document.querySelector('.modal'); if(!m) return;
+  if(e.key === 'Escape'){ closeModal(); return; }
+  if(e.key === 'Tab'){
+    const f = [...m.querySelectorAll('button,input,select,textarea,a[href]')].filter(x => !x.disabled);
+    if(!f.length) return;
+    if(e.shiftKey && document.activeElement === f[0]){ e.preventDefault(); f[f.length-1].focus(); }
+    else if(!e.shiftKey && document.activeElement === f[f.length-1]){ e.preventDefault(); f[0].focus(); }
+  }
+});
+
+/* ============ Vistas: empresa ============ */
+function identBlock(c, opening){
+  if(c.stage === 'sugerido' && !opening) return '<div class="ident"><span class="sr">Identidad oculta hasta revelar</span><div class="slats" aria-hidden="true"><i></i><i></i><i></i><i></i></div></div>';
+  return '<div class="ident"><div class="real"><strong>'+esc(c.name)+'</strong><span class="muted small">Vive en '+esc(c.zone)+'</span></div>'+(opening?'<div class="slats opening" aria-hidden="true"><i></i><i></i><i></i><i></i></div>':'')+'</div>';
+}
+function bar(label, v){ return '<div class="bar"><span>'+label+'</span><span class="num">'+v+'%</span><div class="meter" role="img" aria-label="'+label+' '+v+' por ciento"><span style="width:'+v+'%"></span></div></div>'; }
+function checksList(c){
+  const out = [];
+  out.push(c.checks.ant === 'ok' ? '<li class="tag ok">✓ Antecedentes consultados el 18/09, sin hallazgos</li>' : '<li class="tag warn">◷ Consulta de antecedentes en curso</li>');
+  out.push(!c.checks.prueba ? '<li class="tag warn">◷ Prueba pendiente</li>' : c.checks.prueba >= S.threshold ? '<li class="tag ok">✓ Prueba aprobada, '+c.checks.prueba+' de 100</li>' : '<li class="tag">Prueba: '+c.checks.prueba+' de 100, bajo el mínimo de '+S.threshold+'</li>');
+  if(c.checks.ref) out.push('<li class="tag ok">✓ Referencia respondida por formulario</li>');
+  if(c.backup) out.push('<li class="tag accent">★ Candidato de respaldo</li>');
+  return '<ul class="chips">'+out.join('')+'</ul>';
+}
+function candCard(c, i, v){
+  const opening = c._opening; let actions = '', contact = '';
+  if(c.stage === 'sugerido'){
+    actions = '<button class="btn btn-primary" id="rev-'+c.code+'" data-a="askReveal" data-code="'+c.code+'">Revelar candidato (1 crédito)</button>';
+  } else {
+    contact = '<div class="contact"><span><b>Celular y WhatsApp:</b> <span class="num">'+esc(c.phone)+'</span></span><span><b>Hoja de vida completa:</b> disponible para descargar</span>'+
+      (c.interview ? '<span><b>Entrevista:</b> '+esc(c.interview)+(c.confirmed?' (asistencia confirmada por el candidato)':' (esperando confirmación)')+'</span>' : '')+'</div>';
+    if(c.stage === 'revelado') actions += '<button class="btn btn-primary" data-a="askInterview" data-code="'+c.code+'">Agendar entrevista</button>';
+    if(c.stage === 'entrevista') actions += '<button class="btn btn-primary" data-a="hire" data-code="'+c.code+'">Marcar como contratado</button>';
+    if(c.stage !== 'contratado' && c.stage !== 'descartado'){
+      actions += '<button class="btn btn-ghost" data-a="backup" data-code="'+c.code+'">'+(c.backup?'Quitar de respaldo':'Dejar como respaldo')+'</button>';
+      actions += '<button class="btn btn-danger" data-a="discard" data-code="'+c.code+'">Descartar</button>';
+    }
+  }
+  const stageTag = {sugerido:'',revelado:'<span class="tag accent">Revelado</span>',entrevista:'<span class="tag accent">En entrevista</span>',contratado:'<span class="tag ok">✓ Contratado</span>',descartado:'<span class="tag">Descartado</span>'}[c.stage];
+  return '<article class="card cand" aria-label="Candidato '+c.code+'"><div class="cand-head"><div class="rank num" aria-label="Puesto '+(i+1)+' del ranking">'+(i+1)+'</div><div>'+identBlock(c, opening)+
+    '<div class="code num">Código '+c.code+', '+c.years+(c.years===1?' año':' años')+' de experiencia '+stageTag+'</div></div><div class="aff"><b class="num">'+affinity(c.scores,v.type)+'%</b><span class="small muted">afinidad</span></div></div>'+
+    '<p>'+esc(c.summary)+'</p><div class="bars">'+bar('Experiencia en el cargo',c.scores.exp)+bar('Competencias evaluadas',c.scores.comp)+bar('Disponibilidad de turnos',c.scores.disp)+bar('Cercanía a la sede',c.scores.cerca)+'</div>'+
+    checksList(c)+contact+(actions?'<div class="actions">'+actions+'</div>':'')+'</article>';
+}
+function viewVacantes(){
+  const cards = S.vacancies.map(v => {
+    const rev = v.cands.filter(c => c.stage !== 'sugerido').length;
+    return '<button class="card vac" data-a="openVac" data-id="'+v.id+'"><h3>'+esc(v.title)+'</h3><div class="vac-meta"><span>'+esc(v.city)+'</span><span>'+esc(v.shift)+'</span><span>'+v.openings+(v.openings===1?' cupo':' cupos')+'</span></div><p class="small muted">'+esc(v.salary)+'</p>'+
+      '<div class="vac-foot"><span><b class="num">'+(v.loading?'…':v.cands.length)+'</b>en ranking</span><span><b class="num">'+rev+'</b>revelados</span></div></button>';
+  }).join('');
+  return '<div class="head-row"><div><h1>Vacantes de '+esc(CLIENT)+'</h1><p class="muted">Cada vacante recibe un ranking de candidatos ya evaluados. Ves todo menos su identidad, y pagas solo por los que decides revelar.</p></div><button class="btn btn-primary" data-a="newVac" id="btn-new">Publicar vacante</button></div><div class="grid c3">'+cards+'</div>';
+}
+function viewVacDetail(){
+  const v = vac(S.vacId);
+  let body;
+  if(v.loading) body = '<p class="muted" style="margin-bottom:16px">Buscando y ordenando candidatos validados para este perfil…</p><div class="skel"></div><div class="skel"></div><div class="skel"></div>';
+  else {
+    const list = sorted(v); const f = S.filter;
+    const shown = list.map((c,i) => ({c,i})).filter(({c}) => f==='todos' ? c.stage!=='descartado' : f==='respaldo' ? c.backup : f==='revelados' ? ['revelado','entrevista','contratado'].includes(c.stage) : c.stage===f);
+    const chips = [['todos','Todo el ranking'],['revelados','Revelados'],['entrevista','En entrevista'],['respaldo','Respaldo'],['descartado','Descartados']].map(([k,l]) => '<button class="chip" data-a="filter" data-f="'+k+'" aria-pressed="'+(f===k)+'">'+l+'</button>').join('');
+    const empties = {revelados:['Aún no revelas a nadie','Revela a un candidato del ranking para ver su nombre, su contacto y su hoja de vida completa.'],entrevista:['Sin entrevistas agendadas','Cuando agendes una entrevista con un candidato revelado, aparece aquí.'],respaldo:['Sin candidatos de respaldo','Deja como respaldo a quien quieras tener a mano si un contratado no se presenta o renuncia pronto.'],descartado:['No has descartado a nadie','Los candidatos que descartes salen del ranking y quedan aquí.'],todos:['Sin candidatos por ahora','Estamos evaluando postulaciones para esta vacante.']};
+    body = '<p class="note" style="margin-bottom:16px"><span>Las evaluaciones y consultas son automáticas y muestran exactamente lo que se hizo y cuándo. La decisión de contratar es de tu empresa.</span></p><div class="chips" style="margin-bottom:24px" role="group" aria-label="Filtrar candidatos">'+chips+'</div>'+
+      (shown.length ? shown.map(({c,i}) => candCard(c,i,v)).join('') : '<div class="empty"><h3>'+empties[f][0]+'</h3><p>'+empties[f][1]+'</p></div>');
+  }
+  return '<button class="btn btn-text" data-a="backVac" style="margin:0 0 16px -8px">‹ Todas las vacantes</button><div class="head-row"><div><h1>'+esc(v.title)+'</h1><div class="vac-meta" style="margin-top:8px"><span>'+esc(v.city)+'</span><span>'+esc(v.shift)+'</span><span>'+esc(v.salary)+'</span></div></div></div>'+body;
+}
+function viewCreditos(){
+  const packs = [[5,0],[20,.1],[50,.2]].map(([n,d]) => '<div class="card stack"><div><h3>'+n+' créditos</h3><p class="muted small">'+(d?'Ahorras '+d*100+'% frente al precio unitario':'Precio unitario')+'</p></div><p class="kpi"><b class="num">'+cop(n*S.price*(1-d))+'</b></p><button class="btn btn-ghost" data-a="buy" data-n="'+n+'">Comprar '+n+' créditos</button></div>').join('');
+  const rows = S.log.length ? '<div class="table-wrap"><table><thead><tr><th>Movimiento</th><th>Vacante</th><th class="r">Créditos</th></tr></thead><tbody>'+S.log.map(l => '<tr><td>'+esc(l.what)+'</td><td>'+esc(l.vac)+'</td><td class="r num">'+(l.n>0?'+':'')+l.n+'</td></tr>').join('')+'</tbody></table></div>'
+    : '<div class="empty"><h3>Sin movimientos todavía</h3><p>Aquí verás cada candidato revelado y cada compra de créditos.</p></div>';
+  return '<div class="head-row"><div><h1>Créditos y consumo</h1><p class="muted">Un crédito revela un candidato: nombre, contacto y hoja de vida completa. Publicar vacantes y ver el ranking no tiene costo.</p></div><p class="kpi"><span class="muted">Saldo actual</span><b class="num">'+S.credits+(S.credits===1?' crédito':' créditos')+'</b></p></div><div class="grid c3" style="margin-bottom:32px">'+packs+'</div><h2 style="margin-bottom:16px">Movimientos</h2>'+rows+'<p class="small muted" style="margin-top:16px">Precios de ejemplo en pesos colombianos. La compra es simulada.</p>';
+}
+function viewEmpresa(){
+  const nav = '<nav class="subnav" aria-label="Secciones de empresa"><button data-a="eview" data-v="vacantes" '+(S.view!=='creditos'?'aria-current="page"':'')+'>Vacantes</button><button data-a="eview" data-v="creditos" '+(S.view==='creditos'?'aria-current="page"':'')+'>Créditos y consumo</button></nav>';
+  return '<main class="wrap">'+nav+(S.view==='creditos' ? viewCreditos() : S.vacId ? viewVacDetail() : viewVacantes())+'</main>'+guide(S.view==='creditos' ? 'e-creditos' : S.vacId ? 'e-detalle' : 'e-vacantes');
+}
+
+/* ============ Vistas: candidato (PWA móvil) ============ */
+const MY_CITY = 'Bogotá';
+const myApps = () => S.vacancies.filter(v => v.cands.some(c => c.code === ME));
+const findCandIn = vid => vac(vid).cands.find(c => c.code === ME);
+function myFit(v){
+  const mine = v.cands && v.cands.find(c => c.code === ME); if(mine) return mine.scores;
+  return {exp:{logistica:88,callcenter:34,seguridad:22}[v.type] || 50, comp:findCandIn('v1').scores.comp, disp:v.shift.toLowerCase().includes('noche') ? 84 : 92, cerca:v.city === MY_CITY ? 76 : 8};
+}
+function jobCard(v, company, applied, ext){
+  const fit = affinity(myFit(v), v.type), blocked = v.type === 'seguridad';
+  let foot;
+  if(applied) foot = '<p class="tag ok">✓ Ya te postulaste</p>';
+  else if(blocked) foot = '<p class="small"><b>No puedes postularte todavía.</b> Esta vacante exige curso de vigilancia vigente y no aparece en tu perfil.</p>';
+  else foot = (v.city !== MY_CITY ? '<p class="small muted" style="margin-bottom:12px">Queda en otra ciudad. Tu afinidad baja por la distancia.</p>' : '')+'<button class="btn btn-primary" data-a="apply" data-id="'+v.id+'" data-ext="'+(ext?1:0)+'">Postularme</button>';
+  return '<article class="card stack" aria-label="'+esc(v.title)+'"><div class="cand-head" style="grid-template-columns:1fr auto;align-items:start"><div><h3>'+esc(v.title)+'</h3><p class="small muted" style="margin-top:4px">'+esc(company)+', '+esc(v.city)+'</p></div><div class="aff"><b class="num">'+fit+'%</b><span class="small muted">tu afinidad</span></div></div><div class="vac-meta"><span>'+esc(v.shift)+'</span><span>'+esc(v.salary)+'</span></div><div>'+foot+'</div></article>';
+}
+function viewCandidato(){
+  const {v,c} = findCand(ME); const tab = S.cview;
+  const nav = '<nav class="subnav" aria-label="Secciones del candidato">'+[['inicio','Inicio'],['vacantes','Vacantes'],['perfil','Mi perfil'],['pruebas','Pruebas']].map(([k,l]) => '<button data-a="cview" data-v="'+k+'" '+(tab===k?'aria-current="page"':'')+'>'+l+'</button>').join('')+'</nav>';
+  let body = '';
+  if(tab === 'inicio'){
+    const appRow = (av) => { const a = av.cands.find(x => x.code === ME);
+      const st = {sugerido:'Estás en el ranking de la empresa. Tu nombre sigue oculto.',revelado:'La empresa reveló tu perfil y ya puede contactarte.',entrevista:'Tienes entrevista: '+esc(a.interview||'')+'.',contratado:'La empresa te marcó como contratada.',descartado:'La empresa cerró tu proceso en esta vacante.'}[a.stage];
+      const cf = a.stage==='entrevista' && !a.confirmed ? '<button class="btn btn-primary" data-a="confirmInt" data-id="'+av.id+'" style="margin-top:12px">Confirmar asistencia</button>' : a.stage==='entrevista' ? '<p class="tag ok" style="margin-top:12px">✓ Asistencia confirmada</p>' : '';
+      return '<div class="notif"><b>'+esc(av.title)+'</b><span class="small muted">'+esc(CLIENT)+', '+esc(av.city)+'</span><span>'+st+'</span>'+cf+'</div>'; };
+    const extRows = S.market.filter(m => m.applied).map(m => '<div class="notif"><b>'+esc(m.title)+'</b><span class="small muted">'+esc(m.company)+', '+esc(m.city)+'</span><span>Postulación recibida. Estamos evaluando tu afinidad.</span></div>').join('');
+    body = '<h1 style="margin-bottom:4px">Hola, Yuliana</h1><p class="muted" style="margin-bottom:24px">Así van tus procesos hoy.</p><div class="stack">'+
+      (S.testDone ? '' : '<div class="note coin-note"><div><b>Te falta una prueba.</b> Completarla sube tu puesto en los rankings. <button class="btn btn-text" data-a="cview" data-v="pruebas" style="min-height:32px;padding:0">Hacer la prueba</button></div></div>')+
+      '<section class="card"><h2 style="margin-bottom:12px">Tus postulaciones</h2>'+myApps().map(appRow).join('')+extRows+'<button class="btn btn-ghost" data-a="cview" data-v="vacantes" style="margin-top:16px">Ver vacantes abiertas</button></section>'+
+      '<section class="card"><h2 style="margin-bottom:4px">Novedades</h2>'+S.notifs.map(n => '<div class="notif"><span>'+esc(n.t)+'</span><span class="small muted">'+esc(n.d)+'</span></div>').join('')+'</section>'+
+      '<div class="note"><div><b>Instala Blinds en tu celular.</b> Desde el menú del navegador elige "Agregar a pantalla de inicio" y recibe avisos de entrevistas sin bajar nada de la tienda.</div></div></div>';
+  } else if(tab === 'vacantes'){
+    const all = [...S.vacancies.filter(x => !x.loading).map(x => ({v:x,company:CLIENT,applied:x.cands.some(k => k.code === ME),ext:false})), ...S.market.map(m => ({v:m,company:m.company,applied:m.applied,ext:true}))]
+      .filter(o => !S.cityOnly || o.v.city === MY_CITY).sort((a,b) => affinity(myFit(b.v),b.v.type) - affinity(myFit(a.v),a.v.type));
+    body = '<h1 style="margin-bottom:4px">Vacantes abiertas</h1><p class="muted" style="margin-bottom:16px">Ordenadas por tu afinidad. Al postularte, la empresa ve tu perfil sin tu nombre ni tus datos de contacto.</p><div class="chips" style="margin-bottom:24px"><button class="chip" data-a="cityOnly" aria-pressed="'+S.cityOnly+'">Solo en '+MY_CITY+'</button></div><div class="stack">'+
+      (all.length ? all.map(o => jobCard(o.v,o.company,o.applied,o.ext)).join('') : '<div class="empty"><h3>No hay vacantes con ese filtro</h3><p>Quita el filtro de ciudad para ver todas las vacantes abiertas.</p></div>')+'</div>';
+  } else if(tab === 'perfil'){
+    body = '<h1 style="margin-bottom:24px">Mi perfil</h1><div class="stack"><section class="card stack"><div class="bar"><b>Hoja de vida digital</b><span class="num">'+(S.testDone?100:85)+'%</span><div class="meter"><span style="width:'+(S.testDone?100:85)+'%"></span></div></div>'+
+      '<div><h3>Experiencia</h3><p>Auxiliar de bodega, Centro de distribución de consumo masivo (2023 a 2026)</p><p>Alistadora de pedidos, Operador logístico (2022 a 2023)</p></div><div><h3>Formación</h3><p>Técnica en logística, SENA</p></div><div><h3>Habilidades</h3><ul class="chips"><li class="tag">Radiofrecuencia</li><li class="tag">Picking por voz</li><li class="tag">Inventarios cíclicos</li><li class="tag">Estibado</li></ul></div></section>'+
+      '<section class="card stack"><div><h2>Así te ven las empresas</h2><p class="muted small">Tu nombre, foto, dirección y teléfono quedan ocultos hasta que una empresa decide revelar tu perfil. Te avisamos cuando pase.</p></div><div class="cand-head" style="grid-template-columns:1fr auto"><div>'+identBlock({stage:'sugerido'})+'<div class="code num">Código '+ME+', 4 años de experiencia</div></div><div class="aff"><b class="num">'+affinity(c.scores,v.type)+'%</b><span class="small muted">afinidad</span></div></div>'+checksList(c)+'</section></div>';
+  } else {
+    const qs = [['Llega un pedido con 3 cajas menos de las que dice la remisión. ¿Qué haces primero?',['Firmo la remisión y aviso después','Registro la novedad en la remisión antes de firmar','Devuelvo todo el pedido']],['Una estiba tiene el código 7730-A y en el sistema aparece 7703-A. ¿Qué haces?',['La ubico donde dice el sistema','Reporto la diferencia y no la muevo hasta aclarar','Corrijo la etiqueta a mano']],['Te quedan 20 minutos de turno y falta un alistamiento urgente. ¿Qué haces?',['Lo dejo para el siguiente turno sin avisar','Aviso al líder y lo entrego con nota de lo pendiente','Lo hago rápido sin verificar cantidades']]];
+    const quiz = S.testDone ? '<div class="card"><p class="tag ok">✓ Completada</p><h3 style="margin:12px 0 4px">Atención al detalle</h3><p>Tu resultado: <b class="num">88 de 100</b>. Ya cuenta en tu afinidad para todas las vacantes.</p></div>'
+      : '<form class="card" id="quiz" novalidate><h3 style="margin-bottom:4px">Atención al detalle</h3><p class="muted small" style="margin-bottom:16px">3 situaciones, unos 2 minutos. No hay respuestas con trampa.</p>'+qs.map((q,i) => '<fieldset><legend><b>'+(i+1)+'. '+q[0]+'</b></legend>'+q[1].map((o,j) => '<label class="opt"><input type="radio" name="q'+i+'" value="'+j+'"><span>'+o+'</span></label>').join('')+'</fieldset>').join('')+(S.quizErr?'<p class="err" role="alert" style="margin-bottom:12px">Responde las 3 situaciones para enviar la prueba.</p>':'')+'<button class="btn btn-primary" type="submit">Enviar prueba</button></form>';
+    body = '<h1 style="margin-bottom:24px">Pruebas</h1><div class="stack">'+quiz+'<div class="card"><p class="tag ok">✓ Completada</p><h3 style="margin:12px 0 4px">Razonamiento lógico</h3><p>Tu resultado: <b class="num">81 de 100</b>.</p></div></div>';
+  }
+  return '<main class="wrap narrow">'+nav+body+'</main>'+guide('c-'+tab);
+}
+
+/* ============ Vistas: backoffice ============ */
+const BTYPES = {logistica:'Logística y bodega',callcenter:'Call center',seguridad:'Seguridad'};
+const DIMS = [['exp','Experiencia en el cargo'],['comp','Competencias evaluadas'],['disp','Disponibilidad de turnos'],['cerca','Cercanía a la sede']];
+const CHECK_COST = 4500;
+const revCount = () => 37 + S.log.filter(l => l.what.startsWith('Candidato revelado')).length;
+function audit(who, what, code){ S.audit.unshift({when:'Ahora', who, what, code}); }
+function backResumen(){
+  const rev = revCount(), hired = 14 + S.vacancies.reduce((n,v) => n + v.cands.filter(c => c.stage==='contratado').length, 0);
+  const kpis = [['Candidatos activos','1.284'],['Revelados este mes',rev],['Ingresos del mes',cop(rev*S.price)],['Costo de automatización por candidato','$ 1.140']].map(([l,v]) => '<div class="card kpi"><span class="muted">'+l+'</span><b class="num">'+v+'</b></div>').join('');
+  const funnel = [['Se registraron',1284],['Completaron su perfil',903],['Entraron a algún ranking',612],['Fueron revelados',rev],['Fueron contratados',hired]];
+  const liq = [['Logística y bodega, Bogotá',6,214],['Call center, Medellín',4,131],['Seguridad, Cali',5,38]].map(r => { const x = Math.round(r[2]/r[1]); return '<tr><td>'+r[0]+'</td><td class="r num">'+r[1]+'</td><td class="r num">'+r[2]+'</td><td class="r num">'+x+'</td><td>'+(x>=20?'<span class="tag ok">✓ Suficientes</span>':'<span class="tag warn">◷ Faltan candidatos</span>')+'</td></tr>'; }).join('');
+  return '<div class="grid c4" style="margin-bottom:32px">'+kpis+'</div><div class="grid c2" style="align-items:start"><section class="card"><h2 style="margin-bottom:16px">Embudo del mes</h2><div class="stack">'+funnel.map(([l,n]) => '<div class="bar"><span>'+l+'</span><span class="num">'+n.toLocaleString('es-CO')+'</span><div class="meter"><span style="width:'+Math.max(1.5,n/1284*100)+'%"></span></div></div>').join('')+'</div></section>'+
+    '<section><h2 style="margin-bottom:16px">Candidatos evaluados por vacante abierta</h2><div class="table-wrap"><table><thead><tr><th>Vertical y ciudad</th><th class="r">Vacantes</th><th class="r">Candidatos</th><th class="r">Por vacante</th><th>Lectura</th></tr></thead><tbody>'+liq+'</tbody></table></div><p class="small muted" style="margin-top:12px">Con menos de 20 candidatos evaluados por vacante, el ranking sale corto y el cliente no encuentra a quién revelar.</p></section></div>';
+}
+function backMotor(){
+  const t = S.wtype, w = S.weights[t];
+  const est = {todos:1284*CHECK_COST, top:S.vacancies.length*5*CHECK_COST*4, revelar:revCount()*CHECK_COST};
+  const rules = [['todos','A todos al registrarse','Todos los perfiles llegan consultados al ranking. Es lo más caro: pagas por gente que nadie va a mirar.'],['top','Solo a los 5 primeros de cada ranking','Se consulta cuando un candidato entra al top de una vacante activa.'],['revelar','Solo cuando una empresa lo revela','Es lo más barato, pero el cliente paga el crédito antes de conocer el resultado.']];
+  return '<div class="grid c2" style="align-items:start"><section class="card"><h2 style="margin-bottom:4px">Pesos de la afinidad</h2><p class="muted small" style="margin-bottom:16px">Definen cómo se ordena el ranking que ve la empresa. Cada tipo de cargo tiene sus propios pesos.</p><form id="w-form" novalidate><div class="field"><label for="wtype">Tipo de cargo</label><select id="wtype" data-c="wtype">'+Object.entries(BTYPES).map(([k,l]) => '<option value="'+k+'" '+(k===t?'selected':'')+'>'+l+'</option>').join('')+'</select></div>'+
+    '<fieldset><legend><b>Peso de cada dimensión, en porcentaje *</b></legend><div class="grid c2" style="margin-top:8px">'+DIMS.map(([k,l]) => '<div class="field" style="margin:0"><label for="w-'+k+'" style="font-weight:400">'+l+'</label><input id="w-'+k+'" name="'+k+'" inputmode="numeric" value="'+w[k]+'"></div>').join('')+'</div><span class="err" id="w-err" hidden></span></fieldset><button class="btn btn-primary" type="submit">Guardar pesos</button></form></section>'+
+    '<div class="stack"><section class="card"><h2 style="margin-bottom:16px">Puntaje mínimo de las pruebas</h2><form id="th-form" novalidate><div class="field"><label for="th">Una prueba cuenta como aprobada desde</label><input id="th" inputmode="numeric" value="'+S.threshold+'"><span class="err" id="th-err" hidden></span></div><button class="btn btn-primary" type="submit">Guardar puntaje mínimo</button></form></section>'+
+    '<section class="card"><h2 style="margin-bottom:4px">Cuándo se consultan antecedentes</h2><p class="muted small">Cada consulta al proveedor cuesta '+cop(CHECK_COST)+' de ejemplo. Esta regla decide quién la recibe.</p><fieldset style="margin:8px 0 0">'+'<legend class="sr">Regla de consulta de antecedentes</legend>'+rules.map(([k,l,d]) => '<label class="opt" style="align-items:flex-start"><input type="radio" name="vrule" value="'+k+'" data-c="vrule" '+(S.vrule===k?'checked':'')+' style="margin-top:2px"><span><b>'+l+'</b><br><span class="small muted">'+d+' Costo estimado al mes: <span class="num">'+cop(est[k])+'</span>.</span></span></label>').join('')+'</fieldset></section></div></div>';
+}
+function backAuto(){
+  const pend = S.errors.filter(e => !e.done), e1 = S.errors.find(e => e.id==='e1');
+  const rows = [['Entrada por WhatsApp','ok',212,'0,4%','$ 310'],['Transcripción de audios','ok',538,'1,9%','$ 180'],['Extracción de hoja de vida con IA','ok',197,'2,5%','$ 420'],['Entrevista y pruebas automáticas','ok',163,'0,6%','$ 230'],['Proveedor de antecedentes',e1.done?'ok':'fail',41,e1.done?'0,0%':'2,4%',cop(CHECK_COST)+' por consulta'],['Matching y ranking','ok',1906,'0,0%','Sin costo externo']]
+    .map(r => '<tr><td>'+r[0]+'</td><td>'+(r[1]==='ok'?'<span class="tag ok">✓ Operando</span>':'<span class="tag warn">◷ Con reintentos pendientes</span>')+'</td><td class="r num">'+r[2]+'</td><td class="r num">'+r[3]+'</td><td class="r num">'+r[4]+'</td></tr>').join('');
+  const queue = pend.length ? pend.map(e => '<article class="card" style="padding:16px 24px"><div class="head-row" style="margin:0;align-items:center"><div><b class="num">'+e.code+'</b><p>'+e.what+'</p><p class="small muted">'+e.svc+'</p></div><button class="btn btn-ghost" data-a="fixErr" data-id="'+e.id+'">'+e.action+'</button></div></article>').join('')
+    : '<div class="empty"><h3>Sin errores por atender</h3><p>Cuando una automatización falla después de sus reintentos, el caso aparece aquí con la acción sugerida.</p></div>';
+  return '<h2 style="margin-bottom:16px">Estado de los servicios, hoy</h2><div class="table-wrap" style="margin-bottom:32px"><table><thead><tr><th>Servicio</th><th>Estado</th><th class="r">Procesados</th><th class="r">Fallos</th><th class="r">Costo por candidato</th></tr></thead><tbody>'+rows+'</tbody></table></div><h2 style="margin-bottom:4px">Errores que necesitan una acción</h2><p class="muted" style="margin-bottom:16px;max-width:65ch">Son fallos técnicos, no decisiones sobre personas. Nadie aprueba ni rechaza candidatos desde aquí.</p><div class="stack">'+queue+'</div>';
+}
+function backCasos(){
+  const open = S.cases.filter(c => !c.out), closed = S.cases.filter(c => c.out);
+  const body = open.length ? open.map(c => '<article class="card stack"><div><span class="tag">'+c.kind+'</span><h3 style="margin:12px 0 4px">'+esc(c.title)+'</h3><p style="max-width:70ch">'+esc(c.detail)+'</p></div><div class="actions">'+c.opts.map((o,i) => '<button class="btn '+(i===0?'btn-primary':'btn-ghost')+'" data-a="resolveCase" data-id="'+c.id+'" data-o="'+i+'">'+o[0]+'</button>').join('')+'</div></article>').join('')
+    : '<div class="empty"><h3>Sin excepciones abiertas</h3><p>Aquí llegan las disputas de candidatos, las alertas de fraude y los reclamos de empresas que las reglas no pueden resolver solas.</p></div>';
+  return '<p class="muted" style="margin-bottom:24px;max-width:65ch">Casos que las reglas automáticas no pueden cerrar. Son pocos, pero alguien tiene que responderlos: el candidato tiene derecho a disputar sus datos y la empresa a reclamar un crédito.</p><div class="stack">'+body+'</div>'+
+    (closed.length ? '<h2 style="margin:32px 0 16px">Resueltos</h2><div class="card">'+closed.map(c => '<div class="notif"><b>'+esc(c.title)+'</b><span class="small muted">'+esc(c.out)+'</span></div>').join('')+'</div>' : '');
+}
+function backEmpresas(){
+  const co = S.company, fv = S.flagged;
+  const coCard = co.state==='pendiente' ? '<article class="card stack"><div><span class="tag warn">◷ Solicitud de alta</span><h3 style="margin:12px 0 8px">Logística Express del Valle S.A.S.</h3><ul class="chips"><li class="tag ok">✓ NIT activo en el registro mercantil</li><li class="tag ok">✓ Correo corporativo verificado</li><li class="tag warn">◷ Falta el documento de la persona autorizada</li></ul><p class="small muted" style="margin-top:12px;max-width:65ch">Una empresa sin validar no puede revelar candidatos. Así se evita que alguien compre créditos solo para sacar datos personales.</p></div><div class="actions"><button class="btn btn-primary" data-a="company" data-o="pedir">Pedir el documento</button><button class="btn btn-danger" data-a="company" data-o="rechazar">Rechazar la solicitud</button></div></article>'
+    : '<div class="card"><b>Logística Express del Valle S.A.S.</b><p class="small muted">'+(co.state==='pedir'?'Se pidió el documento de la persona autorizada. La cuenta sigue sin poder revelar candidatos.':'Solicitud rechazada.')+'</p></div>';
+  const fvCard = fv.state==='pendiente' ? '<article class="card stack"><div><span class="tag warn">◷ Vacante retenida por el filtro automático</span><h3 style="margin:12px 0 4px">Recepcionista, Clínica del Norte</h3><p style="max-width:70ch">Requisito detectado: «mujer de 20 a 25 años, buena presencia». Pide sexo, edad y apariencia, que Blinds no acepta como criterios de selección.</p></div><div class="actions"><button class="btn btn-primary" data-a="flagged" data-o="devolver">Devolver a la empresa para corregir</button><button class="btn btn-ghost" data-a="flagged" data-o="falso">Marcar como falso positivo</button></div></article>'
+    : '<div class="card"><b>Recepcionista, Clínica del Norte</b><p class="small muted">'+(fv.state==='devolver'?'Devuelta a la empresa con la explicación del requisito no permitido.':'Marcada como falso positivo y publicada.')+'</p></div>';
+  const clients = [[CLIENT,S.vacancies.length,S.credits],['Seguridad Pacífico Ltda.',5,12],['Contacto Total BPO',8,41]].map(r => '<tr><td>'+esc(r[0])+'</td><td><span class="tag ok">✓ Validada</span></td><td class="r num">'+r[1]+'</td><td class="r num">'+r[2]+'</td></tr>').join('');
+  return '<div class="grid c2" style="align-items:start;margin-bottom:32px"><section><h2 style="margin-bottom:16px">Altas de empresas</h2>'+coCard+'</section><section><h2 style="margin-bottom:16px">Vacantes retenidas</h2>'+fvCard+'</section></div><div class="grid c2" style="align-items:start"><section><h2 style="margin-bottom:16px">Empresas activas</h2><div class="table-wrap"><table style="min-width:420px"><thead><tr><th>Empresa</th><th>Estado</th><th class="r">Vacantes</th><th class="r">Créditos</th></tr></thead><tbody>'+clients+'</tbody></table></div></section>'+
+    '<section class="card"><h2 style="margin-bottom:16px">Precio por crédito</h2><form id="price-form" novalidate><div class="field"><label for="price">Valor en pesos colombianos</label><input id="price" inputmode="numeric" value="'+S.price+'" autocomplete="off"><span class="err" id="price-err" hidden></span></div><button class="btn btn-primary" type="submit">Guardar precio</button></form></section></div>';
+}
+function backAudit(){
+  return '<p class="muted" style="margin-bottom:24px;max-width:65ch">Cada acceso a datos personales queda registrado: el de las empresas que revelan y también el del equipo interno. Prueba revelar un candidato o resolver una excepción y vuelve aquí.</p><div class="table-wrap"><table><thead><tr><th>Cuándo</th><th>Quién</th><th>Qué hizo</th><th>Candidato</th></tr></thead><tbody>'+S.audit.map(a => '<tr><td>'+a.when+'</td><td>'+esc(a.who)+'</td><td>'+esc(a.what)+'</td><td class="num">'+a.code+'</td></tr>').join('')+'</tbody></table></div>';
+}
+function viewBack(){
+  const nErr = S.errors.filter(e => !e.done).length, nCas = S.cases.filter(c => !c.out).length;
+  const tabs = [['resumen','Resumen',0],['motor','Motor de evaluación',0],['auto','Automatizaciones',nErr],['casos','Excepciones',nCas],['empresas','Empresas y vacantes',0],['audit','Auditoría',0]];
+  const nav = '<nav class="subnav" aria-label="Secciones del backoffice">'+tabs.map(([k,l,n]) => '<button data-a="bview" data-v="'+k+'" '+(S.bview===k?'aria-current="page"':'')+'>'+l+(n?' <span class="badge num" aria-label="'+n+' pendientes">'+n+'</span>':'')+'</button>').join('')+'</nav>';
+  const titles = {resumen:'Operación de la plataforma',motor:'Motor de evaluación',auto:'Automatizaciones',casos:'Excepciones',empresas:'Empresas y vacantes',audit:'Auditoría de accesos'};
+  const body = {resumen:backResumen,motor:backMotor,auto:backAuto,casos:backCasos,empresas:backEmpresas,audit:backAudit}[S.bview]();
+  return '<main class="wrap">'+nav+'<h1 style="margin-bottom:24px">'+titles[S.bview]+'</h1>'+body+'</main>'+guide('b-'+S.bview);
+}
+
+/* ============ Guía al pie de cada pantalla ============ */
+const GUIDE = {
+  'e-vacantes':{t:'Empresa, lista de vacantes',
+    hace:'Es la entrada de la empresa cliente. Muestra sus vacantes, cuántos candidatos evaluados tiene cada una en el ranking y cuántos ya reveló. Desde aquí publica vacantes nuevas.',
+    probar:['Abre «Auxiliar de bodega» para ver un ranking completo.','Publica una vacante nueva y mira cómo se arma su ranking en segundos.','Intenta publicar sin cargo ni ciudad para ver cómo responde el formulario.'],
+    cubre:'Cubre el alta de vacantes y la vista general. El ranking de una vacante nueva es simulado: en el producto saldría de la base real de candidatos evaluados. No cubre editar ni cerrar vacantes.',
+    objetivo:'Comprobar que un cliente entiende la promesa en menos de un minuto: publicar es gratis, el ranking llega solo y solo paga por quien decide ver.'},
+  'e-detalle':{t:'Empresa, ranking ciego de una vacante',
+    hace:'Es el corazón del producto. Ordena a los candidatos por afinidad con la vacante y muestra todo lo que sirve para decidir (experiencia, puntajes, consultas hechas) menos la identidad, que queda tapada hasta que la empresa usa un crédito.',
+    probar:['Revela al candidato 1: se descuenta un crédito y aparecen nombre, celular y hoja de vida.','Agéndale una entrevista y cambia al rol Candidato para ver el aviso que recibe.','Deja a alguien como respaldo, descarta a otro y usa los filtros.','Sigue revelando hasta quedarte sin créditos.'],
+    cubre:'Cubre ranking ciego, revelado con crédito, entrevista, contratación, respaldo y descarte. No cubre mensajería con el candidato, descarga real de la hoja de vida ni conexión con calendarios.',
+    objetivo:'Responder la pregunta central del negocio: con esta información y sin ver el nombre, ¿el cliente se siente seguro para pagar por revelar? Anota qué dato echa de menos antes de pagar.'},
+  'e-creditos':{t:'Empresa, créditos y consumo',
+    hace:'Muestra el saldo de créditos, los paquetes disponibles y el historial de movimientos: cada candidato revelado, cada compra y cada devolución.',
+    probar:['Compra un paquete y revisa que el saldo de arriba cambia.','Revela un candidato y vuelve: el movimiento queda registrado con su vacante.'],
+    cubre:'La compra es simulada: no hay pasarela de pagos ni factura. Los precios son de ejemplo y se cambian desde Backoffice, en «Empresas y vacantes».',
+    objetivo:'Probar si el modelo de créditos prepagados se entiende y qué precio y tamaño de paquete le parece razonable a un cliente real.'},
+  'c-inicio':{t:'Candidato, inicio',
+    hace:'Es lo que ve el candidato en su celular: sus postulaciones, en qué va cada una y las novedades. Está pensada como una web que se instala en el teléfono sin pasar por la tienda de aplicaciones.',
+    probar:['Como Empresa, revela a BL-4821 y agéndale entrevista. Vuelve aquí: llegaron los avisos.','Confirma la asistencia y revisa en Empresa que quedó confirmada.'],
+    cubre:'Cubre seguimiento y avisos de todas sus postulaciones. No cubre el registro ni el armado de la hoja de vida por audios de WhatsApp, que es la entrada prevista.',
+    objetivo:'Mostrar que el candidato siempre sabe en qué va su proceso y cuándo una empresa vio sus datos. Esa transparencia sostiene la confianza y el consentimiento.'},
+  'c-vacantes':{t:'Candidato, vacantes abiertas',
+    hace:'Muestra al candidato las vacantes abiertas ordenadas por su propia afinidad, para que se postule a las que le interesan. Al postularse entra al ranking ciego de esa empresa.',
+    probar:['Postúlate a «Operario de cargue y descargue» y cambia al rol Empresa: BL-4821 ya aparece en el ranking de esa vacante.','Mira la vacante de Guarda de seguridad: no deja postularse porque falta un requisito obligatorio, y explica cuál.','Activa el filtro «Solo en Bogotá» y compara con la afinidad de la vacante de Medellín.'],
+    cubre:'Cubre listado, afinidad propia, requisitos obligatorios y postulación. La afinidad frente a vacantes nuevas es una estimación simulada. No cubre búsqueda por texto, alertas de vacantes nuevas ni retirar una postulación.',
+    objetivo:'Probar las dos vías de entrada al ranking: la plataforma sugiere candidatos y el candidato también se postula solo. Eso ayuda al arranque, porque cada vacante publicada atrae a sus propios candidatos.'},
+  'c-perfil':{t:'Candidato, mi perfil',
+    hace:'Muestra la hoja de vida digital del candidato, guardada como datos y no como un PDF, y una vista previa de cómo lo ven las empresas mientras su identidad sigue oculta.',
+    probar:['Compara «Así te ven las empresas» con la tarjeta del candidato 1 en el ranking de la empresa: son la misma persona.','Completa la prueba pendiente y vuelve: el perfil pasa a 100%.'],
+    cubre:'Cubre la lectura del perfil. No cubre editar datos ni subir documentos.',
+    objetivo:'Que el candidato entienda y acepte el modelo ciego: qué se oculta, qué se muestra y en qué momento se revela.'},
+  'c-pruebas':{t:'Candidato, pruebas',
+    hace:'Reúne las pruebas automáticas que responde el candidato. El resultado entra directo a su afinidad en todas las vacantes, sin que nadie lo califique a mano.',
+    probar:['Envía la prueba incompleta para ver el aviso.','Complétala y vuelve al rol Empresa: la etiqueta pasa de «pendiente» a «aprobada» y sube su puntaje de competencias.'],
+    cubre:'Es una prueba situacional de ejemplo con puntaje fijo. El banco real de pruebas, la calificación con IA y los controles contra trampas no están en la demo.',
+    objetivo:'Demostrar que la evaluación ocurre sin entrevistador y que al candidato le conviene completarla, porque mejora su posición.'},
+  'b-resumen':{t:'Backoffice, resumen',
+    hace:'Es el tablero del negocio: embudo del mes, ingresos, costo de procesar a cada candidato y cuántos candidatos evaluados hay por vacante en cada vertical y ciudad.',
+    probar:['Revela candidatos como Empresa y vuelve: suben los revelados y los ingresos.','Mira la tabla de verticales: Seguridad en Cali está en alerta por falta de candidatos.'],
+    cubre:'Las cifras son de ejemplo y solo una parte reacciona a lo que haces en la demo. No hay filtros por fecha ni exportación.',
+    objetivo:'Acordar entre socios qué números vamos a mirar cada semana del piloto, sobre todo cuántos registrados terminan revelados y cuánto cuesta procesar a cada uno.'},
+  'b-motor':{t:'Backoffice, motor de evaluación',
+    hace:'Aquí se definen las reglas del producto: cuánto pesa cada dimensión en la afinidad según el tipo de cargo, desde qué puntaje una prueba cuenta como aprobada y a quién se le paga la consulta de antecedentes.',
+    probar:['En Logística y bodega sube Competencias a 60, ajusta el resto para que sumen 100 y guarda. El ranking de Auxiliar de bodega se reordena.','Sube el puntaje mínimo a 90 y mira cómo cambian las etiquetas en el ranking.','Compara el costo mensual de las tres reglas de antecedentes.'],
+    cubre:'Cubre la configuración por tipo de cargo con efecto inmediato en los rankings. Los costos son de ejemplo. No cubre el banco de pruebas ni el catálogo de cargos.',
+    objetivo:'Decidir juntos la regla de antecedentes: define cuánta caja se gasta antes de facturar y qué promete exactamente la etiqueta que ve el cliente.'},
+  'b-auto':{t:'Backoffice, automatizaciones',
+    hace:'Muestra el estado de cada servicio automático (WhatsApp, transcripción, lectura de hojas de vida, pruebas, antecedentes, ranking), su costo y los errores técnicos que necesitan una acción.',
+    probar:['Reintenta la consulta de BL-3307 y revisa en Empresa que su etiqueta pasa a «consultados, sin hallazgos».','Resuelve los otros errores y mira cómo queda la cola vacía.'],
+    cubre:'El monitoreo es simulado. En el producto, estos datos vendrían de WhatsApp, del servicio de transcripción y del proveedor de antecedentes.',
+    objetivo:'Mostrar que la operación es tecnológica: aquí se atienden fallos de sistemas y nadie aprueba ni rechaza personas.'},
+  'b-casos':{t:'Backoffice, excepciones',
+    hace:'Reúne los pocos casos que las reglas automáticas no pueden cerrar: un candidato que disputa un resultado, una alerta de fraude o una empresa que reclama un crédito.',
+    probar:['Devuelve el crédito del reclamo y revisa el saldo y los movimientos en el rol Empresa.','Resuelve la disputa del homónimo y mira el registro que deja en Auditoría.'],
+    cubre:'Son tres casos de ejemplo con dos salidas cada uno. No cubre la comunicación con el candidato ni los plazos legales de respuesta.',
+    objetivo:'Dimensionar el mínimo de trabajo humano que el modelo necesita y definir quién lo haría durante el piloto.'},
+  'b-empresas':{t:'Backoffice, empresas y vacantes',
+    hace:'Administra el lado de los clientes: valida a las empresas nuevas antes de dejarlas revelar candidatos, retiene vacantes con requisitos no permitidos, lista los clientes activos y fija el precio del crédito.',
+    probar:['Pide el documento que le falta a la empresa en alta.','Devuelve a la empresa la vacante que pide «mujer de 20 a 25 años».','Cambia el precio del crédito y mira los paquetes en el rol Empresa.'],
+    cubre:'La validación y el filtro de vacantes son simulados. La consulta real del NIT y la detección automática de requisitos quedan para el producto.',
+    objetivo:'Acordar qué le exigimos a una empresa para que pueda ver datos personales y qué vacantes no se aceptan en la plataforma.'},
+  'b-audit':{t:'Backoffice, auditoría de accesos',
+    hace:'Registra cada acceso a datos personales de un candidato: los de las empresas que revelan y también los del equipo interno.',
+    probar:['Revela un candidato como Empresa o resuelve una excepción, y vuelve a esta página.'],
+    cubre:'El registro vive en memoria y se borra al reiniciar la demo. En el producto sería permanente y no editable.',
+    objetivo:'Mostrar que la protección de datos está en el diseño desde el inicio. Es una exigencia legal y también un argumento de venta frente a clientes grandes.'}
+};
+function guide(key){
+  const g = GUIDE[key];
+  const box = (label, inner, cls) => '<section class="glass '+(cls||'')+'"><h3 class="glass-label">'+label+'</h3>'+inner+'</section>';
+  return '<footer class="wrap guide" aria-labelledby="guide-title"><div class="guide-head"><p class="glass-label">Guía de esta pantalla</p><h2 id="guide-title">'+g.t+'</h2></div><div class="grid c2">'+
+    box('Qué hace esta página','<p>'+g.hace+'</p>')+
+    box('Qué se espera probar','<ul class="guide-list">'+g.probar.map(x => '<li>'+x+'</li>').join('')+'</ul>')+
+    box('Qué cubre y qué no','<p>'+g.cubre+'</p>')+
+    box('Objetivo','<p>'+g.objetivo+'</p>','glass-accent')+
+    '</div>'+box('Sobre esta demo','<p>Todos los datos son ficticios y nada se guarda: al recargar o tocar «Reiniciar demo» todo vuelve al inicio. Los tres roles comparten el mismo estado, así que lo que haces en uno se refleja en los otros. Mientras la recorres, anota dónde dudas, qué dato te falta y qué preguntaría un cliente. Esa lista define qué se construye primero.</p>','glass-wide')+'</footer>';
+}
+
+/* ============ Render ============ */
+function render(){
+  const roles = [['empresa','Empresa'],['candidato','Candidato'],['backoffice','Backoffice']].map(([k,l]) => '<button role="tab" data-a="role" data-r="'+k+'" aria-selected="'+(S.role===k)+'">'+l+'</button>').join('');
+  const pill = S.role==='empresa' ? '<button class="pill num" data-a="eview" data-v="creditos" aria-label="'+S.credits+' créditos disponibles, ver detalle"><span class="coin" aria-hidden="true"></span>'+S.credits+(S.credits===1?' crédito':' créditos')+'</button>' : '';
+  document.getElementById('app').innerHTML = '<div class="demo-bar"><div><span>Demo con datos ficticios. Cambia de rol para ver cómo una acción se refleja en las otras vistas.</span><button data-a="reset">Reiniciar demo</button></div></div>'+
+    '<header class="top"><div class="top-in"><div class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>Blinds</div><div class="roles" role="tablist" aria-label="Ver la demo como">'+roles+'</div>'+pill+'</div></header>'+
+    (S.role==='empresa' ? viewEmpresa() : S.role==='candidato' ? viewCandidato() : viewBack());
+}
+
+/* ============ Acciones ============ */
+const A = {
+  role(d){ S.role = d.r; render(); window.scrollTo(0,0); },
+  reset(){ S = initialState(); closeModal(); render(); toast('Demo reiniciada'); },
+  eview(d){ S.view = d.v; S.vacId = null; render(); },
+  cview(d){ S.cview = d.v; S.quizErr = false; render(); window.scrollTo(0,0); },
+  openVac(d){ S.vacId = d.id; S.filter = 'todos'; render(); window.scrollTo(0,0); },
+  backVac(){ S.vacId = null; render(); },
+  filter(d){ S.filter = d.f; render(); },
+  overlay(d, el, e){ if(e.target === el) closeModal(); },
+  close(){ closeModal(); },
+  askReveal(d){
+    const {c,v} = findCand(d.code);
+    if(S.credits < 1){ openModal('<h2 id="m-title">No tienes créditos</h2><p>Para revelar a este candidato necesitas 1 crédito. Tu ranking y tus vacantes siguen disponibles.</p><div class="actions"><button class="btn btn-ghost" data-a="close">Ahora no</button><button class="btn btn-primary" data-a="goBuy">Comprar créditos</button></div>'); return; }
+    openModal('<h2 id="m-title">Revelar candidato '+c.code+'</h2><p>Vas a usar <b>1 crédito</b> de los '+S.credits+' que tienes. Verás su nombre, su celular y su hoja de vida completa, y le avisaremos que '+esc(CLIENT)+' está interesada.</p><p class="small muted" style="margin-top:12px">Afinidad con '+esc(v.title)+': '+affinity(c.scores,v.type)+'%.</p><div class="actions"><button class="btn btn-ghost" data-a="close">Cancelar</button><button class="btn btn-primary" data-a="reveal" data-code="'+c.code+'">Revelar candidato</button></div>');
+  },
+  goBuy(){ closeModal(); S.view = 'creditos'; S.vacId = null; render(); },
+  reveal(d, el){
+    if(el.disabled) return; el.disabled = true; el.textContent = 'Revelando…';
+    setTimeout(() => {
+      const {c,v} = findCand(d.code);
+      S.credits--; c.stage = 'revelado'; c._opening = true;
+      S.log.unshift({what:'Candidato revelado: '+c.code, vac:v.title, n:-1}); audit(CLIENT,'Reveló datos personales',c.code);
+      if(c.code === ME) S.notifs.unshift({t:CLIENT+' reveló tu perfil para '+v.title+'. Pronto te pueden contactar.', d:'Ahora'});
+      lastTrigger = null; closeModal(); render(); c._opening = false; toast('Candidato revelado');
+    }, 650);
+  },
+  askInterview(d){
+    openModal('<h2 id="m-title">Agendar entrevista</h2><p class="muted">El candidato recibe el aviso en su app y puede confirmar asistencia.</p><form id="int-form" data-code="'+d.code+'" novalidate><fieldset style="margin-top:16px"><legend class="sr">Horario de la entrevista</legend>'+SLOTS.map((s,i) => '<label class="opt"><input type="radio" name="slot" value="'+i+'" '+(i===0?'checked':'')+'><span>'+s+'</span></label>').join('')+'</fieldset><div class="actions"><button type="button" class="btn btn-ghost" data-a="close">Cancelar</button><button class="btn btn-primary" type="submit">Agendar entrevista</button></div></form>');
+  },
+  hire(d){ const {c,v} = findCand(d.code); c.stage = 'contratado'; c.backup = false; if(c.code===ME) S.notifs.unshift({t:'Felicitaciones: '+CLIENT+' te marcó como contratada en '+v.title+'.',d:'Ahora'}); render(); toast('Marcado como contratado'); },
+  backup(d){ const {c} = findCand(d.code); c.backup = !c.backup; render(); toast(c.backup ? 'Quedó como candidato de respaldo' : 'Ya no es candidato de respaldo'); },
+  discard(d){ const {c} = findCand(d.code); c.stage = 'descartado'; c.backup = false; render(); toast('Candidato descartado'); },
+  confirmInt(d){ const c = findCandIn(d.id); c.confirmed = true; render(); toast('Asistencia confirmada'); },
+  cityOnly(){ S.cityOnly = !S.cityOnly; render(); },
+  apply(d){
+    if(d.ext === '1'){ const m = S.market.find(x => x.id === d.id); if(m.applied) return; m.applied = true; S.notifs.unshift({t:'Te postulaste a '+m.title+'. Estamos evaluando tu afinidad.', d:'Ahora'}); }
+    else {
+      const v = vac(d.id); if(v.cands.some(c => c.code === ME)) return;
+      const base = findCandIn('v1');
+      v.cands.push({...base, scores:myFit(v), checks:base.checks, stage:'sugerido', backup:false, interview:null, confirmed:false, _opening:false});
+      S.notifs.unshift({t:'Te postulaste a '+v.title+'. Ya estás en el ranking de '+CLIENT+'.', d:'Ahora'});
+    }
+    render(); toast('Postulación enviada');
+  },
+  buy(d){ const n = +d.n; S.credits += n; S.log.unshift({what:'Compra de '+n+' créditos (simulada)', vac:'', n}); render(); toast('Compraste '+n+' créditos'); },
+  bview(d){ S.bview = d.v; render(); window.scrollTo(0,0); },
+  fixErr(d){
+    const e = S.errors.find(x => x.id === d.id); e.done = true;
+    if(e.id === 'e1'){ const f = findCand('BL-3307'); if(f) f.c.checks.ant = 'ok'; audit('Sistema','Reconsulta automática de antecedentes','BL-3307'); toast('Consulta completada: sin hallazgos'); }
+    else toast(e.id === 'e2' ? 'Se pidió un nuevo audio por WhatsApp' : 'Se envió la repregunta por WhatsApp');
+    render();
+  },
+  resolveCase(d){
+    const c = S.cases.find(x => x.id === d.id), o = +d.o; c.out = c.opts[o][1];
+    if(c.id === 'c3' && o === 0){ S.credits++; S.log.unshift({what:'Crédito devuelto por reclamo (BL-5590)', vac:'', n:1}); }
+    if(c.id === 'c1') audit('Laura M., operaciones','Vio datos personales para atender una disputa','BL-7720');
+    if(c.id === 'c2') audit('Laura M., operaciones','Comparó datos de dos cuentas por alerta de fraude','BL-6415');
+    render(); toast('Caso resuelto');
+  },
+  company(d){ S.company.state = d.o; render(); toast(d.o === 'pedir' ? 'Se pidió el documento a la empresa' : 'Solicitud rechazada'); },
+  flagged(d){ S.flagged.state = d.o; render(); toast(d.o === 'devolver' ? 'Vacante devuelta a la empresa' : 'Vacante publicada'); },
+  newVac(){
+    openModal('<h2 id="m-title">Publicar vacante</h2><p class="muted" style="margin-bottom:16px">Con estos datos armamos el ranking de candidatos validados.</p><form id="vac-form" novalidate>'+
+      '<div class="field"><label for="f-title">Cargo *</label><input id="f-title" name="title" autocomplete="off" maxlength="80"><span class="err" id="e-title" hidden></span></div>'+
+      '<div class="field"><label for="f-type">Tipo de cargo</label><select id="f-type" name="type">'+Object.entries(BTYPES).map(([k,l]) => '<option value="'+k+'">'+l+'</option>').join('')+'</select></div>'+
+      '<div class="field"><label for="f-city">Ciudad *</label><select id="f-city" name="city"><option value="">Elige una ciudad</option><option>Bogotá</option><option>Medellín</option><option>Cali</option><option>Barranquilla</option></select><span class="err" id="e-city" hidden></span></div>'+
+      '<div class="field"><label for="f-open">Cupos *</label><input id="f-open" name="openings" inputmode="numeric" value="1"><span class="err" id="e-open" hidden></span></div>'+
+      '<div class="field"><label for="f-sal">Salario ofrecido</label><input id="f-sal" name="salary" autocomplete="off" placeholder="Ejemplo: $ 1.750.000 más auxilio"></div>'+
+      '<div class="field"><label for="f-shift">Turnos</label><input id="f-shift" name="shift" autocomplete="off" placeholder="Ejemplo: turnos rotativos"></div>'+
+      '<p class="small muted">Los campos con * son obligatorios.</p><div class="actions"><button type="button" class="btn btn-ghost" data-a="close">Cancelar</button><button class="btn btn-primary" type="submit">Publicar vacante</button></div></form>');
+  }
+};
+document.addEventListener('click', e => { const el = e.target.closest('[data-a]'); if(el && A[el.dataset.a]) A[el.dataset.a](el.dataset, el, e); });
+document.addEventListener('submit', e => {
+  e.preventDefault(); const f = e.target;
+  const setErr = (id, inputId, msg) => { const s = document.getElementById(id), i = document.getElementById(inputId); s.hidden = !msg; s.textContent = msg ? '⚠ '+msg : ''; i.setAttribute('aria-invalid', msg ? 'true' : 'false'); return !msg; };
+  if(f.id === 'vac-form'){
+    const title = f.title.value.trim(), city = f.city.value, n = parseInt(f.openings.value, 10);
+    const ok = [setErr('e-title','f-title', title ? '' : 'Escribe el cargo que necesitas cubrir.'), setErr('e-city','f-city', city ? '' : 'Elige la ciudad de la vacante.'), setErr('e-open','f-open', n >= 1 && n <= 500 ? '' : 'Escribe un número de cupos entre 1 y 500.')].every(Boolean);
+    if(!ok){ f.querySelector('[aria-invalid="true"]').focus(); return; }
+    const id = 'v'+Date.now(); const v = {id,type:f.type.value,title,city,salary:f.salary.value.trim()||'Salario a convenir',shift:f.shift.value.trim()||'Turno por definir',openings:n,cands:[],loading:true};
+    S.vacancies.unshift(v); S.vacId = id; S.filter = 'todos'; lastTrigger = null; closeModal(); render(); toast('Vacante publicada'); window.scrollTo(0,0);
+    setTimeout(() => { v.cands = genCands(between(3,5), city, between(84,93)); v.loading = false; if(S.vacId === id || S.role==='empresa') render(); }, 1600);
+  }
+  if(f.id === 'int-form'){
+    const {c,v} = findCand(f.dataset.code); c.stage = 'entrevista'; c.interview = SLOTS[+f.slot.value]; c.confirmed = false;
+    if(c.code === ME) S.notifs.unshift({t:'Tienes entrevista con '+CLIENT+': '+c.interview+'. Confirma tu asistencia.', d:'Ahora'});
+    lastTrigger = null; closeModal(); render(); toast('Entrevista agendada');
+  }
+  if(f.id === 'quiz'){
+    const done = [0,1,2].every(i => f['q'+i].value !== '');
+    if(!done){ S.quizErr = true; const vals = [0,1,2].map(i => f['q'+i].value); render(); const nf = document.getElementById('quiz'); vals.forEach((val,i) => { if(val !== '') nf['q'+i].value = val; }); return; }
+    S.testDone = true; S.quizErr = false; findCandIn('v1').checks.prueba = 88; myApps().forEach(av => { av.cands.find(x => x.code === ME).scores.comp = 90; });
+    S.notifs.unshift({t:'Completaste la prueba de atención al detalle. Tu afinidad subió.', d:'Ahora'}); render(); toast('Prueba enviada');
+  }
+  if(f.id === 'w-form'){
+    const vals = {}; let sum = 0, bad = false;
+    DIMS.forEach(([k]) => { const n = parseInt(f[k].value, 10); if(!(n >= 0 && n <= 100)) bad = true; vals[k] = n; sum += n || 0; });
+    const err = document.getElementById('w-err'), msg = bad ? 'Escribe un número entre 0 y 100 en cada dimensión.' : sum !== 100 ? 'Los cuatro pesos deben sumar 100. Ahora suman '+sum+'.' : '';
+    err.hidden = !msg; err.textContent = msg ? '⚠ '+msg : ''; DIMS.forEach(([k]) => f[k].setAttribute('aria-invalid', msg ? 'true' : 'false'));
+    if(msg) return;
+    S.weights[S.wtype] = vals; render(); toast('Pesos guardados. Los rankings de '+BTYPES[S.wtype]+' se reordenaron');
+  }
+  if(f.id === 'th-form'){
+    const n = parseInt(f.th.value, 10);
+    if(!setErr('th-err','th', n >= 50 && n <= 95 ? '' : 'Escribe un puntaje entre 50 y 95.')) return;
+    S.threshold = n; render(); toast('Puntaje mínimo guardado');
+  }
+  if(f.id === 'price-form'){
+    const n = parseInt(String(f.price.value).replace(/\D/g,''), 10);
+    if(!setErr('price-err','price', n >= 1000 ? '' : 'Escribe un valor de al menos $ 1.000.')) return;
+    S.price = n; render(); toast('Precio guardado');
+  }
+});
+document.addEventListener('change', e => {
+  const c = e.target.dataset.c;
+  if(c === 'wtype'){ S.wtype = e.target.value; render(); document.getElementById('wtype').focus(); }
+  if(c === 'vrule'){ S.vrule = e.target.value; render(); toast('Regla de consulta guardada'); }
+});
+render();
+</script>
+</body>
+</html>
