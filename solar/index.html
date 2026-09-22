@@ -77,7 +77,7 @@ h2{font-family:var(--display);font-weight:600;font-size:28px;line-height:1.15;ma
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* ---------- SHOWROOM ---------- */
-.show{grid-template-columns:minmax(0,1fr) 400px;gap:20px;align-items:start}
+.show{grid-template-columns:minmax(0,calc((100dvh - 230px) * 1.152)) 400px;gap:20px;align-items:start;justify-content:center}
 .view.on.show{display:grid}
 .mapwrap{padding:0;overflow:hidden;position:relative}
 .maphead{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px;background:var(--primary);color:#fff;flex-wrap:wrap}
