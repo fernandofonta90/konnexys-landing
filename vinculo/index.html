@@ -1,0 +1,723 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vínculo · Prototipo</title>
+<meta name="description" content="Vínculo: un solo canal entre el colegio y las familias. Prototipo navegable de la app para familias y del panel del colegio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#DA4E26; --primary-hover:#C4431F; --primary-pressed:#A8381A;
+  --accent-text:#BF3F16; --ink:#1E1A1A; --muted:#5B5257; --line:#E8DEDE;
+  --peach:#FBE3D8; --apricot:#F4B183; --paper:#FBF8F7;
+  --green:#4E9A73; --green-tint:#E4F2EA; --warn:#DFA23F; --warn-tint:#FBF1DF; --danger:#C4431F; --danger-tint:#F9E0DA;
+  --assoc:#5B4B8A; --assoc-hover:#4A3C73; --assoc-tint:#EDE8F5; --assoc-text:#4E3F7A;
+  --glass:rgba(255,255,255,.58); --glass-border:rgba(255,255,255,.85);
+  --shadow-1:0 2px 6px rgba(74,58,58,.08); --shadow-2:0 8px 24px rgba(74,58,58,.14);
+  --r-pill:999px; --r-card:16px; --r-panel:24px;
+  --display:"Fraunces",Cambria,Georgia,serif; --body:"Inter",Calibri,system-ui,sans-serif;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{height:100%}
+body{margin:0;font-family:var(--body);color:var(--ink);background:#F8F0EE;line-height:1.5;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;z-index:-2;background:
+  radial-gradient(900px 700px at 5% 40%,#F6D6BE 0%,rgba(246,214,190,0) 70%),
+  radial-gradient(900px 500px at 25% 100%,#F7DECD 0%,rgba(247,222,205,0) 70%),
+  radial-gradient(300px 900px at 52% 20%,#FFFDFB 0%,rgba(255,253,251,0) 70%),
+  radial-gradient(900px 700px at 92% 30%,#ECE0F0 0%,rgba(236,224,240,0) 70%),
+  radial-gradient(800px 450px at 80% 100%,#F2E6F0 0%,rgba(242,230,240,0) 70%),#F8F0F0}
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.35;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .18 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+
+/* ---------- layout ---------- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;align-items:center;gap:16px;padding:14px 24px;backdrop-filter:blur(14px);background:rgba(255,255,255,.45);border-bottom:1px solid rgba(255,255,255,.7)}
+.brand{font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:-.01em}
+.brand small{display:block;font-family:var(--body);font-weight:500;font-size:11px;color:var(--muted);letter-spacing:0}
+.seg{margin-left:auto;display:flex;background:rgba(255,255,255,.6);border:1px solid var(--glass-border);border-radius:var(--r-pill);padding:4px}
+.seg button{border:0;background:transparent;font:600 14px var(--body);color:var(--muted);padding:8px 18px;border-radius:var(--r-pill);cursor:pointer;min-height:40px}
+.seg button[aria-selected="true"]{background:var(--primary);color:#fff}
+.seg button:hover:not([aria-selected="true"]){background:rgba(255,255,255,.9);color:var(--ink)}
+.tag{font-size:12px;color:var(--muted);background:rgba(255,255,255,.6);border:1px solid var(--glass-border);padding:6px 12px;border-radius:var(--r-pill);white-space:nowrap}
+main{padding:24px}
+.view{display:none}.view.on{display:block}.view.on.fam,.view.on.sch,.view.on.asc{display:grid}
+
+/* ---------- shared ---------- */
+.glass{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--r-panel);box-shadow:var(--shadow-2)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:var(--r-pill);font:600 14px var(--body);padding:10px 18px;min-height:44px;cursor:pointer;background:var(--primary);color:#fff;transition:background .15s}
+.btn:hover{background:var(--primary-hover)}.btn:active{background:var(--primary-pressed)}
+.btn.ghost{background:rgba(255,255,255,.7);color:var(--ink);border:1px solid var(--line)}.btn.ghost:hover{background:#fff}
+.btn:disabled{background:#F0C9BC;color:#9C6B5C;cursor:not-allowed}
+.btn.sm{font-size:12px;padding:6px 12px;min-height:34px}
+:where(button,a,input,textarea,[tabindex]):focus-visible{outline:2px solid var(--primary);outline-offset:2px;border-radius:6px}
+.chip{display:inline-flex;align-items:center;border-radius:var(--r-pill);font-weight:600;font-size:11px;padding:4px 10px;white-space:nowrap}
+.chip.danger{background:var(--danger);color:#fff}.chip.warn{background:var(--apricot);color:var(--ink)}.chip.new{background:var(--peach);color:var(--accent-text)}.chip.read{background:#EDEBE8;color:var(--muted)}.chip.ok{background:var(--green-tint);color:var(--green)}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;flex:none}
+.dot.g{background:var(--green)}.dot.w{background:var(--warn)}.dot.d{background:var(--danger)}
+.ico{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.circ{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:var(--primary);color:#fff;flex:none}
+.circ.soft{background:var(--peach);color:var(--primary)}
+h2{font-family:var(--display);font-weight:700;font-size:28px;line-height:1.15;margin:0 0 6px;letter-spacing:-.01em}
+.lead{color:var(--muted);margin:0 0 20px;max-width:65ch}
+.tabular{font-variant-numeric:tabular-nums}
+
+/* ---------- toast ---------- */
+.toasts{position:fixed;right:20px;top:calc(76px + env(safe-area-inset-top,0px));z-index:50;display:flex;flex-direction:column;gap:10px}
+.toast{display:flex;gap:12px;align-items:center;background:rgba(255,255,255,.9);border:1px solid var(--glass-border);border-radius:var(--r-card);padding:12px 14px;box-shadow:var(--shadow-2);min-width:260px;max-width:340px;animation:in .2s ease-out}
+.toast b{display:block;font-size:13px}.toast span{font-size:12px;color:var(--muted)}
+@keyframes in{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---------- FAMILY (phone) ---------- */
+.fam{grid-template-columns:1fr minmax(0,420px) 1fr;gap:24px;align-items:start}
+.fam .side{padding:24px}
+.fam .side h2{font-size:32px}
+.fam .side ul{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:14px}
+.fam .side li{display:flex;gap:12px}
+.fam .side li b{display:block;font-size:14px}.fam .side li p{margin:2px 0 0;font-size:13px;color:var(--muted)}
+.phone{position:relative;width:390px;height:812px;max-width:100%;margin:0 auto;background:#3A3A3C;border-radius:56px;padding:12px;box-shadow:0 30px 60px rgba(0,0,0,.28),inset 0 0 0 1px #5A5A5E}
+.phone::before,.phone::after{content:"";position:absolute;background:#2C2C2E;border-radius:3px}
+.phone::before{left:-3px;top:150px;width:3px;height:110px;box-shadow:0 70px 0 #2C2C2E}
+.phone::after{right:-3px;top:190px;width:3px;height:90px}
+.screen{position:relative;height:100%;background:var(--paper);border-radius:44px;overflow:hidden;display:flex;flex-direction:column;border:6px solid #0B0B0C}
+.island{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:120px;height:34px;background:#0B0B0C;border-radius:20px;z-index:5}
+.status{display:flex;justify-content:space-between;padding:16px 28px 0;font-size:14px;font-weight:600;color:#fff;position:relative;z-index:4}
+.status .icons{display:flex;gap:5px;align-items:center}
+.status .bat{width:24px;height:11px;border:1.5px solid #fff;border-radius:4px;position:relative}.status .bat::after{content:"";position:absolute;inset:2px;background:#fff;border-radius:2px}
+.hdr{background:var(--primary);color:#fff;padding:52px 20px 16px;margin-top:-40px}
+.hdr h1{font:700 20px var(--body);margin:0;display:flex;align-items:center;justify-content:space-between}
+.hdr .kids{display:flex;gap:8px;margin-top:12px}
+.hdr .kids button{border:1px solid rgba(255,255,255,.5);background:rgba(255,255,255,.15);color:#fff;font:600 12px var(--body);padding:6px 12px;border-radius:var(--r-pill);cursor:pointer;min-height:32px}
+.hdr .kids button[aria-pressed="true"]{background:#fff;color:var(--primary);border-color:#fff}
+.body{flex:1;overflow:auto;padding:14px 16px 20px}
+.body::-webkit-scrollbar{display:none}
+.lbl{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:10px 4px 8px}
+.item{display:flex;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:var(--r-card);padding:10px 12px;margin-bottom:8px;box-shadow:var(--shadow-1);text-align:left;width:100%;cursor:pointer;font:inherit;color:inherit}
+.item:hover{border-color:#D9C8C0}
+.item .t{flex:1;min-width:0}.item b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.item small{display:block;font-size:12px;color:var(--muted)}
+.item .circ{width:36px;height:36px}
+.tabs{display:flex;border-top:1px solid var(--line);background:#fff;padding:8px 0 22px}
+.tabs button{flex:1;border:0;background:none;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:3px;font:500 10px var(--body);cursor:pointer;min-height:48px}
+.tabs button[aria-selected="true"]{color:var(--primary)}
+.tabs .ico{width:24px;height:24px}
+.homebar{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;background:#1C1C1E;border-radius:3px}
+.fab{position:absolute;right:16px;bottom:92px;width:52px;height:52px;border-radius:50%;background:var(--primary);color:#fff;border:0;box-shadow:var(--shadow-2);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:6}
+.fab .ico{width:24px;height:24px}
+.sheet{position:absolute;inset:0;background:rgba(30,26,26,.45);display:none;align-items:flex-end;z-index:8;border-radius:44px}
+.sheet.on{display:flex}
+.sheet>div{background:#fff;border-radius:24px 24px 44px 44px;width:100%;padding:16px 20px 36px;max-height:88%;overflow:auto;animation:up .2s ease-out}
+@keyframes up{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
+.sheet h3{font:700 17px var(--body);margin:6px 0 4px}.sheet p{margin:0 0 12px;font-size:13px;color:var(--muted)}
+.sig{border:1.5px dashed var(--line);border-radius:12px;height:120px;width:100%;touch-action:none;background:#FCFAF9}
+.row{display:flex;gap:8px;margin-top:12px}.row .btn{flex:1}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;font-size:12px}
+.cal .d{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:50%}
+.cal .dow{color:var(--muted);font-size:10px;font-weight:600}
+.cal .ev{background:var(--primary);color:#fff;font-weight:600}.cal .ev.w{background:var(--apricot);color:var(--ink)}.cal .ev.d{background:var(--danger)}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:6px}
+.tile{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}
+.tile b{font:700 20px var(--display);display:block}.tile small{font-size:11px;color:var(--muted)}
+.grade{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin-bottom:6px;font-size:13px}
+.bar{flex:1;height:6px;background:var(--peach);border-radius:3px;overflow:hidden}.bar i{display:block;height:100%;background:var(--primary)}
+.chat{display:flex;flex-direction:column;gap:8px;padding-bottom:70px}
+.bub{max-width:82%;padding:10px 12px;border-radius:16px;font-size:13px;line-height:1.4}
+.bub.me{align-self:flex-end;background:var(--primary);color:#fff;border-bottom-right-radius:4px}
+.bub.ai{align-self:flex-start;background:#fff;border:1px solid var(--line);border-bottom-left-radius:4px}
+.bub .src{display:inline-block;margin-top:8px;background:var(--peach);color:var(--accent-text);font-weight:600;font-size:11px;padding:4px 10px;border-radius:var(--r-pill);border:0;cursor:pointer}
+.ask{position:absolute;left:16px;right:16px;bottom:96px;display:flex;gap:8px;z-index:6}
+.ask input{flex:1;border:1px solid var(--line);border-radius:var(--r-pill);padding:12px 16px;font:14px var(--body);background:#fff;min-height:44px}
+.ask button{width:44px;height:44px;border-radius:50%;border:0;background:var(--primary);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.sugg{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}.sugg button{border:1px solid var(--line);background:#fff;border-radius:var(--r-pill);font:500 12px var(--body);padding:6px 10px;cursor:pointer;color:var(--ink)}
+
+/* ---------- ASSOCIATION accents ---------- */
+.item.assoc{border-left:4px solid var(--assoc)}
+.item.assoc .circ.soft{background:var(--assoc-tint);color:var(--assoc)}
+.tagA{display:inline-flex;align-items:center;gap:6px;background:var(--assoc-tint);color:var(--assoc-text);font-weight:600;font-size:11px;padding:4px 10px;border-radius:var(--r-pill)}
+.tagA::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--assoc)}
+.lbl.assoc{color:var(--assoc-text);display:flex;align-items:center;gap:6px}
+.btn.assoc{background:var(--assoc)}.btn.assoc:hover{background:var(--assoc-hover)}
+.circ.assoc{background:var(--assoc)}
+.nav.assoc button[aria-current="page"]{background:var(--assoc)}
+.seg button.assoc[aria-selected="true"]{background:var(--assoc)}
+.kpi.assoc .n{color:var(--assoc-text)}
+.mini i.assoc{background:var(--assoc)}
+.note{display:flex;gap:10px;align-items:flex-start;background:var(--assoc-tint);border-radius:12px;padding:10px 12px;font-size:12px;color:var(--assoc-text);margin-top:12px}
+.note .ico{width:16px;height:16px;margin-top:2px}
+.chip.resp{background:var(--assoc);color:#fff}
+/* ---------- SCHOOL (dashboard) ---------- */
+.sch,.asc{grid-template-columns:220px 1fr;gap:20px;min-height:70vh}
+.nav{padding:16px;align-self:start}
+.nav .who{padding:8px 12px 16px;border-bottom:1px solid var(--line);margin-bottom:10px}
+.nav .who b{display:block;font-size:14px}.nav .who small{color:var(--muted);font-size:12px}
+.nav button{display:flex;align-items:center;gap:10px;width:100%;border:0;background:none;text-align:left;font:500 14px var(--body);color:var(--ink);padding:10px 12px;border-radius:12px;cursor:pointer;min-height:44px}
+.nav button:hover{background:rgba(255,255,255,.7)}
+.nav button[aria-current="page"]{background:var(--primary);color:#fff}
+.pane{display:none}.pane.on{display:block}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:16px}
+.kpi{padding:20px 22px}
+.kpi .n{font:700 34px var(--display);letter-spacing:-.02em;line-height:1}
+.kpi .l{font-size:14px;margin:8px 0 10px}
+.kpi .s{display:flex;align-items:center;gap:8px;font-weight:600;font-size:13px}
+.kpi .delta{float:right;font-size:12px;color:var(--muted)}
+.two{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
+.card{padding:20px 22px}
+.card h3{font:600 15px var(--body);margin:0 0 14px;display:flex;justify-content:space-between;align-items:center}
+.card h3 small{font-weight:500;color:var(--muted);font-size:12px}
+.hb{display:grid;grid-template-columns:48px 1fr 48px;gap:12px;align-items:center;margin-bottom:10px;font-size:13px}
+.hb .tr{height:14px;background:#F1E7E4;border-radius:7px;position:relative;overflow:hidden}
+.hb .tr i{display:block;height:100%;border-radius:7px}
+.hb .tr u{position:absolute;top:0;bottom:0;border-left:1.5px dashed var(--muted);opacity:.6}
+.hb b{text-align:right}
+.att{list-style:none;padding:0;margin:0}.att li{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px}
+.att li:last-child{border:0}.att li span{flex:1}.att li .dot{flex:none;width:10px}
+.save{margin-top:16px;background:var(--green-tint);border-color:#fff;display:flex;gap:16px;align-items:center;padding:16px 20px}
+.save b{font:700 30px var(--display);color:var(--green);white-space:nowrap}.save p{margin:0;font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:10px 12px;border-bottom:1px solid var(--line)}
+td{padding:12px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border:0}
+tr.link{cursor:pointer}tr.link:hover td{background:rgba(255,255,255,.5)}
+.tw{overflow-x:auto}
+.mini{display:inline-block;width:60px;height:8px;background:#F1E7E4;border-radius:4px;vertical-align:middle;margin-right:6px;overflow:hidden}.mini i{display:block;height:100%;background:var(--primary)}
+.detail{display:grid;grid-template-columns:1.2fr 1fr;gap:16px}
+.big{font:700 40px var(--display);line-height:1}
+.pend{display:grid;grid-template-columns:1fr 1fr;gap:10px 20px;margin-top:12px}
+.pend>div{display:flex;gap:8px;align-items:flex-start;font-size:13px}.pend small{display:block;color:var(--muted);font-size:12px}
+.spark{display:flex;align-items:flex-end;gap:6px;height:90px;margin:8px 0 4px}
+.spark i{flex:1;background:#F0C4B2;border-radius:4px 4px 0 0}.spark i.hot{background:var(--primary)}
+.axis{display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}
+.modal{position:fixed;inset:0;background:rgba(30,26,26,.45);display:none;align-items:center;justify-content:center;z-index:40;padding:20px}
+.modal.on{display:flex}
+.modal form{background:#fff;border-radius:var(--r-panel);padding:24px;width:min(520px,100%);box-shadow:var(--shadow-2)}
+.modal h3{font:700 20px var(--display);margin:0 0 4px}
+.f{display:grid;gap:6px;margin-top:14px}.f label{font-size:13px;font-weight:600}
+.f input,.f select,.f textarea{border:1px solid var(--line);border-radius:12px;padding:10px 12px;font:14px var(--body);width:100%;background:#FCFAF9}
+.f .hint{font-size:12px;color:var(--muted)}
+.f .err{font-size:12px;color:var(--danger);display:none}
+.f.invalid input{border-color:var(--danger)}.f.invalid .err{display:block}
+
+@media (max-width:1100px){.fam{grid-template-columns:1fr;justify-items:center}.fam .side{max-width:420px}.grid4{grid-template-columns:repeat(2,1fr)}.two,.detail{grid-template-columns:1fr}}
+@media (max-width:760px){main{padding:16px}.sch,.asc{grid-template-columns:1fr}.nav{display:flex;gap:6px;overflow-x:auto;padding:8px}.nav .who{display:none}.nav button{white-space:nowrap;width:auto}.phone{transform:scale(.88);transform-origin:top center;margin-bottom:-90px}.top{padding:10px 16px}.tag{display:none}.pend{grid-template-columns:1fr}}
+@media (max-width:480px){.phone{transform:scale(.82);margin-bottom:-140px}.grid4{grid-template-columns:1fr}.kpi .delta{float:none;display:block;margin-bottom:6px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></symbol>
+  <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"/><path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"/></symbol>
+  <symbol id="i-msg" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5zM2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></symbol>
+  <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-bar" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></symbol>
+  <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></symbol>
+</svg>
+
+<header class="top">
+  <div class="brand">Vínculo<small>Un solo canal entre el colegio y las familias</small></div>
+  <div class="seg" role="tablist" aria-label="Vista">
+    <button role="tab" id="tab-fam" aria-selected="true" aria-controls="v-fam" onclick="setView('fam')">Familia</button>
+    <button role="tab" id="tab-sch" aria-selected="false" aria-controls="v-sch" onclick="setView('sch')">Colegio</button>
+    <button role="tab" id="tab-asc" class="assoc" aria-selected="false" aria-controls="v-asc" onclick="setView('asc')">Asociación</button>
+  </div>
+  <span class="tag">Prototipo navegable · datos ilustrativos</span>
+</header>
+
+<main>
+<!-- ================= FAMILIA ================= -->
+<section id="v-fam" class="view on fam" role="tabpanel" aria-labelledby="tab-fam">
+  <aside class="side">
+    <h2>Lo que ve una familia</h2>
+    <p class="lead">Un perfil por hijo. Lo que hay que firmar o confirmar, arriba; lo informativo, después. Probá firmar la autorización o preguntarle algo al asistente.</p>
+    <ul>
+      <li><span class="circ"><svg class="ico"><use href="#i-check"/></svg></span><div><b>Acción, no ruido</b><p>Pendientes separados de los comunicados. Cuando firmás, el ítem baja solo.</p></div></li>
+      <li><span class="circ"><svg class="ico"><use href="#i-bell"/></svg></span><div><b>Recordatorios que llegan</b><p>Push, y respaldo por correo o WhatsApp en avisos críticos.</p></div></li>
+      <li><span class="circ"><svg class="ico"><use href="#i-shield"/></svg></span><div><b>Privado por familia</b><p>Notas y conducta solo de sus hijos, con acuse de lectura.</p></div></li>
+    </ul>
+  </aside>
+
+  <div class="phone" aria-label="Simulación de la app en un teléfono">
+    <div class="screen">
+      <div class="island"></div>
+      <div class="status"><span>9:41</span><span class="icons"><svg width="18" height="12" viewBox="0 0 18 12" fill="#fff"><rect x="0" y="8" width="3" height="4" rx=".5"/><rect x="5" y="5" width="3" height="7" rx=".5"/><rect x="10" y="2" width="3" height="10" rx=".5"/><rect x="15" y="0" width="3" height="12" rx=".5"/></svg><svg width="16" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg><span class="bat"></span></span></div>
+      <div class="hdr" id="hdr"></div>
+      <div class="body" id="body"></div>
+      <button class="fab" id="fab" aria-label="Abrir asistente" onclick="go('asis')"><svg class="ico"><use href="#i-cpu"/></svg></button>
+      <div class="ask" id="ask" hidden>
+        <input id="q" placeholder="Escribí tu consulta…" aria-label="Consulta al asistente">
+        <button aria-label="Enviar" onclick="askAI()"><svg class="ico"><use href="#i-send"/></svg></button>
+      </div>
+      <nav class="tabs" role="tablist" aria-label="Secciones de la app" id="tabs"></nav>
+      <div class="homebar"></div>
+      <div class="sheet" id="sheet" role="dialog" aria-modal="true"><div id="sheetBody"></div></div>
+    </div>
+  </div>
+
+  <aside class="side">
+    <h2>Y lo que no ve más</h2>
+    <p class="lead">Doce grupos de WhatsApp, circulares arrugadas en la mochila y fechas perdidas. Cada acción que hacés acá queda registrada del lado del colegio: pasá a la vista <b>Colegio</b> después de firmar y mirá cómo cambia el contador.</p>
+    <ul>
+      <li><span class="circ soft"><svg class="ico"><use href="#i-cal"/></svg></span><div><b>Calendario unificado</b><p>Exámenes, actos, reuniones y salidas, con recordatorio configurable.</p></div></li>
+      <li><span class="circ soft"><svg class="ico"><use href="#i-cpu"/></svg></span><div><b>Asistente del colegio</b><p>Responde con la información oficial y cita la fuente. Lo que es de un docente, lo convierte en turno.</p></div></li>
+    </ul>
+  </aside>
+</section>
+
+<!-- ================= COLEGIO ================= -->
+<section id="v-sch" class="view sch" role="tabpanel" aria-labelledby="tab-sch">
+  <nav class="nav glass" aria-label="Panel del colegio">
+    <div class="who"><b>Colegio San Martín</b><small>Dirección · Sept. 2026</small></div>
+    <button aria-current="page" onclick="pane('dash',this)"><svg class="ico"><use href="#i-grid"/></svg>Tablero</button>
+    <button onclick="pane('com',this)"><svg class="ico"><use href="#i-send"/></svg>Comunicados</button>
+    <button onclick="pane('ind',this)"><svg class="ico"><use href="#i-bar"/></svg>Indicadores</button>
+    <button onclick="pane('fam',this)"><svg class="ico"><use href="#i-users"/></svg>Familias</button>
+  </nav>
+  <div>
+    <!-- Tablero -->
+    <div class="pane on" id="p-dash">
+      <h2>Tablero de dirección</h2>
+      <p class="lead">Cuatro semáforos y una lista de atención: lo que la dirección necesita ver cada lunes.</p>
+      <div class="grid4" id="kpis"></div>
+      <div class="two">
+        <div class="glass card">
+          <h3>Lectura por curso · último comunicado <small>meta 90%</small></h3>
+          <div id="hbars"></div>
+        </div>
+        <div>
+          <div class="glass card">
+            <h3>Requiere atención esta semana</h3>
+            <ul class="att">
+              <li><span class="dot d"></span><span>4° A: 29% no leyó la autorización del museo</span><button class="btn ghost sm" onclick="toast('Recordatorio enviado','A las 8 familias de 4° A que no leyeron')">Reenviar</button></li>
+              <li><span class="dot w"></span><span>5° B: 3 semanas sin reunión confirmada</span></li>
+              <li><span class="dot w"></span><span>18 familias sin abrir la app en 30 días</span></li>
+            </ul>
+          </div>
+          <div class="glass card save"><b>62 h</b><p>de secretaría y docentes ahorradas este mes en consultas repetidas y papel evitado.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comunicados -->
+    <div class="pane" id="p-com">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap">
+        <div><h2>Comunicados</h2><p class="lead">Publicá una vez, segmentá y mirá quién leyó y quién firmó.</p></div>
+        <button class="btn" onclick="openModal()">+ Nuevo comunicado</button>
+      </div>
+      <div class="glass card tw" id="comList"></div>
+      <div id="comDetail" style="margin-top:16px"></div>
+    </div>
+
+    <!-- Indicadores -->
+    <div class="pane" id="p-ind">
+      <h2>Los indicadores que le sirven a la dirección</h2>
+      <p class="lead">Cada uno con su semáforo y la decisión que habilita. Los umbrales se ajustan con el colegio.</p>
+      <div class="glass card tw"><table>
+        <thead><tr><th>Indicador</th><th>Qué te dice</th><th>Semáforo</th><th>Qué decidir</th></tr></thead>
+        <tbody>
+          <tr><td><b>Tasa de lectura</b></td><td>% de familias que abrió cada comunicado, por curso</td><td><span class="dot g"></span> ≥ 90 · 80–89 · &lt; 80</td><td>Si un curso cae, revisar el canal o al docente, no insistir a todos</td></tr>
+          <tr><td><b>Firmas a tiempo</b></td><td>Autorizaciones y fichas firmadas antes del vencimiento</td><td><span class="dot w"></span> ≥ 85 · 70–84 · &lt; 70</td><td>Ajustar el calendario de recordatorios; evitar salidas sin permiso</td></tr>
+          <tr><td><b>Familias activas</b></td><td>% que usó la app en los últimos 30 días</td><td><span class="dot g"></span> ≥ 80 · 65–79 · &lt; 65</td><td>Campaña de instalación y ayuda en la entrada del colegio</td></tr>
+          <tr><td><b>Reuniones confirmadas</b></td><td>Asistencia confirmada vs. convocada</td><td><span class="dot w"></span> ≥ 75 · 55–74 · &lt; 55</td><td>Cambiar horario o formato; ofrecer turnos individuales</td></tr>
+          <tr><td><b>Tiempo de respuesta docente</b></td><td>Horas hasta responder una consulta en horario</td><td><span class="dot g"></span> ≤ 24 h · 24–48 · &gt; 48</td><td>Redistribuir carga o definir un canal de secretaría</td></tr>
+          <tr><td><b>Incidencias de conducta</b></td><td>Observaciones por curso y tendencia mensual</td><td><span class="dot d"></span> tendencia ↓ · = · ↑</td><td>Intervenir en el curso donde suben antes de que escale</td></tr>
+          <tr><td><b>Horas ahorradas</b></td><td>Consultas repetidas y papel evitados, valorizados</td><td><span class="dot g"></span> meta mensual acordada</td><td>Justificar la inversión: cuánto cuesta hoy la comunicación</td></tr>
+        </tbody></table></div>
+    </div>
+
+    <!-- Familias -->
+    <div class="pane" id="p-fam">
+      <h2>Familias</h2>
+      <p class="lead">312 familias · 263 activas en los últimos 30 días. Importadas desde Excel el primer día.</p>
+      <div class="glass card tw"><table>
+        <thead><tr><th>Familia</th><th>Alumnos</th><th>Última actividad</th><th>Estado</th></tr></thead>
+        <tbody id="famRows"></tbody></table></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ================= ASOCIACIÓN DE PADRES ================= -->
+<section id="v-asc" class="view asc" role="tabpanel" aria-labelledby="tab-asc">
+  <nav class="nav glass assoc" aria-label="Panel de la asociación">
+    <div class="who"><b>Asociación de Padres</b><small>Comisión directiva 2026</small></div>
+    <button aria-current="page" onclick="apane('com',this)"><svg class="ico"><use href="#i-send"/></svg>Comunicados</button>
+    <button onclick="apane('ev',this)"><svg class="ico"><use href="#i-cal"/></svg>Eventos y colectas</button>
+    <button onclick="apane('who',this)"><svg class="ico"><use href="#i-users"/></svg>Comisión</button>
+  </nav>
+  <div>
+    <div class="pane on" id="a-com">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap">
+        <div><h2>Comunicados de la asociación</h2><p class="lead">Mismo canal que el colegio, con su propio color. Las familias ven que viene de la asociación, no de la dirección.</p></div>
+        <button class="btn assoc" onclick="openAModal()">+ Nuevo comunicado</button>
+      </div>
+      <div class="grid4" id="akpis"></div>
+      <div class="glass card tw" id="aList"></div>
+      <div class="glass card" style="margin-top:16px"><h3>Qué puede y qué no puede hacer la asociación</h3>
+        <div class="two" style="gap:24px">
+          <ul class="att"><li><span class="dot g"></span><span>Publicar avisos, eventos, colectas y encuestas a todo el colegio o a un curso</span></li><li><span class="dot g"></span><span>Ver lectura y respuestas de sus propios comunicados</span></li><li><span class="dot g"></span><span>Recibir respuestas de las familias (asisto / no asisto, aporto)</span></li></ul>
+          <ul class="att"><li><span class="dot d"></span><span>Ver notas, asistencia o conducta de ningún alumno</span></li><li><span class="dot d"></span><span>Pedir firmas ni documentos oficiales</span></li><li><span class="dot d"></span><span>Escribir por mensajería a los docentes o a familias individuales</span></li></ul>
+        </div>
+        <p class="lead" style="margin:12px 0 0;font-size:13px">La dirección puede activar la revisión previa: cada comunicado de la asociación pasa por coordinación antes de salir.</p>
+      </div>
+    </div>
+    <div class="pane" id="a-ev">
+      <h2>Eventos y colectas</h2>
+      <p class="lead">Lo que la asociación organiza este mes y cómo van las respuestas.</p>
+      <div class="glass card tw"><table><thead><tr><th>Evento</th><th>Fecha</th><th>Respuestas</th><th>Recaudado</th></tr></thead><tbody>
+        <tr><td><b>Kermesse de primavera</b></td><td>Sáb 27 sep</td><td><span class="tabular">118 asisten · 34 no</span></td><td>—</td></tr>
+        <tr><td><b>Rifa solidaria</b></td><td>Cierra 30 sep</td><td><span class="tabular">203 números vendidos</span></td><td><span class="tabular">Gs. 4.060.000</span></td></tr>
+        <tr><td><b>Colecta de útiles</b></td><td>Hasta 3 oct</td><td><span class="tabular">57 familias aportaron</span></td><td>—</td></tr>
+      </tbody></table></div>
+    </div>
+    <div class="pane" id="a-who">
+      <h2>Comisión directiva</h2>
+      <p class="lead">Quiénes pueden publicar en nombre de la asociación. El colegio administra estos permisos.</p>
+      <div class="glass card tw"><table><thead><tr><th>Nombre</th><th>Rol</th><th>Puede publicar</th></tr></thead><tbody>
+        <tr><td><b>Laura Cáceres</b></td><td>Presidenta</td><td><span class="dot g"></span> Sí</td></tr>
+        <tr><td><b>Diego Ramírez</b></td><td>Tesorero</td><td><span class="dot g"></span> Sí</td></tr>
+        <tr><td><b>Paola Núñez</b></td><td>Secretaria</td><td><span class="dot g"></span> Sí</td></tr>
+        <tr><td><b>Marcos Ayala</b></td><td>Vocal · 3° A</td><td><span class="dot w"></span> Solo su curso</td></tr>
+      </tbody></table></div>
+    </div>
+  </div>
+</section>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<div class="modal" id="modal">
+  <form onsubmit="return sendCom(event)" novalidate>
+    <h3>Nuevo comunicado</h3>
+    <p class="lead" style="margin-bottom:0">Se envía por push a las familias del destino elegido y queda con acuse de lectura.</p>
+    <div class="f" id="f-title"><label for="ctitle">Título</label><input id="ctitle" maxlength="80" placeholder="Ej.: Cambio de horario de Ed. Física"><span class="err">Escribí un título para el comunicado.</span></div>
+    <div class="f"><label for="cdest">Destino</label><select id="cdest"><option>3° A</option><option>3° B</option><option>4° A</option><option>Todo el colegio</option></select></div>
+    <div class="f"><label for="ctype">Tipo</label><select id="ctype"><option value="info">Informativo</option><option value="sign">Requiere firma</option><option value="confirm">Requiere confirmación</option></select><span class="hint">Los que requieren firma vencen en 4 días y reciben recordatorio 48 h antes.</span></div>
+    <div class="row"><button type="button" class="btn ghost" onclick="closeModal()">Cancelar</button><button type="submit" class="btn" id="sendBtn">Enviar comunicado</button></div>
+  </form>
+</div>
+
+<div class="modal" id="amodal">
+  <form onsubmit="return sendAssoc(event)" novalidate>
+    <h3 style="color:var(--assoc-text)">Nuevo comunicado de la asociación</h3>
+    <p class="lead" style="margin-bottom:0">Las familias lo reciben en Vínculo con la etiqueta "Asociación de padres". No es un comunicado oficial del colegio.</p>
+    <div class="f" id="fa-title"><label for="atitle">Título</label><input id="atitle" maxlength="80" placeholder="Ej.: Kermesse de primavera"><span class="err">Escribí un título para el comunicado.</span></div>
+    <div class="f"><label for="abody">Texto</label><textarea id="abody" rows="3" placeholder="Qué, cuándo, dónde y qué esperan de las familias."></textarea></div>
+    <div class="f"><label for="adest">Destino</label><select id="adest"><option>Todo el colegio</option><option>3° A</option><option>6° B</option></select></div>
+    <div class="f"><label for="akind">Tipo</label><select id="akind"><option value="aviso">Aviso</option><option value="evento">Evento (pide asisto / no asisto)</option><option value="colecta">Colecta (pide aporto / no)</option><option value="encuesta">Encuesta</option></select><span class="hint">Los eventos y colectas muestran botones de respuesta a las familias; la asociación ve el conteo.</span></div>
+    <div class="row"><button type="button" class="btn ghost" onclick="closeAModal()">Cancelar</button><button type="submit" class="btn assoc" id="asendBtn">Publicar</button></div>
+  </form>
+</div>
+
+<script>
+/* ============ estado compartido (ilustrativo) ============ */
+const S = {
+  kid: 0,
+  kids: [{n:'Sofía', c:'3° A'},{n:'Mateo', c:'6° B'}],
+  tab: 'home',
+  pending: [
+    {id:1, kid:0, t:'Autorización: visita al museo', m:'Vence jue 18 sep', chip:'Firmar', type:'sign', icon:'i-doc'},
+    {id:2, kid:0, t:'Reunión de padres 3° A', m:'Jue 18 · 18:30 · Aula 12', chip:'Confirmar', type:'confirm', icon:'i-cal'},
+    {id:3, kid:1, t:'Ficha médica anual', m:'Vence 30 sep', chip:'Completar', type:'sign', icon:'i-doc'},
+  ],
+  news: [
+    {id:10, kid:0, t:'Boletín 2° bimestre disponible', m:'Dirección · hace 2 h', chip:'Nuevo', icon:'i-award'},
+    {id:11, kid:0, t:'Cambio horario Ed. Física', m:'Prof. Gómez · ayer · Leído', icon:'i-bell'},
+    {id:12, kid:0, t:'Acto Día del Estudiante', m:'Coordinación · 8 sep · Leído', icon:'i-msg'},
+    {id:13, kid:1, t:'Viaje de egresados: reunión informativa', m:'Coordinación · hace 1 h', chip:'Nuevo', icon:'i-bell'},
+  ],
+  coms: [
+    {id:1042, t:'Autorización visita al museo', d:'3° A', fam:28, read:27, signed:22, type:'sign', sent:'lun 14', due:'jue 18'},
+    {id:1041, t:'Reunión de padres', d:'3° A', fam:28, read:25, signed:null, type:'confirm', sent:'lun 14', due:'jue 18'},
+    {id:1040, t:'Boletín 2° bimestre', d:'Todo el colegio', fam:312, read:284, signed:null, type:'info', sent:'lun 14', due:'—'},
+    {id:1039, t:'Cambio horario Ed. Física', d:'6° B', fam:30, read:29, signed:null, type:'info', sent:'dom 13', due:'—'},
+  ],
+  pend: [['Familia Rojas','leyó ayer · sin firmar','w'],['Familia Duarte','leyó hoy 08:12','w'],['Familia Giménez','no abrió · 2 recordatorios','d'],['Familia Ortiz','no abrió · app no instalada','d'],['Familia Vera','leyó lun · sin firmar','w'],['Familia Benítez','leyó hoy · sin firmar','w']],
+  chat: [],
+  assoc: [
+    {id:301, t:'Kermesse de primavera', m:'Asociación de padres · hace 3 h', from:'Laura Cáceres · Presidenta', when:'Hoy 06:40', kind:'evento', d:'Todo el colegio', fam:312, read:212, resp:152, body:'Sábado 27 de septiembre de 14:00 a 19:00 en el patio del colegio. Habrá juegos, feria de platos y música en vivo. Lo recaudado va al fondo para el aire acondicionado de las aulas de primaria. Necesitamos familias que colaboren en los stands.', icon:'i-star', reply:null},
+    {id:302, t:'Rifa solidaria: quedan 97 números', m:'Asociación de padres · ayer', from:'Diego Ramírez · Tesorero', when:'Ayer 20:15', kind:'colecta', d:'Todo el colegio', fam:312, read:248, resp:203, body:'Cada número cuesta Gs. 20.000. Sorteo el 30 de septiembre en la kermesse. Los premios fueron donados por familias del colegio. Podés reservar tu número respondiendo acá y pagar en la puerta o por transferencia.', icon:'i-zap', reply:null},
+    {id:303, t:'Colecta de útiles para la escuela rural', m:'Asociación de padres · 12 sep · Leído', from:'Paola Núñez · Secretaria', when:'Vie 12 sep · 09:00', kind:'colecta', d:'Todo el colegio', fam:312, read:190, resp:57, body:'Hasta el 3 de octubre juntamos cuadernos, lápices y mochilas en buen estado para la Escuela Básica N.° 4520 de Villa Hayes. Caja en la entrada de primaria.', icon:'i-down', reply:'aporto'},
+  ],
+  details: {
+    10: {from:'Dirección · Prof. Ana Villalba', when:'Hoy 06:10', body:'Ya está disponible el boletín del 2° bimestre. Sofía mantiene un promedio de 8,4 y 96% de asistencia. La entrega de boletines en papel se reemplaza por esta versión digital, que queda guardada en Documentos.', att:[['Boletín 2° bimestre · Sofía.pdf','i-doc']], actions:[['Ver notas y comentarios','go(\'grades\')'],['Preguntar al asistente','askFrom(\'¿Cómo le fue a Sofía en el boletín?\')']]},
+    11: {from:'Prof. Gómez · Educación Física', when:'Ayer 17:45', body:'A partir del lunes 22 la clase de Ed. Física de 3° A pasa de martes a jueves, 10:00 a 11:30, por reorganización del patio cubierto. Recordá traer el certificado médico si todavía no lo entregaste.', att:[], actions:[['Ver horario en Calendario','go(\'cal\')'],['Escribirle al profesor','go(\'msgs\')']]},
+    12: {from:'Coordinación · Nivel primario', when:'Lun 8 sep · 12:20', body:'El miércoles 24 a las 9:00 celebramos el Día del Estudiante en el patio central. Las familias pueden asistir; cada curso prepara una presentación. Los alumnos vienen con ropa cómoda y la remera del colegio.', att:[['Programa del acto.pdf','i-doc']], actions:[['Agregar al calendario','addToCal(\'ics\',{t:\'Acto Día del Estudiante\',loc:\'Patio central · Colegio San Martín\',start:\'20260924T090000\',end:\'20260924T110000\',desc:\'Acto del Día del Estudiante. Las familias pueden asistir.\'})']]},
+    13: {from:'Coordinación · Nivel secundario', when:'Hoy 07:30', body:'Reunión informativa sobre el viaje de egresados de 6° B: destino, fechas, costos y plan de pagos. Jueves 25 a las 19:00 en el salón de actos. Se necesita al menos un adulto responsable por familia.', att:[['Propuesta de viaje.pdf','i-doc'],['Plan de pagos.xlsx','i-doc']], actions:[['Confirmar asistencia','toast(\'Asistencia confirmada\',\'Jue 25 · 19:00 · salón de actos\');closeSheet()'],['Agregar al calendario','addToCal(\'ics\',{t:\'Reunión viaje de egresados 6° B\',loc:\'Salón de actos\',start:\'20260925T190000\',end:\'20260925T200000\',desc:\'Reunión informativa del viaje de egresados.\'})']]},
+  },
+};
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ico = n => `<svg class="ico" aria-hidden="true"><use href="#${n}"/></svg>`;
+
+/* ============ vista ============ */
+function setView(v){
+  ['fam','sch','asc'].forEach(k => { $('#v-'+k).classList.toggle('on', k===v); $('#tab-'+k).setAttribute('aria-selected', k===v); });
+  if (v==='sch') renderSchool(); if (v==='asc') renderAssoc();
+}
+function toast(title, msg){
+  const t = document.createElement('div'); t.className='toast';
+  t.innerHTML = `<span class="circ" style="width:34px;height:34px">${ico('i-bell')}</span><div><b>${esc(title)}</b><span>${esc(msg)}</span></div>`;
+  $('#toasts').appendChild(t); setTimeout(()=>t.remove(), 4200);
+}
+
+/* ============ FAMILIA ============ */
+const TABS = [['home','Inicio','i-home'],['cal','Calendario','i-cal'],['docs','Documentos','i-doc'],['grades','Desempeño','i-award'],['msgs','Mensajes','i-msg']];
+function go(tab){ S.tab = tab; renderPhone(); }
+function setKid(i){ S.kid = i; renderPhone(); }
+function renderPhone(){
+  const k = S.kids[S.kid];
+  const titles = {home:`Hola, familia Benítez`, cal:'Septiembre 2026', docs:`Documentos · ${k.n}`, grades:`Desempeño · ${k.n} ${k.c}`, msgs:'Mensajes', asis:'Asistente del colegio'};
+  $('#hdr').innerHTML = `<h1>${esc(titles[S.tab])}${S.tab==='asis'?'<span class="dot g" title="En línea"></span>':ico('i-bell')}</h1>` +
+    (S.tab==='home' ? `<div class="kids">${S.kids.map((x,i)=>`<button aria-pressed="${i===S.kid}" onclick="setKid(${i})">${x.n} · ${x.c}</button>`).join('')}</div>` : '');
+  $('#tabs').innerHTML = TABS.map(([id,l,i]) => `<button role="tab" aria-selected="${S.tab===id}" onclick="go('${id}')">${ico(i)}${l}</button>`).join('');
+  $('#fab').hidden = S.tab==='asis'; $('#ask').hidden = S.tab!=='asis';
+  const b = $('#body');
+  const item = (x, onclick) => `<button class="item" onclick="${onclick||''}"><span class="circ soft">${ico(x.icon)}</span><span class="t"><b>${esc(x.t)}</b><small>${esc(x.m)}</small></span>${x.chip?`<span class="chip ${x.chip==='Firmar'||x.chip==='Completar'?'danger':x.chip==='Confirmar'?'warn':x.chip==='Nuevo'?'new':'read'}">${x.chip}</span>`:''}</button>`;
+  if (S.tab==='home'){
+    const p = S.pending.filter(x=>x.kid===S.kid), n = S.news.filter(x=>x.kid===S.kid);
+    b.innerHTML = `<div class="lbl">Requiere tu acción</div>` + (p.length ? p.map(x=>item(x,`openPending(${x.id})`)).join('') : `<div class="item" style="cursor:default;color:var(--muted);font-size:13px">Sin pendientes. Los próximos eventos aparecen en Calendario.</div>`) +
+      `<div class="lbl">Comunicados</div>` + n.map(x=>item(x,`readNews(${x.id})`)).join('') +
+      `<div class="lbl assoc">Asociación de padres</div>` + S.assoc.filter(a=>a.d==='Todo el colegio' || a.d===k.c).map(a=>`<button class="item assoc" onclick="readAssoc(${a.id})"><span class="circ soft">${ico(a.icon)}</span><span class="t"><b>${esc(a.t)}</b><small>${esc(a.m)}</small></span>${a.reply?`<span class="chip resp">${a.reply==='asisto'?'Asisto':a.reply==='aporto'?'Aporto':'Respondido'}</span>`:(a.kind==='evento'||a.kind==='colecta')?`<span class="chip" style="background:var(--assoc-tint);color:var(--assoc-text)">Responder</span>`:''}</button>`).join('');
+  } else if (S.tab==='cal'){
+    const marks = {14:'',18:'w',24:'d',29:''}; // sep 2026 starts Tuesday
+    let cells = ['L','M','M','J','V','S','D'].map(d=>`<div class="dow">${d}</div>`).join('') + '<div></div>';
+    for (let d=1; d<=30; d++) cells += `<div class="d ${d in marks?'ev '+marks[d]:''}">${d}</div>`;
+    b.innerHTML = `<div class="item" style="cursor:default;display:block"><div class="cal">${cells}</div></div><div class="lbl">Próximos eventos</div>` +
+      [{t:'Reunión de padres 3° A',m:'Jue 18 · 18:30 · aviso 1 día antes',chip:'Confirmar',icon:'i-cal',a:'openPending(2)'},{t:'Examen de Matemática',m:'Lun 22 · 08:00 · Sofía',chip:'Recordar',icon:'i-award',a:"evSheet('Examen de Matemática','Lun 22 sep · 08:00 · Prof. Lara','Temas: fracciones y proporciones. Traer regla y calculadora.','20260922T080000','20260922T094000')"},{t:'Acto Día del Estudiante',m:'Mié 24 · 09:00 · todo el colegio',icon:'i-bell',a:'readNews(12)'},{t:'Vacaciones de primavera',m:'Lun 29 sep – vie 3 oct',icon:'i-cal',a:"evSheet('Vacaciones de primavera','Lun 29 sep a vie 3 oct','No hay clases. Las actividades se retoman el lunes 6 de octubre.','20260929','20261004')"}].map(x=>item(x,x.a)).join('');
+  } else if (S.tab==='docs'){
+    const p = S.pending.filter(x=>x.kid===S.kid && x.type==='sign');
+    b.innerHTML = `<div class="lbl">Pendientes de firma</div>` + (p.length? p.map(x=>item({...x,icon:'i-pen'},`openPending(${x.id})`)).join('') : `<div class="item" style="cursor:default;color:var(--muted);font-size:13px">Todo firmado. Bien ahí.</div>`) +
+      `<div class="lbl">Recibidos</div>` + [{t:'Circular 14 – Cuotas y vencimientos',m:'Administración · 5 sep',chip:'Leído',icon:'i-down'},{t:'Lista de útiles 2027',m:'Coordinación · 1 sep',chip:'Leído',icon:'i-down'},{t:'Reglamento de convivencia',m:'Dirección · mar 2026',icon:'i-down'}].map(x=>item(x,`toast('Documento abierto','${x.t}')`)).join('');
+  } else if (S.tab==='grades'){
+    const g = [['Matemática',9],['Lengua',8],['Ciencias',7],['Inglés',9],['Historia',8]];
+    b.innerHTML = `<div class="tiles"><div class="tile"><b style="color:var(--primary)">8,4</b><small>Promedio</small></div><div class="tile"><b style="color:var(--primary)">96%</b><small>Asistencia</small></div><div class="tile"><b style="color:var(--danger)">2</b><small>Observ.</small></div></div>
+      <div class="lbl">Boletín · 2° bimestre</div>` + g.map(([n,v])=>`<div class="grade"><span style="width:84px">${n}</span><span class="bar"><i style="width:${v*10}%;background:${v<8?'var(--apricot)':'var(--primary)'}"></i></span><b class="tabular">${v}</b></div>`).join('') +
+      `<div class="lbl">Conducta y asistencia</div>` + [{t:'Observación: uso de celular en clase',m:'Prof. Lara · 10 sep · privado',chip:'Acusar',icon:'i-alert'},{t:'Felicitación: proyecto de Ciencias',m:'Prof. Díaz · 3 sep',chip:'Leído',icon:'i-star'}].map(x=>item(x,`ack(this)`)).join('');
+  } else if (S.tab==='msgs'){
+    b.innerHTML = `<div class="lbl">Docentes</div>` + [{t:'Prof. Lara · Matemática',m:'Gracias, quedó claro. Saludos.',chip:'8–16 h',icon:'i-msg'},{t:'Prof. Gómez · Ed. Física',m:'Recordar traer certificado médico…',chip:'1 nuevo',icon:'i-msg'}].map(x=>item(x,`toast('Prototipo','La mensajería con docentes respeta la franja de atención.')`)).join('') +
+      `<div class="lbl">Reservar turno</div><div class="item" style="display:block;cursor:default"><b>Entrevista con Prof. Lara</b><small>Jueves 18 de septiembre</small><div class="row" style="margin-top:10px">${['15:00','15:20','15:40','16:00'].map(t=>`<button class="btn ghost sm" onclick="toast('Turno reservado','Jue 18 · ${t} con Prof. Lara')">${t}</button>`).join('')}</div></div>`;
+  } else if (S.tab==='asis'){
+    if (!S.chat.length) S.chat.push({ai:true, t:'Hola. Puedo responder sobre cuotas, horarios, salidas, documentos y turnos con la información oficial del colegio. ¿Qué necesitás?'});
+    b.innerHTML = `<div class="sugg">${SUGG.map((q,i)=>`<button onclick="askAI(SUGG[${i}])">${q}</button>`).join('')}</div>
+      <div class="chat" id="chat">${S.chat.map(m=>`<div class="bub ${m.ai?'ai':'me'}">${esc(m.t)}${m.src?`<br><button class="src" onclick="${m.act||''}">${esc(m.src)}</button>`:''}</div>`).join('')}</div>`;
+    b.scrollTop = b.scrollHeight;
+  }
+}
+function openPending(id){
+  const x = S.pending.find(p=>p.id===id); if(!x) return;
+  const sb = $('#sheetBody');
+  if (x.type==='sign'){
+    sb.innerHTML = `<h3>${esc(x.t)}</h3><p>Salida educativa · jueves 18 · 8:30 a 12:30. Llevar merienda y remera del colegio. Firmá con el dedo o el mouse para autorizar.</p>
+      <canvas class="sig" id="sig" width="340" height="120" aria-label="Área de firma"></canvas>
+      <div class="row"><button class="btn ghost" onclick="closeSheet()">Cancelar</button><button class="btn" id="signBtn" disabled onclick="doSign(${id})">Firmar</button></div>
+      <p style="margin-top:8px;font-size:11px">El botón se habilita cuando hay una firma. Queda registrado quién firmó y a qué hora.</p>`;
+    $('#sheet').classList.add('on'); initSig();
+  } else {
+    sb.innerHTML = `<h3>${esc(x.t)}</h3><p>${esc(x.m)}. ¿Confirmás tu asistencia?</p>
+      <div class="row"><button class="btn ghost" onclick="closeSheet()">No puedo ir</button><button class="btn" onclick="doConfirm(${id})">Confirmo</button></div>`;
+    $('#sheet').classList.add('on');
+  }
+}
+function closeSheet(){ $('#sheet').classList.remove('on'); }
+function initSig(){
+  const c = $('#sig'), ctx = c.getContext('2d'); let drawing=false, drew=false;
+  ctx.lineWidth=2.2; ctx.lineCap='round'; ctx.strokeStyle='#1E1A1A';
+  const pos = e => { const r=c.getBoundingClientRect(); const p = e.touches?e.touches[0]:e; return [(p.clientX-r.left)*c.width/r.width,(p.clientY-r.top)*c.height/r.height]; };
+  const start = e => { drawing=true; ctx.beginPath(); ctx.moveTo(...pos(e)); e.preventDefault(); };
+  const move = e => { if(!drawing) return; ctx.lineTo(...pos(e)); ctx.stroke(); drew=true; $('#signBtn').disabled=false; e.preventDefault(); };
+  const end = () => drawing=false;
+  c.addEventListener('pointerdown',start); c.addEventListener('pointermove',move); window.addEventListener('pointerup',end);
+}
+function doSign(id){
+  const btn = $('#signBtn'); btn.disabled=true; btn.textContent='Firmando…';
+  setTimeout(()=>{
+    const x = S.pending.find(p=>p.id===id); S.pending = S.pending.filter(p=>p.id!==id);
+    S.news.unshift({id:Date.now(), kid:x.kid, t:x.t.replace('Autorización: ','Autorización firmada: ').replace('Ficha médica anual','Ficha médica enviada'), m:'Firmado hoy 08:14 · registrado', chip:'Firmado', icon:'i-check'});
+    const com = S.coms.find(c=>c.id===1042); if (com && x.id===1) { com.signed++; S.pend = S.pend.filter(p=>p[0]!=='Familia Benítez'); }
+    closeSheet(); renderPhone(); toast('Firmado', 'El colegio ya ve tu firma. Podés verlo en la vista Colegio.');
+  }, 700);
+}
+function doConfirm(id){
+  const x = S.pending.find(p=>p.id===id); if(!x) return;
+  S.pending = S.pending.filter(p=>p.id!==id);
+  S.news.unshift({id:Date.now(), kid:x.kid, t:x.t, m:'Asistencia confirmada · jue 18 · 18:30', chip:'Confirmado', icon:'i-check'});
+  const com = S.coms.find(c=>c.id===1041); if (com) com.read = Math.min(com.fam, com.read+1);
+  renderPhone();
+  // paso 2: ofrecer agregarlo al calendario personal
+  const ev = {t:x.t, loc:'Aula 12 · Colegio San Martín', start:'20260918T183000', end:'20260918T193000', desc:'Reunión de padres. Confirmaste tu asistencia desde Vínculo.'};
+  $('#sheetBody').innerHTML = `<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><span class="circ" style="background:var(--green)">${ico('i-check')}</span><h3 style="margin:0">Asistencia confirmada</h3></div>
+    <p>Jueves 18 de septiembre · 18:30 · Aula 12. ¿Querés agregarlo a tu calendario personal para que te avise?</p>
+    <div class="row" style="flex-direction:column">
+      <button class="btn" onclick="addToCal('google',${JSON.stringify(ev).replace(/"/g,'&quot;')})">${ico('i-cal')} Google Calendar</button>
+      <button class="btn ghost" onclick="addToCal('ics',${JSON.stringify(ev).replace(/"/g,'&quot;')})">${ico('i-down')} Apple / Outlook (.ics)</button>
+      <button class="btn ghost" onclick="closeSheet()">Ahora no</button>
+    </div>
+    <p style="margin-top:10px;font-size:11px">Lo que ya está en el calendario de Vínculo sigue ahí; esto lo copia a tu agenda personal.</p>`;
+  $('#sheet').classList.add('on');
+}
+function addToCal(kind, ev){
+  if (kind==='google'){
+    const u = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(ev.t)+'&dates='+ev.start+'/'+ev.end+'&details='+encodeURIComponent(ev.desc)+'&location='+encodeURIComponent(ev.loc);
+    window.open(u, '_blank', 'noopener');
+  } else {
+    const ics = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Vinculo//ES','BEGIN:VEVENT','UID:'+Date.now()+'@vinculo','DTSTAMP:'+ev.start,'DTSTART:'+ev.start,'DTEND:'+ev.end,'SUMMARY:'+ev.t,'LOCATION:'+ev.loc,'DESCRIPTION:'+ev.desc,'BEGIN:VALARM','TRIGGER:-PT1H','ACTION:DISPLAY','DESCRIPTION:'+ev.t,'END:VALARM','END:VEVENT','END:VCALENDAR'].join('\r\n');
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([ics],{type:'text/calendar'})); a.download = 'reunion-de-padres.ics'; document.body.appendChild(a); a.click(); a.remove();
+  }
+  closeSheet(); toast('Agregado a tu calendario', kind==='google' ? 'Se abrió Google Calendar con el evento cargado.' : 'Descargaste el evento con recordatorio 1 h antes.');
+}
+function readNews(id){
+  const n = S.news.find(x=>x.id===id); if(!n) return;
+  const firstRead = n.chip==='Nuevo';
+  if (firstRead){ n.chip=''; n.m = n.m.replace(/(·\s*)?(hace.*|ayer|ahora)$/,'$1leído ahora'); }
+  const d = S.details[id] || {from:n.m.split('·')[0].trim(), when:'Hoy', body:'Comunicado enviado desde el panel del colegio. En la versión final acá va el texto completo, adjuntos y las acciones que correspondan.', att:[], actions:[]};
+  $('#sheetBody').innerHTML = `<h3>${esc(n.t)}</h3>
+    <p style="margin-bottom:6px"><b style="color:var(--ink)">${esc(d.from)}</b> · ${esc(d.when)}</p>
+    <p style="color:var(--ink);line-height:1.5">${esc(d.body)}</p>
+    ${d.att.length ? `<div class="lbl" style="margin-left:0">Adjuntos</div>` + d.att.map(a=>`<button class="item" onclick="toast('Adjunto abierto','${esc(a[0])}')"><span class="circ soft">${ico(a[1])}</span><span class="t"><b>${esc(a[0])}</b><small>PDF · se guarda en Documentos</small></span>${ico('i-down')}</button>`).join('') : ''}
+    <div class="row" style="flex-direction:column">${d.actions.map(a=>`<button class="btn ghost" onclick="${a[1]};">${esc(a[0])}</button>`).join('')}<button class="btn" onclick="closeSheet()">Listo</button></div>
+    <p style="margin-top:10px;font-size:11px;display:flex;gap:6px;align-items:center"><span class="dot g"></span>${firstRead ? 'Acuse de lectura enviado ahora. El colegio ve que lo leíste.' : 'Leído. El colegio ya tiene tu acuse.'}</p>`;
+  $('#sheet').classList.add('on'); renderPhone();
+  if (firstRead) toast('Acuse de lectura','El colegio ve que lo leíste.');
+}
+function evSheet(t,when,body,start,end){
+  $('#sheetBody').innerHTML = `<h3>${esc(t)}</h3><p><b style="color:var(--ink)">${esc(when)}</b></p><p style="color:var(--ink)">${esc(body)}</p>
+    <div class="row" style="flex-direction:column"><button class="btn" onclick="addToCal('ics',{t:'${esc(t)}',loc:'Colegio San Martín',start:'${start}',end:'${end}',desc:'${esc(body)}'})">${ico('i-cal')} Agregar a mi calendario</button><button class="btn ghost" onclick="toast('Recordatorio activado','Te avisamos 1 día y 1 hora antes.');closeSheet()">${ico('i-bell')} Recordarme</button><button class="btn ghost" onclick="closeSheet()">Cerrar</button></div>`;
+  $('#sheet').classList.add('on');
+}
+function readAssoc(id){
+  const a = S.assoc.find(x=>x.id===id); if(!a) return;
+  const first = !/Leído|leído/.test(a.m);
+  if (first){ a.m = a.m.replace(/(·\s*)?(hace.*|ayer)$/,'$1leído ahora'); a.read++; }
+  const replyBtns = a.kind==='evento' ? [['asisto','Asisto'],['no','No puedo ir']] : a.kind==='colecta' ? [['aporto','Aporto'],['no','Esta vez no']] : a.kind==='encuesta' ? [['si','Sí'],['no','No']] : [];
+  $('#sheetBody').innerHTML = `<span class="tagA">Asociación de padres · no es comunicado oficial del colegio</span>
+    <h3 style="margin-top:10px">${esc(a.t)}</h3>
+    <p style="margin-bottom:6px"><b style="color:var(--ink)">${esc(a.from)}</b> · ${esc(a.when)}</p>
+    <p style="color:var(--ink);line-height:1.5">${esc(a.body)}</p>
+    ${replyBtns.length ? `<div class="lbl assoc" style="margin-left:0">${a.reply ? 'Tu respuesta' : 'Respondé a la asociación'}</div><div class="row">${replyBtns.map(r=>`<button class="btn ${a.reply===r[0]?'assoc':'ghost'}" onclick="replyAssoc(${a.id},'${r[0]}')">${r[1]}</button>`).join('')}</div>` : ''}
+    ${a.kind==='evento' ? `<div class="row" style="flex-direction:column"><button class="btn ghost" onclick="addToCal('ics',{t:'${esc(a.t)}',loc:'Patio del colegio',start:'20260927T140000',end:'20260927T190000',desc:'Evento de la Asociación de Padres.'})">${ico('i-cal')} Agregar a mi calendario</button></div>` : ''}
+    <div class="note">${ico('i-shield')}<span>La asociación no ve datos de tus hijos. Solo recibe tu respuesta y si leíste el aviso.</span></div>
+    <div class="row"><button class="btn" style="background:var(--assoc)" onclick="closeSheet()">Listo</button></div>`;
+  $('#sheet').classList.add('on'); renderPhone();
+}
+function replyAssoc(id, r){ const a = S.assoc.find(x=>x.id===id); if(!a) return; if(a.reply==null) a.resp++; a.reply=r; readAssoc(id); toast('Respuesta enviada a la asociación', r==='asisto'?'Te anotamos en la kermesse.':r==='aporto'?'Gracias por aportar.':'Registrado.'); }
+function askFrom(q){ closeSheet(); go('asis'); setTimeout(()=>askAI(q), 250); }
+function ack(el){ const chip = el.querySelector('.chip'); if (chip && chip.textContent==='Acusar'){ chip.textContent='Acusado'; chip.className='chip read'; toast('Acuse registrado','La observación queda como leída por la familia.'); } }
+const SUGG = ['¿Hasta cuándo se paga la cuota de octubre?','¿Qué hay que llevar a la salida al museo?','¿Puedo hablar con la profe Lara?'];
+const AI = [
+  [/cuota|pag/i, {t:'Hasta el viernes 10 de octubre sin recargo. Después aplica un 2% (Circular 14, Administración).', src:'Ver Circular 14', act:"go('docs')"}],
+  [/museo|salida|llevar/i, {t:'Jueves 18: autorización firmada, merienda y remera del colegio. Salen 8:30 y vuelven 12:30.', src:'Ir a la autorización', act:"go('home')"}],
+  [/lara|profe|docente|hablar/i, {t:'La profe Lara atiende lunes y jueves de 15 a 16. Hay turno el jueves 15:20, ¿te lo reservo?', src:'Reservar turno', act:"go('msgs')"}],
+  [/nota|boleti|conducta|promedio|cómo le fue|como le fue/i, {t:'Sofía cerró el 2° bimestre con 8,4 de promedio y 96% de asistencia. Matemática e Inglés 9; Ciencias 7, con comentario de la docente. Solo tu familia puede ver esto.', src:'Ver desempeño', act:"go('grades')"}],
+  [/reuni|acto|cuándo|cuando|fecha/i, {t:'Reunión de padres de 3° A: jueves 18 a las 18:30 en el aula 12. Acto del Día del Estudiante: miércoles 24 a las 9:00.', src:'Abrir calendario', act:"go('cal')"}],
+];
+function askAI(q){
+  q = q || $('#q').value.trim(); if(!q) return; $('#q').value='';
+  S.chat.push({ai:false, t:q}); renderPhone();
+  setTimeout(()=>{
+    const hit = AI.find(([re])=>re.test(q));
+    S.chat.push(hit ? {ai:true, ...hit[1]} : {ai:true, t:'Eso no está en la información oficial que tengo. Se lo paso a secretaría y te avisan por acá en menos de 24 h.', src:'Enviar a secretaría', act:"toast('Enviado a secretaría','Te responden por la app en menos de 24 h.')"});
+    renderPhone();
+  }, 600);
+}
+$('#q').addEventListener('keydown', e => { if (e.key==='Enter') askAI(); });
+
+/* ============ COLEGIO ============ */
+function apane(id, btn){ document.querySelectorAll('#v-asc .pane').forEach(p=>p.classList.toggle('on', p.id==='a-'+id)); document.querySelectorAll('#v-asc .nav button').forEach(b=>b.removeAttribute('aria-current')); if(btn) btn.setAttribute('aria-current','page'); renderAssoc(); }
+function renderAssoc(){
+  const tot = S.assoc.reduce((o,a)=>({read:o.read+a.read, fam:o.fam+a.fam, resp:o.resp+a.resp}),{read:0,fam:0,resp:0});
+  const pct = Math.round(tot.read/tot.fam*100);
+  $('#akpis').innerHTML = [[S.assoc.length,'Comunicados este mes','desde 3 miembros'],[pct+'%','Lectura promedio','de 312 familias'],[tot.resp,'Respuestas recibidas','asisto · aporto · encuestas'],['0','Pendientes de revisión','revisión previa: desactivada']].map(([n,l,d])=>`<div class="glass kpi assoc"><span class="delta">${d}</span><div class="n tabular">${n}</div><div class="l">${l}</div></div>`).join('');
+  $('#aList').innerHTML = `<table><thead><tr><th>Comunicado</th><th>Tipo</th><th>Destino</th><th>Leído</th><th>Respuestas</th></tr></thead><tbody>` +
+    S.assoc.map(a=>{const r=Math.round(a.read/a.fam*100); return `<tr><td><b>${esc(a.t)}</b><br><small style="color:var(--muted)">${esc(a.from)} · ${esc(a.when)}</small></td><td><span class="tagA">${a.kind}</span></td><td>${a.d}</td><td><span class="mini"><i class="assoc" style="width:${r}%"></i></span><span class="tabular">${r}%</span></td><td class="tabular">${a.resp}</td></tr>`;}).join('') + '</tbody></table>';
+}
+function openAModal(){ $('#amodal').classList.add('on'); setTimeout(()=>$('#atitle').focus(),50); }
+function closeAModal(){ $('#amodal').classList.remove('on'); $('#fa-title').classList.remove('invalid'); $('#atitle').value=''; $('#abody').value=''; }
+function sendAssoc(e){
+  e.preventDefault(); const t=$('#atitle').value.trim(); if(!t){ $('#fa-title').classList.add('invalid'); $('#atitle').focus(); return false; }
+  const btn=$('#asendBtn'); btn.disabled=true; btn.textContent='Publicando…';
+  const body=$('#abody').value.trim() || 'Comunicado de la Asociación de Padres.', d=$('#adest').value, kind=$('#akind').value;
+  setTimeout(()=>{
+    S.assoc.unshift({id:Date.now(), t, m:'Asociación de padres · ahora', from:'Laura Cáceres · Presidenta', when:'Hoy', kind, d, fam:d==='Todo el colegio'?312:28, read:0, resp:0, body, icon:kind==='evento'?'i-star':kind==='colecta'?'i-zap':'i-bell', reply:null});
+    btn.disabled=false; btn.textContent='Publicar'; closeAModal(); renderAssoc(); renderPhone();
+    toast('Publicado por la asociación', `Las familias de ${d} ya lo ven en violeta. Pasá a la vista Familia.`);
+  }, 800);
+  return false;
+}
+function pane(id, btn){ document.querySelectorAll('.pane').forEach(p=>p.classList.toggle('on', p.id==='p-'+id)); document.querySelectorAll('.nav button').forEach(b=>b.removeAttribute('aria-current')); if(btn) btn.setAttribute('aria-current','page'); renderSchool(); }
+const sem = (v,g,w) => v>=g?'g':v>=w?'w':'d';
+const semTxt = {g:'Esto está buenísimo', w:'Hay que mejorar', d:'No estamos bien'};
+const semCol = {g:'var(--green)', w:'var(--warn)', d:'var(--danger)'};
+function renderSchool(){
+  const museo = S.coms.find(c=>c.id===1042);
+  const signPct = Math.round(museo.signed/museo.fam*100);
+  const kp = [[`91%`,'Lectura de comunicados','+4 pts vs. agosto', sem(91,90,80)], [`${signPct}%`,'Firmas a tiempo','meta 85%', sem(signPct,85,70)], ['84%','Familias activas · 30 días','263 de 312', sem(84,80,65)], ['2','Cursos en alerta','4° A · 5° B','d']];
+  $('#kpis').innerHTML = kp.map(([n,l,d,s])=>`<div class="glass kpi"><span class="delta">${d}</span><div class="n tabular">${n}</div><div class="l">${l}</div><div class="s" style="color:${semCol[s]}"><span class="dot ${s}"></span>${semTxt[s]}</div></div>`).join('');
+  const courses = [['1° A',95],['2° B',92],['3° A',96],['4° A',71],['5° B',83],['6° B',97]];
+  $('#hbars').innerHTML = courses.map(([c,v])=>{const s=sem(v,90,80);return `<div class="hb"><span>${c}</span><span class="tr"><i style="width:${v}%;background:${semCol[s]}"></i><u style="left:90%"></u></span><b class="tabular" style="color:${semCol[s]}">${v}%</b></div>`;}).join('');
+  $('#comList').innerHTML = `<table><thead><tr><th>Comunicado</th><th>Destino</th><th>Leído</th><th>Firmado</th><th>Vence</th></tr></thead><tbody>` +
+    S.coms.map(c=>{const r=Math.round(c.read/c.fam*100), sg=c.signed==null?null:Math.round(c.signed/c.fam*100);
+      return `<tr class="link" onclick="showCom(${c.id})" tabindex="0" onkeydown="if(event.key==='Enter')showCom(${c.id})"><td><b>${esc(c.t)}</b><br><small style="color:var(--muted)">enviado ${c.sent}</small></td><td>${c.d}</td><td><span class="mini"><i style="width:${r}%"></i></span><span class="tabular">${r}%</span></td><td>${sg==null?'—':`<span class="mini"><i style="width:${sg}%;background:${semCol[sem(sg,85,70)]}"></i></span><span class="tabular">${sg}%</span>`}</td><td>${c.due}</td></tr>`;}).join('') + `</tbody></table>`;
+  if (!$('#comDetail').innerHTML) showCom(1042, true);
+  else if ($('#comDetail').dataset.id) showCom(+$('#comDetail').dataset.id, true);
+  $('#famRows').innerHTML = [['Benítez','Sofía (3° A) · Mateo (6° B)','hoy 08:14','g','Activa'],['Rojas','Tomás (3° A)','ayer','w','Sin firmar'],['Giménez','Valentina (3° A)','hace 12 días','d','Sin abrir'],['Ortiz','Lucas (3° A)','—','d','App no instalada'],['Duarte','Emma (3° A)','hoy 08:12','g','Activa']].map(r=>`<tr><td><b>Familia ${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td><span class="dot ${r[3]}"></span> ${r[4]}</td></tr>`).join('');
+}
+function showCom(id, quiet){
+  const c = S.coms.find(x=>x.id===id); const d=$('#comDetail'); d.dataset.id=id;
+  const r=Math.round(c.read/c.fam*100), sg=c.signed==null?null:Math.round(c.signed/c.fam*100);
+  const pendN = c.id===1042 ? S.pend.length : c.fam-c.read;
+  d.innerHTML = `<div class="detail">
+    <div class="glass card">
+      <h3 style="font:700 20px var(--display);margin-bottom:2px">${esc(c.t)}</h3>
+      <small style="color:var(--muted)">${c.d} · ${c.fam} familias · enviado ${c.sent} · vence ${c.due}</small>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0">
+        <div><div class="big tabular" style="color:${semCol[sem(r,90,80)]}">${r}%</div><div style="font-size:13px;margin:4px 0 8px">Leído · ${c.read} de ${c.fam}</div><div class="hb" style="grid-template-columns:1fr;margin:0"><span class="tr"><i style="width:${r}%;background:${semCol[sem(r,90,80)]}"></i></span></div></div>
+        ${sg==null?'':`<div><div class="big tabular" style="color:${semCol[sem(sg,85,70)]}">${sg}%</div><div style="font-size:13px;margin:4px 0 8px">Firmado · ${c.signed} de ${c.fam}</div><div class="hb" style="grid-template-columns:1fr;margin:0"><span class="tr"><i style="width:${sg}%;background:${semCol[sem(sg,85,70)]}"></i></span></div></div>`}
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><b>Pendientes · ${pendN}</b><button class="btn sm" id="resend" onclick="resend(this,${pendN})" ${pendN?'':'disabled'}>${pendN?`Reenviar a ${pendN} pendientes`:'Nadie pendiente'}</button></div>
+      ${c.id===1042?`<div class="pend">${S.pend.map(p=>`<div><span class="dot ${p[2]}" style="margin-top:5px"></span><div><b>${p[0]}</b><small>${p[1]}</small></div></div>`).join('')}</div>`:`<p class="lead" style="margin:10px 0 0;font-size:13px">${pendN?`${pendN} familias todavía no abrieron este comunicado.`:'Todas las familias lo leyeron.'}</p>`}
+    </div>
+    <div>
+      <div class="glass card"><h3>Lecturas por hora desde el envío</h3><div class="spark">${[9,6,4,2,1,1,2,1,1,1].map((v,i)=>`<i class="${i<3?'hot':''}" style="height:${v/9*100}%"></i>`).join('')}</div><div class="axis"><span>1 h</span><span>3 h</span><span>6 h</span><span>10 h</span></div><p style="margin:10px 0 0;font-size:13px;font-weight:600;color:var(--accent-text)">70% leyó en las primeras 3 horas</p></div>
+      <div class="glass card" style="margin-top:16px"><h3>Firmas por curso · este mes <small>meta 85%</small></h3>${[['3° A',signPctOf()],['3° B',91],['4° A',64],['4° B',88]].map(([k,v])=>`<div class="hb"><span>${k}</span><span class="tr"><i style="width:${v}%;background:${semCol[sem(v,85,70)]}"></i></span><b class="tabular" style="color:${semCol[sem(v,85,70)]}">${v}%</b></div>`).join('')}</div>
+    </div></div>`;
+  if(!quiet) d.scrollIntoView({behavior:'smooth', block:'start'});
+}
+function signPctOf(){ const m=S.coms.find(c=>c.id===1042); return Math.round(m.signed/m.fam*100); }
+function resend(btn,n){ btn.disabled=true; btn.textContent='Enviando…'; setTimeout(()=>{ btn.textContent=`Reenviado a ${n}`; toast('Recordatorio enviado',`Solo a las ${n} familias pendientes, no a todo el curso.`); }, 700); }
+function openModal(){ $('#modal').classList.add('on'); setTimeout(()=>$('#ctitle').focus(),50); }
+function closeModal(){ $('#modal').classList.remove('on'); $('#f-title').classList.remove('invalid'); $('#ctitle').value=''; }
+function sendCom(e){
+  e.preventDefault(); const t=$('#ctitle').value.trim(); if(!t){ $('#f-title').classList.add('invalid'); $('#ctitle').focus(); return false; }
+  const btn=$('#sendBtn'); btn.disabled=true; btn.textContent='Enviando…';
+  const dest=$('#cdest').value, type=$('#ctype').value;
+  setTimeout(()=>{
+    S.coms.unshift({id:Date.now()%10000+2000, t, d:dest, fam:dest==='Todo el colegio'?312:28, read:0, signed:type==='info'?null:0, type, sent:'hoy', due:type==='info'?'—':'4 días'});
+    const kid = dest==='6° B'?1:0;
+    if (type==='info') S.news.unshift({id:Date.now(), kid, t, m:'Dirección · ahora', chip:'Nuevo', icon:'i-bell'});
+    else S.pending.unshift({id:Date.now(), kid, t, m:'Vence en 4 días', chip:type==='sign'?'Firmar':'Confirmar', type, icon:type==='sign'?'i-doc':'i-cal'});
+    btn.disabled=false; btn.textContent='Enviar comunicado'; closeModal(); renderSchool(); renderPhone();
+    toast('Comunicado enviado', `Push a ${dest}. Pasá a la vista Familia: ya está en el celular.`);
+  }, 800);
+  return false;
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape'){ closeModal(); closeAModal(); closeSheet(); } });
+renderPhone(); renderSchool(); renderAssoc();
+</script>
+</body>
+</html>
