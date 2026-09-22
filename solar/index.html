@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Solar · Prototipo</title>
+<meta name="description" content="Solar: toda tu cartera de lotes, vista desde arriba. Prototipo navegable del showroom, la app del vendedor y el tablero de dirección.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#1F4D3A; --primary-hover:#173C2D; --primary-pressed:#112C21;
+  --cta:#B7473A; --cta-hover:#9E3A2E; --cta-pressed:#852F25;
+  --ink:#1C231F; --muted:#5B5346; --line:#DDD5C4; --paper:#FAF7F0; --sand:#F3EEE4;
+  --ok:#2F7A4B; --ok-fill:rgba(63,154,95,.62); --ok-tint:#E3F1E8;
+  --warn:#B07F24; --warn-fill:rgba(224,165,58,.68); --warn-tint:#FBF0D9;
+  --sold:#8F3327; --sold-fill:rgba(183,71,58,.62); --sold-tint:#F8E1DC;
+  --mora:#5B5346; --mora-fill:rgba(140,133,120,.72); --mora-tint:#ECE8DF;
+  --glass:rgba(255,255,255,.62); --glass-border:rgba(255,255,255,.85);
+  --shadow-1:0 2px 6px rgba(40,50,40,.08); --shadow-2:0 8px 24px rgba(40,50,40,.14);
+  --r-pill:999px; --r-card:16px; --r-panel:24px;
+  --display:"Fraunces",Georgia,serif; --body:"Instrument Sans",system-ui,sans-serif;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{height:100%}
+body{margin:0;font-family:var(--body);color:var(--ink);background:#F1EBDF;line-height:1.5;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;z-index:-2;background:
+  radial-gradient(900px 700px at 5% 40%,#EAD9B8 0%,rgba(234,217,184,0) 70%),
+  radial-gradient(900px 500px at 25% 100%,#F0E4CC 0%,rgba(240,228,204,0) 70%),
+  radial-gradient(300px 900px at 52% 20%,#FFFDF9 0%,rgba(255,253,249,0) 70%),
+  radial-gradient(900px 700px at 92% 30%,#D8E4D3 0%,rgba(216,228,211,0) 70%),
+  radial-gradient(800px 450px at 80% 100%,#E2EADB 0%,rgba(226,234,219,0) 70%),#F1EBDF}
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.35;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .18 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+
+/* ---------- top ---------- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;align-items:center;gap:16px;padding:12px 24px;backdrop-filter:blur(14px);background:rgba(255,255,255,.45);border-bottom:1px solid rgba(255,255,255,.7)}
+.brand{font-family:var(--display);font-weight:700;font-size:24px;letter-spacing:-.01em;line-height:1.1}
+.brand small{display:block;font-family:var(--body);font-weight:500;font-size:11px;color:var(--muted);letter-spacing:0}
+.seg{margin-left:auto;display:flex;background:rgba(255,255,255,.6);border:1px solid var(--glass-border);border-radius:var(--r-pill);padding:4px}
+.seg button{border:0;background:transparent;font:600 14px var(--body);color:var(--muted);padding:8px 18px;border-radius:var(--r-pill);cursor:pointer;min-height:40px}
+.seg button[aria-selected="true"]{background:var(--primary);color:#fff}
+.seg button:hover:not([aria-selected="true"]){background:rgba(255,255,255,.9);color:var(--ink)}
+.tag{font-size:12px;color:var(--muted);background:rgba(255,255,255,.6);border:1px solid var(--glass-border);padding:6px 12px;border-radius:var(--r-pill);white-space:nowrap}
+main{padding:24px}
+.view{display:none}.view.on{display:block}
+
+/* ---------- shared ---------- */
+.glass{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--r-panel);box-shadow:var(--shadow-2)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:var(--r-pill);font:600 14px var(--body);padding:10px 18px;min-height:44px;cursor:pointer;background:var(--primary);color:#fff;transition:background .15s;text-decoration:none}
+.btn:hover{background:var(--primary-hover)}.btn:active{background:var(--primary-pressed)}
+.btn.cta{background:var(--cta)}.btn.cta:hover{background:var(--cta-hover)}.btn.cta:active{background:var(--cta-pressed)}
+.btn.ghost{background:rgba(255,255,255,.75);color:var(--primary);border:1.5px solid var(--primary)}.btn.ghost:hover{background:#fff}
+.btn:disabled{background:#CFC8B8;color:#6E6759;cursor:not-allowed;border-color:transparent}
+.btn.sm{font-size:12px;padding:6px 12px;min-height:36px}
+:where(button,a,input,select,textarea,[tabindex]):focus-visible{outline:2px solid var(--cta);outline-offset:2px;border-radius:6px}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:var(--r-pill);font-weight:600;font-size:11px;padding:4px 10px;white-space:nowrap}
+.chip.ok{background:var(--ok);color:#fff}.chip.warn{background:var(--warn);color:#fff}.chip.sold{background:var(--sold);color:#fff}.chip.mora{background:var(--mora);color:#fff}.chip.soft{background:var(--sand);color:var(--muted)}
+.dot{display:inline-block;width:10px;height:10px;border-radius:3px;flex:none}
+.dot.ok{background:var(--ok)}.dot.warn{background:var(--warn)}.dot.sold{background:var(--sold)}.dot.mora{background:var(--mora)}
+.ico{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.circ{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:var(--primary);color:#fff;flex:none}
+.circ.soft{background:var(--sand);color:var(--primary)}
+h2{font-family:var(--display);font-weight:600;font-size:28px;line-height:1.15;margin:0 0 6px;letter-spacing:-.01em}
+.lead{color:var(--muted);margin:0 0 20px;max-width:65ch}
+.tabular{font-variant-numeric:tabular-nums}
+.lbl{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:10px 4px 8px}
+
+/* ---------- toast ---------- */
+.toasts{position:fixed;right:20px;top:calc(72px + env(safe-area-inset-top,0px));z-index:50;display:flex;flex-direction:column;gap:10px}
+.toast{display:flex;gap:12px;align-items:center;background:rgba(255,255,255,.92);border:1px solid var(--glass-border);border-radius:var(--r-card);padding:12px 14px;box-shadow:var(--shadow-2);min-width:260px;max-width:360px;animation:in .2s ease-out}
+.toast b{display:block;font-size:13px}.toast span{font-size:12px;color:var(--muted)}
+@keyframes in{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---------- SHOWROOM ---------- */
+.show{grid-template-columns:minmax(0,1fr) 400px;gap:20px;align-items:start}
+.view.on.show{display:grid}
+.mapwrap{padding:0;overflow:hidden;position:relative}
+.maphead{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px;background:var(--primary);color:#fff;flex-wrap:wrap}
+.maphead b{font-family:var(--display);font-size:18px;font-weight:600}
+.legend{display:flex;gap:14px;font-size:13px;flex-wrap:wrap}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.live{display:inline-flex;align-items:center;gap:8px;padding:5px 12px;border-radius:var(--r-pill);background:rgba(255,255,255,.14);font-size:12px}
+.live i{width:8px;height:8px;border-radius:50%;background:#7FD39A}
+.map{position:relative;aspect-ratio:720/625;background:#F7F3EA;overflow:hidden}
+.map svg.base{position:absolute;inset:0;width:100%;height:100%}
+.lots{position:absolute;inset:0}
+.lot{position:absolute;border:0;outline:1.5px solid;outline-offset:-1.5px;border-radius:0;padding:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;color:var(--ink);font-family:var(--body);transition:box-shadow .15s,transform .15s}
+.lot b{font-family:var(--display);font-size:clamp(8px,.95vw,12px);font-weight:600;line-height:1}
+.lot small{display:none}
+.lot:hover{transform:translateY(-1px);box-shadow:0 6px 14px rgba(0,0,0,.3)}
+.lot[aria-pressed="true"]{outline:2.5px solid var(--primary);z-index:2;filter:drop-shadow(0 2px 5px rgba(31,77,58,.45))}
+.lot.disponible{background:#CFE6D6;outline-color:var(--ok)}.lot.reservado{background:#F6E2B3;outline-color:var(--warn)}.lot.vendido{background:#F0C7BE;outline-color:var(--sold)}.lot.mora{background:#DCD7CC;outline-color:var(--mora)}
+.agent{position:absolute;display:flex;flex-direction:column;align-items:center;pointer-events:none;transition:left 1.2s ease,top 1.2s ease;z-index:3}
+.agent .ring{width:64px;height:64px;border-radius:50%;border:2px dashed var(--primary);opacity:.6;position:absolute;top:-16px}
+.agent .pin{width:30px;height:30px;border-radius:50%;background:var(--primary);border:3px solid var(--sand);box-shadow:0 4px 12px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700}
+.agent .who{margin-top:6px;padding:3px 9px;border-radius:var(--r-pill);background:var(--primary);color:#fff;font-size:11px;font-weight:500;white-space:nowrap}
+.layers{position:absolute;left:12px;bottom:12px;display:flex;gap:4px;padding:4px;border-radius:12px;background:rgba(243,238,228,.95);box-shadow:var(--shadow-1)}
+.layers button{height:34px;padding:0 12px;border-radius:8px;border:0;background:transparent;color:var(--primary);font:600 12px var(--body);cursor:pointer}
+.layers button[aria-pressed="true"]{background:var(--primary);color:#fff}
+.map.plano svg.base .deco{display:none}
+.map.plano{background:#F3EEE4}
+
+.map.cobranza .lot{opacity:.35}.map.cobranza .lot.mora,.map.cobranza .lot.vendido{opacity:1}
+.panel{padding:0;overflow:hidden;display:flex;flex-direction:column}
+.photo{height:170px;position:relative;background:linear-gradient(160deg,#D7CDB4,#C4B693);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;font-weight:500}
+.photo .chip{position:absolute;left:16px;top:14px}
+.photo .play{position:absolute;right:16px;bottom:14px;width:44px;height:44px;border-radius:50%;border:0;background:var(--paper);color:var(--primary);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-2)}
+.pbody{padding:18px 20px;display:flex;flex-direction:column;gap:14px}
+.ptitle{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.ptitle h3{font-family:var(--display);font-size:30px;font-weight:600;line-height:1;margin:0}
+.ptitle small{display:block;font-size:13px;color:var(--muted);margin-top:4px}
+.qrbtn{width:64px;height:64px;border-radius:10px;border:1px solid var(--line);background:#fff;padding:4px;cursor:pointer;flex:none;display:flex;align-items:center;justify-content:center}
+.qrbtn:hover{border-color:var(--primary)}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.fact{padding:10px 12px;border-radius:10px;background:#fff;border:1px solid var(--line)}
+.fact span{display:block;font-size:11px;color:var(--muted)}.fact b{font-size:16px;white-space:nowrap}
+.price{padding:12px 14px;border-radius:12px;background:var(--primary);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.price span{display:block;font-size:11px;opacity:.8}.price b{font-family:var(--display);font-size:20px;font-weight:600}.price .cuota{text-align:right;font-size:13px;font-weight:600}
+.visit{padding:12px 14px;border-radius:12px;background:#fff;border:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.visit .h{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}.visit .h b{color:var(--primary);font-size:13px}
+.visit .who{display:flex;align-items:center;gap:10px;font-size:13px}
+.visit .who .av{width:34px;height:34px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex:none}
+.visit .st{display:flex;align-items:center;gap:6px;font-size:12px}
+.acts{display:flex;gap:8px}.acts .btn{flex:1}
+.feed{border-top:1px solid var(--line);background:var(--sand);padding:14px 20px 16px}
+.feed ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;font-size:13px}
+.feed li{display:flex;gap:10px;align-items:center}.feed li>span:not(.dot){flex:1}.feed li small{color:var(--muted);white-space:nowrap}
+.empty{padding:20px;display:flex;flex-direction:column;gap:14px}
+.kp2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.kp2 .fact b{font-size:24px}
+
+/* ---------- VENDEDOR (phone) ---------- */
+.sell{grid-template-columns:1fr minmax(0,420px) 1fr;gap:24px;align-items:start}
+.view.on.sell{display:grid}
+.side{padding:24px}
+.side h2{font-size:30px}
+.side ul{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:14px}
+.side li{display:flex;gap:12px}
+.side li b{display:block;font-size:14px}.side li p{margin:2px 0 0;font-size:13px;color:var(--muted)}
+.phone{position:relative;width:390px;height:812px;max-width:100%;margin:0 auto;background:#3A3A3C;border-radius:56px;padding:12px;box-shadow:0 30px 60px rgba(0,0,0,.28),inset 0 0 0 1px #5A5A5E}
+.phone::before,.phone::after{content:"";position:absolute;background:#2C2C2E;border-radius:3px}
+.phone::before{left:-3px;top:150px;width:3px;height:110px;box-shadow:0 70px 0 #2C2C2E}
+.phone::after{right:-3px;top:190px;width:3px;height:90px}
+.screen{position:relative;height:100%;background:var(--sand);border-radius:44px;overflow:hidden;display:flex;flex-direction:column;border:6px solid #0B0B0C}
+.island{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:120px;height:34px;background:#0B0B0C;border-radius:20px;z-index:5}
+.status{display:flex;justify-content:space-between;padding:16px 28px 0;font-size:14px;font-weight:600;color:#fff;position:relative;z-index:4}
+.status .icons{display:flex;gap:5px;align-items:center}
+.status .bat{width:24px;height:11px;border:1.5px solid #fff;border-radius:4px;position:relative}.status .bat::after{content:"";position:absolute;inset:2px;background:#fff;border-radius:2px}
+.hdr{background:var(--primary);color:#fff;padding:52px 18px 14px;margin-top:-40px}
+.hdr .t{display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
+.hdr h1{font:600 22px var(--display);margin:0}
+.hdr small{display:block;font-size:12px;opacity:.75}
+.gps{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:var(--r-pill);background:rgba(255,255,255,.14);font-size:11px;white-space:nowrap}
+.gps i{width:7px;height:7px;border-radius:50%;background:#7FD39A}
+.body{flex:1;overflow:auto;padding:14px 14px 20px}
+.body::-webkit-scrollbar{display:none}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r-card);overflow:hidden;box-shadow:var(--shadow-1);margin-bottom:12px}
+.minimap{height:170px;position:relative;background:#9DB26F;overflow:hidden}
+.minimap svg{position:absolute;inset:0;width:100%;height:100%}
+.minimap .arrive{position:absolute;left:10px;top:10px;padding:5px 10px;border-radius:var(--r-pill);background:var(--primary);color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;gap:6px}
+.minimap .arrive i{width:7px;height:7px;border-radius:50%;background:#7FD39A}
+.minimap .arrive.wait{background:#fff;color:var(--muted)}
+.minimap .arrive.wait i{background:var(--warn)}
+.cbody{padding:14px;display:flex;flex-direction:column;gap:12px}
+.cbody .t{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.cbody .t b{font-family:var(--display);font-size:20px;font-weight:600;line-height:1.1;display:block}
+.cbody .t small{font-size:12px;color:var(--muted)}
+.person{display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px;background:var(--sand)}
+.person .av{width:38px;height:38px;border-radius:50%;background:#D7CDB4;color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex:none}
+.person div{flex:1;min-width:0}.person b{display:block;font-size:13px}.person small{font-size:11px;color:var(--muted)}
+.person a{width:40px;height:40px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+.steps{display:flex;flex-direction:column;gap:7px;font-size:12px}
+.steps div{display:flex;align-items:center;gap:8px}
+.steps i{width:18px;height:18px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;border:2px solid var(--line)}
+.steps i.done{background:var(--ok);border-color:var(--ok);color:#fff}
+.steps .todo{color:var(--muted)}
+.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.quick button{height:74px;border-radius:14px;border:1px solid var(--line);background:#fff;color:var(--primary);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font:600 11px var(--body);cursor:pointer}
+.quick button:hover{border-color:var(--primary)}
+.quick button:disabled{color:#9A9282;cursor:not-allowed}
+.nextv{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:#fff;border:1px solid var(--line);margin-bottom:8px;font-size:13px}
+.nextv b{width:44px;flex:none}.nextv div{flex:1;min-width:0}.nextv small{display:block;font-size:11px;color:var(--muted)}
+.priv{margin-top:6px;padding:10px 12px;border-radius:10px;background:#E9E1CF;font-size:11px;color:var(--muted);line-height:1.4}
+.tabs{display:flex;border-top:1px solid var(--line);background:#fff;padding:8px 0 22px}
+.tabs button{flex:1;border:0;background:none;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:3px;font:500 10px var(--body);cursor:pointer;min-height:48px}
+.tabs button[aria-selected="true"]{color:var(--primary)}
+.tabs .ico{width:24px;height:24px}
+.homebar{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;background:#1C1C1E;border-radius:3px}
+.sheet{position:absolute;inset:0;background:rgba(28,35,31,.45);display:none;align-items:flex-end;z-index:8;border-radius:44px}
+.sheet.on{display:flex}
+.sheet>div{background:#fff;border-radius:24px 24px 44px 44px;width:100%;padding:16px 20px 36px;max-height:88%;overflow:auto;animation:up .2s ease-out}
+@keyframes up{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
+.sheet h3{font:600 18px var(--display);margin:6px 0 4px}.sheet p{margin:0 0 12px;font-size:13px;color:var(--muted)}
+.row{display:flex;gap:8px;margin-top:12px}.row .btn{flex:1}
+.f{display:grid;gap:6px;margin-top:12px}.f label{font-size:13px;font-weight:600}
+.f input,.f select,.f textarea{border:1px solid var(--line);border-radius:12px;padding:10px 12px;font:14px var(--body);width:100%;background:var(--paper);min-height:44px}
+.f .hint{font-size:12px;color:var(--muted)}
+.f .err{font-size:12px;color:var(--cta);display:none}
+.f.invalid input,.f.invalid select{border-color:var(--cta)}.f.invalid .err{display:block}
+.lotlist button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px;font:inherit;color:inherit;cursor:pointer}
+.lotlist button:hover{border-color:var(--primary)}
+.lotlist b{font-family:var(--display);font-size:16px}.lotlist small{display:block;font-size:11px;color:var(--muted)}
+.lotlist .sp{flex:1}
+
+/* ---------- DIRECCIÓN ---------- */
+.dir{grid-template-columns:220px 1fr;gap:20px}
+.view.on.dir{display:grid}
+.nav{padding:16px;align-self:start}
+.nav .who{padding:8px 12px 16px;border-bottom:1px solid var(--line);margin-bottom:10px}
+.nav .who b{display:block;font-size:14px}.nav .who small{color:var(--muted);font-size:12px}
+.nav button{display:flex;align-items:center;gap:10px;width:100%;border:0;background:none;text-align:left;font:500 14px var(--body);color:var(--ink);padding:10px 12px;border-radius:12px;cursor:pointer;min-height:44px}
+.nav button:hover{background:rgba(255,255,255,.7)}
+.nav button[aria-current="page"]{background:var(--primary);color:#fff}
+.pane{display:none}.pane.on{display:block}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:16px}
+.kpi{padding:20px 22px}
+.kpi .n{font:600 34px var(--display);letter-spacing:-.02em;line-height:1}
+.kpi .l{font-size:14px;margin:8px 0 10px}
+.kpi .s{display:flex;align-items:center;gap:8px;font-weight:600;font-size:13px}
+.kpi .delta{float:right;font-size:12px;color:var(--muted)}
+.two{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
+.gcard{padding:20px 22px}
+.gcard h3{font:600 15px var(--body);margin:0 0 14px;display:flex;justify-content:space-between;align-items:center}
+.gcard h3 small{font-weight:500;color:var(--muted);font-size:12px}
+.hb{display:grid;grid-template-columns:110px 1fr 48px;gap:12px;align-items:center;margin-bottom:10px;font-size:13px}
+.hb .tr{height:14px;background:#EAE3D3;border-radius:7px;position:relative;overflow:hidden}
+.hb .tr i{display:block;height:100%;border-radius:7px}
+.hb .tr u{position:absolute;top:0;bottom:0;border-left:1.5px dashed var(--muted);opacity:.6}
+.hb b{text-align:right}
+.att{list-style:none;padding:0;margin:0}.att li{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px}
+.att li:last-child{border:0}.att li>span:not(.dot){flex:1}.att li .dot{flex:none}
+.save{margin-top:16px;background:var(--ok-tint);border-color:#fff;display:flex;gap:16px;align-items:center;padding:16px 20px}
+.save b{font:600 30px var(--display);color:var(--ok);white-space:nowrap}.save p{margin:0;font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:10px 12px;border-bottom:1px solid var(--line)}
+td{padding:12px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border:0}
+.tw{overflow-x:auto}
+.mini{display:inline-block;width:60px;height:8px;background:#EAE3D3;border-radius:4px;vertical-align:middle;margin-right:6px;overflow:hidden}.mini i{display:block;height:100%;background:var(--primary)}
+.spark{display:flex;align-items:flex-end;gap:6px;height:90px;margin:8px 0 4px}
+.spark i{flex:1;background:#CFDCC8;border-radius:4px 4px 0 0}.spark i.hot{background:var(--primary)}
+.axis{display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}
+.timeline{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.timeline li{display:grid;grid-template-columns:22px 1fr;gap:10px;font-size:13px}
+.timeline i{width:18px;height:18px;border-radius:50%;background:var(--ok);color:#fff;display:flex;align-items:center;justify-content:center;margin-top:2px}
+.timeline i.pend{background:#fff;border:2px solid var(--line)}
+.timeline small{display:block;color:var(--muted);font-size:12px}
+.modal{position:fixed;inset:0;background:rgba(28,35,31,.45);display:none;align-items:center;justify-content:center;z-index:40;padding:20px}
+.modal.on{display:flex}
+.modal>div{background:#fff;border-radius:var(--r-panel);padding:24px;width:min(520px,100%);box-shadow:var(--shadow-2)}
+.modal h3{font:600 22px var(--display);margin:0 0 4px}
+.qrbig{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.qrbig canvas{width:200px;height:200px;border:1px solid var(--line);border-radius:12px;background:#fff;image-rendering:pixelated}
+.qrbig p{margin:0;font-size:13px;color:var(--muted)}
+
+@media (max-width:1180px){.show{grid-template-columns:1fr}.sell{grid-template-columns:1fr;justify-items:center}.side{max-width:420px}.grid4{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}}
+@media (max-width:760px){.brand small{display:none}main{padding:16px}.dir{grid-template-columns:1fr}.nav{display:flex;gap:6px;overflow-x:auto;padding:8px}.nav .who{display:none}.nav button{white-space:nowrap;width:auto}.phone{transform:scale(.88);transform-origin:top center;margin-bottom:-90px}.top{padding:10px 16px}.tag{display:none}.seg button{padding:8px 12px;font-size:13px}.legend{display:none}}
+@media (max-width:480px){.phone{transform:scale(.82);margin-bottom:-140px}.grid4{grid-template-columns:1fr}.kpi .delta{float:none;display:block;margin-bottom:6px}.facts{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-map" viewBox="0 0 24 24"><path d="M1 6v16l7-4 8 4 7-4V2l-7 4-8-4-7 4z"/><path d="M8 2v16M16 6v16"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="i-qr" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM18 18h3v3h-3zM18 14h3M14 18v3"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><path d="M7 7h.01"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></symbol>
+  <symbol id="i-msg" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-bar" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></symbol>
+  <symbol id="i-nav" viewBox="0 0 24 24"><path d="M3 11l19-9-9 19-2-8-8-2z"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3z"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+  <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></symbol>
+  <symbol id="i-money" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 12h.01M18 12h.01"/></symbol>
+</svg>
+
+<header class="top">
+  <div class="brand">Solar<small>Toda tu cartera, vista desde arriba</small></div>
+  <div class="seg" role="tablist" aria-label="Vista">
+    <button role="tab" id="tab-show" aria-selected="true" aria-controls="v-show" onclick="setView('show')">Showroom</button>
+    <button role="tab" id="tab-sell" aria-selected="false" aria-controls="v-sell" onclick="setView('sell')">Vendedor</button>
+    <button role="tab" id="tab-dir" aria-selected="false" aria-controls="v-dir" onclick="setView('dir')">Dirección</button>
+  </div>
+  <span class="tag">Prototipo navegable · datos ilustrativos</span>
+</header>
+
+<main>
+<!-- ================= SHOWROOM ================= -->
+<section id="v-show" class="view on show" role="tabpanel" aria-labelledby="tab-show">
+  <div class="glass mapwrap">
+    <div class="maphead">
+      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap"><b>Aqua Village · San Bernardino</b><span class="live"><i></i>En vivo · <span id="agentsLive">2</span> en campo</span></div>
+      <div class="legend" id="legend"></div>
+    </div>
+    <div class="map" id="map">
+      <svg class="base" viewBox="0 0 720 625" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" aria-hidden="true">
+<rect width="720" height="625" fill="#F7F3EA"/>
+<path d="M0 0 H720 V625 H0 Z" fill="#F7F3EA"/>
+<path d="M330 22 L704 332 L372 606 L50 300 Z" fill="#E1E8D6" stroke="#D4CCBC" stroke-width="14" stroke-linejoin="round"/>
+<path d="M330 22 L704 332 L372 606 L50 300 Z" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-dasharray="10 8" stroke-linejoin="round" opacity=".8"/>
+<path d="M490.1 262.1 L498.7 279.2 L506.4 296.6 L513.2 314.2 L519.0 331.8 L523.8 349.2 L527.5 366.5 L530.2 383.4 L531.7 399.8 L532.2 415.5 L531.5 430.5 L529.7 444.7 L526.8 457.9 L522.8 470.0 L517.8 481.0 L511.7 490.7 L504.7 499.1 L496.8 506.2 L488.0 511.8 L478.5 515.9 L468.2 518.5 L457.3 519.7 L445.9 519.2 L434.0 517.3 L421.7 513.8 L409.1 508.8 L396.4 502.4 L383.5 494.5 L370.7 485.4 L358.0 474.9 L345.5 463.3 L333.3 450.5 L321.5 436.8 L310.1 422.1 L299.4 406.7 L289.3 390.6 L279.9 373.9 L271.3 356.8 L263.6 339.4 L256.8 321.8 L251.0 304.2 L246.2 286.8 L242.5 269.5 L239.8 252.6 L238.3 236.2 L237.8 220.5 L238.5 205.5 L240.3 191.3 L243.2 178.1 L247.2 166.0 L252.2 155.0 L258.3 145.3 L265.3 136.9 L273.2 129.8 L282.0 124.2 L291.5 120.1 L301.8 117.5 L312.7 116.3 L324.1 116.8 L336.0 118.7 L348.3 122.2 L360.9 127.2 L373.6 133.6 L386.5 141.5 L399.3 150.6 L412.0 161.1 L424.5 172.7 L436.7 185.5 L448.5 199.2 L459.9 213.9 L470.6 229.3 L480.7 245.4 Z" fill="none" stroke="#E3DDD0" stroke-width="12" stroke-linejoin="round"/>
+<path d="M490.1 262.1 L498.7 279.2 L506.4 296.6 L513.2 314.2 L519.0 331.8 L523.8 349.2 L527.5 366.5 L530.2 383.4 L531.7 399.8 L532.2 415.5 L531.5 430.5 L529.7 444.7 L526.8 457.9 L522.8 470.0 L517.8 481.0 L511.7 490.7 L504.7 499.1 L496.8 506.2 L488.0 511.8 L478.5 515.9 L468.2 518.5 L457.3 519.7 L445.9 519.2 L434.0 517.3 L421.7 513.8 L409.1 508.8 L396.4 502.4 L383.5 494.5 L370.7 485.4 L358.0 474.9 L345.5 463.3 L333.3 450.5 L321.5 436.8 L310.1 422.1 L299.4 406.7 L289.3 390.6 L279.9 373.9 L271.3 356.8 L263.6 339.4 L256.8 321.8 L251.0 304.2 L246.2 286.8 L242.5 269.5 L239.8 252.6 L238.3 236.2 L237.8 220.5 L238.5 205.5 L240.3 191.3 L243.2 178.1 L247.2 166.0 L252.2 155.0 L258.3 145.3 L265.3 136.9 L273.2 129.8 L282.0 124.2 L291.5 120.1 L301.8 117.5 L312.7 116.3 L324.1 116.8 L336.0 118.7 L348.3 122.2 L360.9 127.2 L373.6 133.6 L386.5 141.5 L399.3 150.6 L412.0 161.1 L424.5 172.7 L436.7 185.5 L448.5 199.2 L459.9 213.9 L470.6 229.3 L480.7 245.4 Z" fill="none" stroke="#FFFFFF" stroke-width="1.2" stroke-dasharray="8 7" opacity=".9"/>
+<path d="M246.2 305.6 L252.1 317.3 L257.4 329.3 L262.0 341.5 L266.0 353.6 L269.2 365.7 L271.7 377.6 L273.5 389.3 L274.4 400.6 L274.6 411.5 L274.1 421.9 L272.7 431.7 L270.6 440.9 L267.7 449.3 L264.1 457.0 L259.8 463.7 L254.8 469.6 L249.2 474.6 L243.0 478.5 L236.2 481.4 L229.0 483.3 L221.4 484.2 L213.3 483.9 L205.0 482.7 L196.4 480.3 L187.6 477.0 L178.7 472.6 L169.7 467.3 L160.8 461.0 L152.0 453.9 L143.3 445.9 L134.8 437.2 L126.6 427.7 L118.7 417.6 L111.3 407.0 L104.3 395.9 L97.8 384.4 L91.9 372.7 L86.6 360.7 L82.0 348.5 L78.0 336.4 L74.8 324.3 L72.3 312.4 L70.5 300.7 L69.6 289.4 L69.4 278.5 L69.9 268.1 L71.3 258.3 L73.4 249.1 L76.3 240.7 L79.9 233.0 L84.2 226.3 L89.2 220.4 L94.8 215.4 L101.0 211.5 L107.8 208.6 L115.0 206.7 L122.6 205.8 L130.7 206.1 L139.0 207.3 L147.6 209.7 L156.4 213.0 L165.3 217.4 L174.3 222.7 L183.2 229.0 L192.0 236.1 L200.7 244.1 L209.2 252.8 L217.4 262.3 L225.3 272.4 L232.7 283.0 L239.7 294.1 Z" fill="none" stroke="#E3DDD0" stroke-width="12" stroke-linejoin="round"/>
+<path d="M246.2 305.6 L252.1 317.3 L257.4 329.3 L262.0 341.5 L266.0 353.6 L269.2 365.7 L271.7 377.6 L273.5 389.3 L274.4 400.6 L274.6 411.5 L274.1 421.9 L272.7 431.7 L270.6 440.9 L267.7 449.3 L264.1 457.0 L259.8 463.7 L254.8 469.6 L249.2 474.6 L243.0 478.5 L236.2 481.4 L229.0 483.3 L221.4 484.2 L213.3 483.9 L205.0 482.7 L196.4 480.3 L187.6 477.0 L178.7 472.6 L169.7 467.3 L160.8 461.0 L152.0 453.9 L143.3 445.9 L134.8 437.2 L126.6 427.7 L118.7 417.6 L111.3 407.0 L104.3 395.9 L97.8 384.4 L91.9 372.7 L86.6 360.7 L82.0 348.5 L78.0 336.4 L74.8 324.3 L72.3 312.4 L70.5 300.7 L69.6 289.4 L69.4 278.5 L69.9 268.1 L71.3 258.3 L73.4 249.1 L76.3 240.7 L79.9 233.0 L84.2 226.3 L89.2 220.4 L94.8 215.4 L101.0 211.5 L107.8 208.6 L115.0 206.7 L122.6 205.8 L130.7 206.1 L139.0 207.3 L147.6 209.7 L156.4 213.0 L165.3 217.4 L174.3 222.7 L183.2 229.0 L192.0 236.1 L200.7 244.1 L209.2 252.8 L217.4 262.3 L225.3 272.4 L232.7 283.0 L239.7 294.1 Z" fill="none" stroke="#FFFFFF" stroke-width="1.2" stroke-dasharray="8 7" opacity=".9"/>
+<path d="M150 140 L215 200" stroke="#E3DDD0" stroke-width="10" stroke-linecap="round"/>
+<path d="M600 190 L530 240" stroke="#E3DDD0" stroke-width="10" stroke-linecap="round"/>
+<path d="M500 520 L450 470" stroke="#E3DDD0" stroke-width="10" stroke-linecap="round"/>
+<path d="M300 540 L290 470" stroke="#E3DDD0" stroke-width="10" stroke-linecap="round"/>
+<path d="M70 335 L120 340" stroke="#E3DDD0" stroke-width="10" stroke-linecap="round"/>
+<path d="M441.5 288.0 L445.0 294.8 L448.3 301.8 L451.2 308.9 L453.9 315.9 L456.3 323.0 L458.4 330.1 L460.2 337.1 L461.6 344.1 L462.8 350.9 L463.6 357.6 L464.0 364.1 L464.1 370.4 L463.9 376.5 L463.4 382.4 L462.5 387.9 L461.2 393.2 L459.7 398.2 L457.8 402.8 L455.6 407.0 L453.1 410.9 L450.4 414.3 L447.3 417.4 L444.0 420.0 L440.4 422.2 L436.6 423.9 L432.5 425.2 L428.3 426.0 L423.9 426.4 L419.3 426.3 L414.6 425.8 L409.7 424.7 L404.7 423.3 L399.7 421.3 L394.5 418.9 L389.4 416.1 L384.2 412.9 L379.0 409.3 L373.9 405.3 L368.8 400.9 L363.8 396.1 L358.8 391.0 L354.0 385.6 L349.3 379.9 L344.8 374.0 L340.4 367.8 L336.2 361.4 L332.2 354.8 L328.5 348.0 L325.0 341.2 L321.7 334.2 L318.8 327.1 L316.1 320.1 L313.7 313.0 L311.6 305.9 L309.8 298.9 L308.4 291.9 L307.2 285.1 L306.4 278.4 L306.0 271.9 L305.9 265.6 L306.1 259.5 L306.6 253.6 L307.5 248.1 L308.8 242.8 L310.3 237.8 L312.2 233.2 L314.4 229.0 L316.9 225.1 L319.6 221.7 L322.7 218.6 L326.0 216.0 L329.6 213.8 L333.4 212.1 L337.5 210.8 L341.7 210.0 L346.1 209.6 L350.7 209.7 L355.4 210.2 L360.3 211.3 L365.3 212.7 L370.3 214.7 L375.5 217.1 L380.6 219.9 L385.8 223.1 L391.0 226.7 L396.1 230.7 L401.2 235.1 L406.2 239.9 L411.2 245.0 L416.0 250.4 L420.7 256.1 L425.2 262.0 L429.6 268.2 L433.8 274.6 L437.8 281.2 Z" fill="#C4DFE9" stroke="#8DBBCD" stroke-width="2"/>
+<path d="M433.6 292.2 L436.6 298.1 L439.4 304.1 L442.0 310.1 L444.3 316.2 L446.3 322.3 L448.1 328.4 L449.7 334.5 L450.9 340.4 L451.9 346.3 L452.6 352.0 L453.0 357.7 L453.1 363.1 L452.9 368.3 L452.4 373.4 L451.6 378.1 L450.6 382.7 L449.2 386.9 L447.6 390.9 L445.7 394.5 L443.6 397.9 L441.2 400.8 L438.6 403.5 L435.7 405.7 L432.6 407.6 L429.4 409.1 L425.9 410.2 L422.2 410.9 L418.4 411.2 L414.5 411.2 L410.4 410.7 L406.2 409.8 L402.0 408.5 L397.6 406.9 L393.2 404.8 L388.8 402.4 L384.3 399.6 L379.9 396.5 L375.4 393.0 L371.1 389.3 L366.7 385.2 L362.5 380.8 L358.3 376.2 L354.3 371.3 L350.4 366.1 L346.6 360.8 L343.0 355.3 L339.6 349.6 L336.4 343.8 L333.4 337.9 L330.6 331.9 L328.0 325.9 L325.7 319.8 L323.7 313.7 L321.9 307.6 L320.3 301.5 L319.1 295.6 L318.1 289.7 L317.4 284.0 L317.0 278.3 L316.9 272.9 L317.1 267.7 L317.6 262.6 L318.4 257.9 L319.4 253.3 L320.8 249.1 L322.4 245.1 L324.3 241.5 L326.4 238.1 L328.8 235.2 L331.4 232.5 L334.3 230.3 L337.4 228.4 L340.6 226.9 L344.1 225.8 L347.8 225.1 L351.6 224.8 L355.5 224.8 L359.6 225.3 L363.8 226.2 L368.0 227.5 L372.4 229.1 L376.8 231.2 L381.2 233.6 L385.7 236.4 L390.1 239.5 L394.6 243.0 L398.9 246.7 L403.3 250.8 L407.5 255.2 L411.7 259.8 L415.7 264.7 L419.6 269.9 L423.4 275.2 L427.0 280.7 L430.4 286.4 Z" fill="none" stroke="#FFFFFF" stroke-width="1" opacity=".7"/>
+<rect x="470" y="196" width="46" height="26" rx="4" fill="#EDE7DA" stroke="#8A8271" stroke-width="1.2"/>
+<rect x="478" y="204" width="30" height="10" rx="2" fill="#C4DFE9"/>
+<circle cx="372" cy="548" r="26" fill="#E1E8D6" stroke="#E3DDD0" stroke-width="8"/>
+<g class="deco"><circle cx="97" cy="317" r="4.1" fill="#CBD7BE"/>
+<circle cx="203" cy="386" r="7.8" fill="#CBD7BE"/>
+<circle cx="176" cy="359" r="6.6" fill="#CBD7BE"/>
+<circle cx="136" cy="265" r="7.0" fill="#CBD7BE"/>
+<circle cx="157" cy="306" r="4.2" fill="#CBD7BE"/>
+<circle cx="218" cy="250" r="7.5" fill="#CBD7BE"/>
+<circle cx="209" cy="304" r="6.4" fill="#CBD7BE"/>
+<circle cx="571" cy="251" r="5.6" fill="#CBD7BE"/>
+<circle cx="221" cy="225" r="5.5" fill="#CBD7BE"/>
+</g><g font-family="Instrument Sans, sans-serif" font-size="11" fill="#8A8271">
+<text x="342" y="322" font-family="Fraunces, Georgia, serif" font-size="13" font-style="italic" text-anchor="middle" fill="#6F9BAD">Laguna</text>
+<text x="522" y="192" font-size="10">Club house</text>
+<text x="372" y="552" font-size="9" text-anchor="middle">Plaza</text>
+<text x="30" y="270" font-size="10" transform="rotate(-50 30 270)">Ruta San Bernardino – Altos</text>
+<text x="56" y="322" font-size="10">Acceso</text>
+</g>
+<g transform="translate(680 40)"><circle r="14" fill="#FFFFFF" stroke="#E3DDD0"/><path d="M0 -8 L4 5 L0 2 L-4 5 Z" fill="#8A8271"/><text y="-17" x="-3.5" font-family="Instrument Sans, sans-serif" font-size="9" font-weight="600" fill="#8A8271">N</text></g>
+<g transform="translate(620 600)"><rect width="70" height="5" fill="#8A8271"/><rect x="35" width="35" height="5" fill="#FFFFFF" stroke="#8A8271" stroke-width="1"/><text y="-4" font-family="Instrument Sans, sans-serif" font-size="8" fill="#8A8271">0 · 50 · 100 m</text></g>
+</svg>
+      <div class="lots" id="lots"></div>
+      <div class="agent" id="agentPin"><div class="ring"></div><div class="pin">MG</div><div class="who" id="agentWho">M. González</div></div>
+      <div class="agent" id="agentPin2"><div class="ring"></div><div class="pin">LB</div><div class="who">L. Benítez · en Lote 7</div></div>
+      <div style="position:absolute;right:10px;bottom:8px;font-size:9px;color:var(--muted);opacity:.85">Masterplan ilustrativo · geometría aproximada</div>
+      <div class="layers" role="group" aria-label="Capa">
+        <button aria-pressed="true" onclick="layer('aerea',this)">Masterplan</button>
+        <button aria-pressed="false" onclick="layer('plano',this)">Solo lotes</button>
+        <button aria-pressed="false" onclick="layer('cobranza',this)">Cobranza</button>
+      </div>
+    </div>
+  </div>
+
+  <aside class="glass panel" id="panel" aria-live="polite"></aside>
+</section>
+
+<!-- ================= VENDEDOR ================= -->
+<section id="v-sell" class="view sell" role="tabpanel" aria-labelledby="tab-sell">
+  <aside class="side">
+    <h2>Lo que ve el vendedor</h2>
+    <p class="lead">Sus visitas del día, el lote en la mano y la evidencia de que llegó. Probá simular la llegada al lote y después reservarlo: el mapa del showroom y el tablero de dirección cambian al instante.</p>
+    <ul>
+      <li><span class="circ"><svg class="ico"><use href="#i-pin"/></svg></span><div><b>La llegada se registra sola</b><p>Cuando el celular entra al perímetro del lote, la visita queda marcada con hora. Sin formularios.</p></div></li>
+      <li><span class="circ"><svg class="ico"><use href="#i-tag"/></svg></span><div><b>Reserva en el terreno</b><p>Un toque y el lote cambia de color para todos: showroom, web y el resto del equipo.</p></div></li>
+      <li><span class="circ"><svg class="ico"><use href="#i-qr"/></svg></span><div><b>La ficha viaja con el cliente</b><p>QR o WhatsApp con fotos, medidas y cuotas. Cada ficha compartida queda asociada al interesado.</p></div></li>
+    </ul>
+  </aside>
+
+  <div class="phone" aria-label="Simulación de la app del vendedor en un teléfono">
+    <div class="screen">
+      <div class="island"></div>
+      <div class="status"><span>9:41</span><span class="icons"><svg width="18" height="12" viewBox="0 0 18 12" fill="#fff"><rect x="0" y="8" width="3" height="4" rx=".5"/><rect x="5" y="5" width="3" height="7" rx=".5"/><rect x="10" y="2" width="3" height="10" rx=".5"/><rect x="15" y="0" width="3" height="12" rx=".5"/></svg><svg width="16" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg><span class="bat"></span></span></div>
+      <div class="hdr" id="hdr"></div>
+      <div class="body" id="pbody"></div>
+      <nav class="tabs" role="tablist" aria-label="Secciones de la app" id="ptabs"></nav>
+      <div class="homebar"></div>
+      <div class="sheet" id="sheet" role="dialog" aria-modal="true"><div id="sheetBody"></div></div>
+    </div>
+  </div>
+
+  <aside class="side">
+    <h2>Y lo que ya no pasa</h2>
+    <p class="lead">Dos vendedores ofreciendo el mismo lote, "sí, fui a la visita" sin forma de comprobarlo, y el plano de la pared del showroom con lotes tachados a mano.</p>
+    <ul>
+      <li><span class="circ soft"><svg class="ico"><use href="#i-shield"/></svg></span><div><b>Ubicación con reglas claras</b><p>Solo en horario laboral y en visitas agendadas. El vendedor la ve y la puede descargar. Pensado para la Ley 7593/2025.</p></div></li>
+      <li><span class="circ soft"><svg class="ico"><use href="#i-zap"/></svg></span><div><b>Funciona sin señal</b><p>En el fraccionamiento la app sigue andando; sincroniza cuando vuelve la conexión.</p></div></li>
+    </ul>
+  </aside>
+</section>
+
+<!-- ================= DIRECCIÓN ================= -->
+<section id="v-dir" class="view dir" role="tabpanel" aria-labelledby="tab-dir">
+  <nav class="nav glass" aria-label="Panel de dirección">
+    <div class="who"><b>Raíces Real Estate</b><small>Gerencia comercial · Sept. 2026</small></div>
+    <button aria-current="page" onclick="pane('dash',this)"><svg class="ico"><use href="#i-grid"/></svg>Tablero</button>
+    <button onclick="pane('vis',this)"><svg class="ico"><use href="#i-cal"/></svg>Visitas</button>
+    <button onclick="pane('ind',this)"><svg class="ico"><use href="#i-bar"/></svg>Indicadores</button>
+    <button onclick="pane('team',this)"><svg class="ico"><use href="#i-users"/></svg>Vendedores</button>
+  </nav>
+  <div>
+    <div class="pane on" id="p-dash">
+      <h2>Tablero de dirección</h2>
+      <p class="lead">Cuatro semáforos y una lista de atención: lo que la gerencia necesita ver cada lunes, por proyecto.</p>
+      <div class="grid4" id="kpis"></div>
+      <div class="two">
+        <div class="glass gcard">
+          <h3>Colocación por proyecto <small>meta 70% a los 6 meses</small></h3>
+          <div id="hbars"></div>
+        </div>
+        <div>
+          <div class="glass gcard">
+            <h3>Requiere atención esta semana</h3>
+            <ul class="att" id="attention"></ul>
+          </div>
+          <div class="glass gcard save"><b id="saveN">0</b><p>dobles ventas evitadas este mes: reservas que otro vendedor intentó sobre un lote ya tomado.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pane" id="p-vis">
+      <h2>Visitas</h2>
+      <p class="lead">Agendadas, realizadas con llegada verificada y su resultado. Lo que antes era "sí, fui", ahora tiene hora y lugar.</p>
+      <div class="two">
+        <div class="glass gcard tw">
+          <h3>Esta semana · Aqua Village</h3>
+          <table><thead><tr><th>Cuándo</th><th>Lote</th><th>Vendedor</th><th>Llegada</th><th>Resultado</th></tr></thead><tbody id="visRows"></tbody></table>
+        </div>
+        <div>
+          <div class="glass gcard"><h3>Trazabilidad · Lote 14</h3><ul class="timeline" id="trace"></ul></div>
+          <div class="glass gcard" style="margin-top:16px"><h3>Visitas por hora <small>última semana</small></h3><div class="spark"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pane" id="p-ind">
+      <h2>Los indicadores que le sirven a la gerencia</h2>
+      <p class="lead">Cada uno con su semáforo y la decisión que habilita. Los umbrales se ajustan con Raíces en el relevamiento.</p>
+      <div class="glass gcard tw"><table>
+        <thead><tr><th>Indicador</th><th>Qué te dice</th><th>Semáforo</th><th>Qué decidir</th></tr></thead>
+        <tbody>
+          <tr><td><b>Colocación</b></td><td>% de lotes vendidos o reservados por proyecto y etapa</td><td><span class="dot ok"></span> ≥ 70 · 50–69 · &lt; 50</td><td>Dónde poner pauta y vendedores; cuándo lanzar la etapa siguiente</td></tr>
+          <tr><td><b>Visitas verificadas</b></td><td>Visitas con llegada registrada sobre visitas agendadas</td><td><span class="dot warn"></span> ≥ 85 · 70–84 · &lt; 70</td><td>Si cae, hay agenda inflada o vendedores que no llegan</td></tr>
+          <tr><td><b>Visita → reserva</b></td><td>Cuántas visitas reales hacen falta por reserva</td><td><span class="dot ok"></span> ≤ 4 · 5–7 · &gt; 7</td><td>Calidad del lead vs. calidad del vendedor; capacitar o cambiar canal</td></tr>
+          <tr><td><b>Tiempo lote en vidriera</b></td><td>Días desde publicación hasta reserva, por manzana</td><td><span class="dot warn"></span> ≤ 45 · 46–90 · &gt; 90</td><td>Ajustar precio o plan de cuotas de las manzanas lentas</td></tr>
+          <tr><td><b>Mora</b></td><td>Lotes con 3+ cuotas atrasadas sobre lotes vendidos a plazo</td><td><span class="dot sold"></span> &lt; 10 · 10–20 · &gt; 20</td><td>Gestión temprana antes de llegar a la caducidad del contrato</td></tr>
+          <tr><td><b>Fichas compartidas</b></td><td>QR y envíos por WhatsApp, y cuántos vuelven a agendar</td><td><span class="dot ok"></span> tendencia ↑ · = · ↓</td><td>Medir el showroom y la web como canal, no solo la pauta</td></tr>
+          <tr><td><b>Dobles ventas evitadas</b></td><td>Intentos de reserva bloqueados sobre lotes ya tomados</td><td><span class="dot ok"></span> cada una cuenta</td><td>Justificar la inversión: cuánto cuesta hoy deshacer una venta</td></tr>
+        </tbody></table></div>
+    </div>
+
+    <div class="pane" id="p-team">
+      <h2>Vendedores</h2>
+      <p class="lead">Actividad de campo verificada por persona. Se usa para acompañar, no para vigilar: el vendedor ve lo mismo que la gerencia.</p>
+      <div class="glass gcard tw"><table>
+        <thead><tr><th>Vendedor</th><th>Visitas agendadas</th><th>Con llegada</th><th>Reservas</th><th>Estado</th></tr></thead>
+        <tbody id="teamRows"></tbody></table></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div id="modalBody"></div></div>
+
+<script>
+/* ============ estado compartido (ilustrativo) ============ */
+const COL = {
+  disponible:{label:'Disponible', cls:'ok'},
+  reservado:{label:'Reservado', cls:'warn'},
+  vendido:{label:'Vendido', cls:'sold'},
+  mora:{label:'En mora', cls:'mora'}
+};
+const LOTS=[{"n": 1, "mz": "A", "pts": [[63.69, 45.09], [65.77, 50.61], [70.0, 50.51], [67.2, 43.1]], "m2": 480, "dims": "16 × 30 m", "esq": true, "st": "disponible"}, {"n": 2, "mz": "A", "pts": [[66.0, 51.37], [67.2, 56.87], [71.91, 58.93], [70.3, 51.54]], "m2": 480, "dims": "16 × 30 m", "esq": false, "st": "vendido"}, {"n": 3, "mz": "A", "pts": [[67.29, 57.6], [67.51, 62.66], [72.34, 66.7], [72.05, 59.91]], "m2": 480, "dims": "16 × 30 m", "esq": false, "st": "vendido"}, {"n": 4, "mz": "A", "pts": [[67.47, 63.29], [66.69, 67.48], [71.23, 73.19], [72.28, 67.56]], "m2": 480, "dims": "16 × 30 m", "esq": false, "st": "reservado"}, {"n": 5, "mz": "A", "pts": [[66.52, 67.98], [64.79, 70.97], [68.69, 77.87], [71.0, 73.86]], "m2": 480, "dims": "16 × 30 m", "esq": false, "st": "disponible"}, {"n": 6, "mz": "A", "pts": [[64.5, 71.28], [61.98, 72.82], [64.91, 80.36], [68.29, 78.29]], "m2": 480, "dims": "16 × 30 m", "esq": false, "st": "disponible"}, {"n": 7, "mz": "A", "pts": [[61.6, 72.93], [58.48, 72.9], [60.21, 80.47], [64.39, 80.5]], "m2": 480, "dims": "16 × 30 m", "esq": false, "st": "mora"}, {"n": 8, "mz": "A", "pts": [[58.03, 72.79], [54.58, 71.19], [54.96, 78.17], [59.6, 80.32]], "m2": 480, "dims": "16 × 30 m", "esq": false, "st": "vendido"}, {"n": 9, "mz": "A", "pts": [[54.1, 70.87], [50.58, 67.84], [49.59, 73.67], [54.31, 77.75]], "m2": 480, "dims": "16 × 30 m", "esq": false, "st": "disponible"}, {"n": 10, "mz": "A", "pts": [[50.11, 67.34], [46.82, 63.12], [44.53, 67.32], [48.96, 73.0]], "m2": 480, "dims": "16 × 30 m", "esq": false, "st": "reservado"}, {"n": 11, "mz": "A", "pts": [[46.4, 62.47], [43.6, 57.4], [40.2, 59.64], [43.97, 66.46]], "m2": 480, "dims": "16 × 30 m", "esq": false, "st": "disponible"}, {"n": 12, "mz": "A", "pts": [[43.26, 56.67], [41.17, 51.15], [36.95, 51.25], [39.75, 58.66]], "m2": 480, "dims": "16 × 30 m", "esq": false, "st": "vendido"}, {"n": 13, "mz": "A", "pts": [[40.95, 50.39], [39.75, 44.89], [35.03, 42.83], [36.64, 50.22]], "m2": 480, "dims": "16 × 30 m", "esq": false, "st": "disponible"}, {"n": 14, "mz": "A", "pts": [[39.65, 44.16], [39.43, 39.1], [34.61, 35.06], [34.9, 41.85]], "m2": 480, "dims": "16 × 30 m", "esq": false, "st": "disponible"}, {"n": 15, "mz": "A", "pts": [[39.47, 38.47], [40.26, 34.28], [35.71, 28.57], [34.66, 34.2]], "m2": 480, "dims": "16 × 30 m", "esq": false, "st": "vendido"}, {"n": 16, "mz": "A", "pts": [[40.43, 33.78], [42.15, 30.79], [38.26, 23.89], [35.95, 27.9]], "m2": 480, "dims": "16 × 30 m", "esq": false, "st": "mora"}, {"n": 17, "mz": "A", "pts": [[42.44, 30.48], [44.96, 28.94], [42.03, 21.4], [38.65, 23.47]], "m2": 480, "dims": "16 × 30 m", "esq": false, "st": "disponible"}, {"n": 18, "mz": "A", "pts": [[45.35, 28.83], [48.46, 28.86], [46.74, 21.29], [42.56, 21.26]], "m2": 480, "dims": "16 × 30 m", "esq": false, "st": "vendido"}, {"n": 19, "mz": "A", "pts": [[48.91, 28.97], [52.37, 30.57], [51.99, 23.59], [47.35, 21.44]], "m2": 480, "dims": "16 × 30 m", "esq": false, "st": "disponible"}, {"n": 20, "mz": "A", "pts": [[52.85, 30.89], [56.36, 33.92], [57.36, 28.09], [52.63, 24.01]], "m2": 480, "dims": "16 × 30 m", "esq": false, "st": "disponible"}, {"n": 21, "mz": "A", "pts": [[56.83, 34.42], [60.13, 38.64], [62.41, 34.44], [57.99, 28.76]], "m2": 480, "dims": "16 × 30 m", "esq": false, "st": "reservado"}, {"n": 22, "mz": "A", "pts": [[60.55, 39.29], [63.35, 44.36], [66.74, 42.12], [62.98, 35.3]], "m2": 480, "dims": "16 × 30 m", "esq": true, "st": "vendido"}, {"n": 23, "mz": "B", "pts": [[32.37, 60.79], [31.95, 64.65], [36.39, 69.85], [37.03, 63.87]], "m2": 450, "dims": "15 × 30 m", "esq": true, "st": "disponible"}, {"n": 24, "mz": "B", "pts": [[31.81, 65.09], [30.24, 67.56], [33.74, 74.36], [36.17, 70.54]], "m2": 450, "dims": "15 × 30 m", "esq": false, "st": "vendido"}, {"n": 25, "mz": "B", "pts": [[29.96, 67.78], [27.5, 68.45], [29.48, 75.73], [33.3, 74.7]], "m2": 450, "dims": "15 × 30 m", "esq": false, "st": "disponible"}, {"n": 26, "mz": "B", "pts": [[27.12, 68.41], [24.16, 67.17], [24.3, 73.75], [28.89, 75.67]], "m2": 450, "dims": "15 × 30 m", "esq": false, "st": "disponible"}, {"n": 27, "mz": "B", "pts": [[23.74, 66.88], [20.78, 63.93], [19.06, 68.73], [23.66, 73.3]], "m2": 450, "dims": "15 × 30 m", "esq": false, "st": "mora"}, {"n": 28, "mz": "B", "pts": [[20.39, 63.43], [17.9, 59.27], [14.61, 61.5], [18.47, 67.96]], "m2": 450, "dims": "15 × 30 m", "esq": false, "st": "vendido"}, {"n": 29, "mz": "B", "pts": [[17.62, 58.64], [16.01, 53.93], [11.68, 53.24], [14.17, 60.54]], "m2": 450, "dims": "15 × 30 m", "esq": false, "st": "disponible"}, {"n": 30, "mz": "B", "pts": [[15.86, 53.29], [15.4, 48.81], [10.74, 45.3], [11.45, 52.24]], "m2": 450, "dims": "15 × 30 m", "esq": false, "st": "reservado"}, {"n": 31, "mz": "B", "pts": [[15.43, 48.25], [16.19, 44.73], [11.95, 38.98], [10.77, 44.43]], "m2": 450, "dims": "15 × 30 m", "esq": false, "st": "disponible"}, {"n": 32, "mz": "B", "pts": [[16.37, 44.35], [18.23, 42.37], [15.12, 35.31], [12.24, 38.38]], "m2": 450, "dims": "15 × 30 m", "esq": false, "st": "disponible"}, {"n": 33, "mz": "B", "pts": [[18.55, 42.22], [21.2, 42.1], [19.72, 34.89], [15.61, 35.08]], "m2": 450, "dims": "15 × 30 m", "esq": false, "st": "vendido"}, {"n": 34, "mz": "B", "pts": [[21.6, 42.21], [24.61, 43.97], [25.0, 37.8], [20.33, 35.07]], "m2": 450, "dims": "15 × 30 m", "esq": true, "st": "disponible"}];
+function buildLots(){
+  return LOTS.map(l=>{const xs=l.pts.map(p=>p[0]),ys=l.pts.map(p=>p[1]);const x=Math.min(...xs),y=Math.min(...ys),w=Math.max(...xs)-x,h=Math.max(...ys)-y;const clip=l.pts.map(([px,py])=>`${((px-x)/w*100).toFixed(1)}% ${((py-y)/h*100).toFixed(1)}%`).join(",");return {...l,x,y,w,h,clip,dims:l.dims};});
+}
+const S = {
+  lots: buildLots(),
+  sel: 14,
+  layer:'aerea',
+  arrived:false, visitStarted:false, visitDone:false,
+  tab:'home',
+  feed:[
+    {c:'warn', t:'Lote 7 pasó a <b>reservado</b> · L. Benítez desde el celular', when:'hace 2 min'},
+    {c:'ok', t:'Ficha del Lote 3 <b>compartida por QR</b> en showroom', when:'15:31'},
+    {c:'sold', t:'Lote 2 <b>vendido</b> · contrato firmado en oficina', when:'ayer'},
+  ],
+  visits:[
+    {when:'Hoy 16:00', lot:14, who:'M. González', arr:null, res:'Pendiente', st:'warn'},
+    {when:'Hoy 17:30', lot:9, who:'M. González', arr:null, res:'Agendada', st:'soft'},
+    {when:'Hoy 11:00', lot:7, who:'L. Benítez', arr:'10:56', res:'Reservó', st:'ok'},
+    {when:'Ayer 15:00', lot:11, who:'C. Rojas', arr:'15:22', res:'Sin decisión', st:'soft'},
+    {when:'Ayer 10:00', lot:5, who:'C. Rojas', arr:'—', res:'No se registró llegada', st:'sold'},
+    {when:'Lun 16:30', lot:12, who:'L. Benítez', arr:'16:31', res:'Volvió a agendar', st:'ok'},
+  ],
+  saved:3,
+  shared:0,
+};
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ico = n => `<svg class="ico" aria-hidden="true"><use href="#${n}"/></svg>`;
+const lot = n => S.lots.find(l=>l.n===n);
+const count = st => S.lots.filter(l=>l.st===st).length;
+
+/* ============ vista ============ */
+function setView(v){
+  ['show','sell','dir'].forEach(k => { $('#v-'+k).classList.toggle('on', k===v); $('#tab-'+k).setAttribute('aria-selected', k===v); });
+  if (v==='dir') renderDir();
+  if (v==='sell') renderPhone();
+  if (v==='show') renderShow();
+}
+function toast(title, msg){
+  const t = document.createElement('div'); t.className='toast';
+  t.innerHTML = `<span class="circ" style="width:34px;height:34px">${ico('i-bell')}</span><div><b>${esc(title)}</b><span>${esc(msg)}</span></div>`;
+  $('#toasts').appendChild(t); setTimeout(()=>t.remove(), 4500);
+}
+function addFeed(c,t,when){ S.feed.unshift({c,t,when:when||'ahora'}); S.feed=S.feed.slice(0,5); }
+
+/* ============ SHOWROOM ============ */
+function renderShow(){
+  $('#legend').innerHTML = Object.entries(COL).map(([k,v])=>`<span><span class="dot ${v.cls}"></span>${v.label} <b>${count(k)}</b></span>`).join('');
+  $('#lots').innerHTML = S.lots.map(l=>`<button class="lot ${l.st}" style="left:${l.x}%;top:${l.y}%;width:${l.w}%;height:${l.h}%;clip-path:polygon(${l.clip})" aria-pressed="${l.n===S.sel}" aria-label="Lote ${l.n}, manzana ${l.mz}, ${COL[l.st].label}" onclick="pick(${l.n})"><b>${l.n}</b><small>${l.m2} m²</small></button>`).join('');
+  const l14 = lot(14);
+  const l7 = lot(7); const ap2=$('#agentPin2'); ap2.style.left=(l7.x+l7.w/2-2.2)+'%'; ap2.style.top=(l7.y+l7.h/2-2.5)+'%';
+  $('#agentsLive').textContent = document.querySelectorAll('.agent').length;
+  const ap=$('#agentPin');
+  if (S.arrived){ ap.style.left=(l14.x+l14.w/2-2.2)+'%'; ap.style.top=(l14.y+l14.h/2-2.5)+'%'; $('#agentWho').textContent='M. González · en Lote 14'; }
+  else { ap.style.left='2%'; ap.style.top='43%'; $('#agentWho').textContent='M. González · en camino'; }
+  renderPanel();
+}
+function pick(n){ S.sel = S.sel===n ? 0 : n; renderShow(); }
+function layer(k,btn){ S.layer=k; document.querySelectorAll('.layers button').forEach(b=>b.setAttribute('aria-pressed', b===btn)); $('#map').className='map'+(k==='aerea'?'':' '+k); }
+function renderPanel(){
+  const p=$('#panel'); const l=lot(S.sel);
+  const feed = `<div class="feed"><div class="lbl" style="margin-top:0">Actividad en vivo</div><ul>${S.feed.map(f=>`<li><span class="dot ${f.c}"></span><span>${f.t}</span><small>${esc(f.when)}</small></li>`).join('')}</ul></div>`;
+  if(!l){
+    const total=S.lots.length, placed=count('vendido')+count('reservado')+count('mora');
+    p.innerHTML = `<div class="empty"><div><h2 style="font-size:26px">Aqua Village · San Bernardino</h2><p class="lead" style="margin:0">Tocá un lote en el mapa para ver su ficha.</p></div>
+      <div class="kp2"><div class="fact"><span>Lotes en etapa</span><b class="tabular">${total}</b></div><div class="fact"><span>Colocados</span><b class="tabular">${Math.round(placed/total*100)}%</b></div></div></div>${feed}`;
+    return;
+  }
+  const c=COL[l.st];
+  const cta = {disponible:['Reservar','reserve(14)'],reservado:['Confirmar venta',"toast('Prototipo','La venta se confirma desde oficina con el contrato firmado.')"],vendido:['Ver contrato',"toast('Prototipo','Abre el contrato y el plan de cuotas del comprador.')"],mora:['Ver cobranza',"toast('Prototipo','Muestra cuotas atrasadas y el próximo paso de gestión.')"]}[l.st];
+  const ctaClick = l.st==='disponible' ? `reserve(${l.n})` : cta[1];
+  const visit = l.n===14 ? `<div class="visit"><div class="h"><b>Visita programada</b><span>Hoy · 16:00</span></div>
+      <div class="who"><span class="av">MG</span><div><b>M. González</b> · vendedor<div class="st">${S.arrived?`<span class="dot ok"></span><span style="color:var(--ok)">Llegó al lote a las 15:52 · registrado por GPS</span>`:`<span class="dot warn"></span><span style="color:var(--warn)">En camino · llegada pendiente</span>`}</div></div></div></div>` : '';
+  p.innerHTML = `<div class="photo">Foto del lote · [SUBIR FOTO O VIDEO]<span class="chip ${c.cls}">${c.label}</span><button class="play" aria-label="Ver video del lote" onclick="toast('Prototipo','Reproduce el video de dron del lote.')">${ico('i-play')}</button></div>
+    <div class="pbody">
+      <div class="ptitle"><div><h3>Lote ${l.n}</h3><small>Manzana ${l.mz} · Aqua Village, San Bernardino</small></div><button class="qrbtn" aria-label="Generar QR de la ficha" onclick="openQR(${l.n})"><canvas class="qrmini" data-n="${l.n}" width="21" height="21" style="width:52px;height:52px;image-rendering:pixelated"></canvas></button></div>
+      <div class="facts"><div class="fact"><span>Superficie</span><b class="tabular">${l.m2} m²</b></div><div class="fact"><span>Frente × fondo</span><b>${l.dims}</b></div><div class="fact"><span>Esquina</span><b>${l.esq?'Sí':'No'}</b></div></div>
+      <div class="price"><div><span>Precio contado</span><b>Gs. [PRECIO]</b></div><div class="cuota"><span>Plan en cuotas</span>[N] cuotas de Gs. [CUOTA]</div></div>
+      ${visit}
+      <div class="acts"><button class="btn cta" onclick="${ctaClick}">${cta[0]}</button><button class="btn ghost" onclick="openVisit(${l.n})">Agendar visita</button></div>
+    </div>${feed}`;
+  p.querySelectorAll('.qrmini').forEach(cv=>drawQR(cv, +cv.dataset.n));
+}
+
+/* ============ reserva compartida ============ */
+function reserve(n, from){
+  const l=lot(n); if(!l) return;
+  if(l.st!=='disponible'){ S.saved++; addFeed('sold',`Intento de reserva <b>bloqueado</b> sobre Lote ${n}: ya estaba ${COL[l.st].label.toLowerCase()}`); toast('Reserva bloqueada',`El Lote ${n} ya no está disponible. Doble venta evitada.`); renderAll(); return; }
+  l.st='reservado';
+  const v=S.visits.find(x=>x.lot===n); if(v){v.res='Reservó';v.st='ok';}
+  addFeed('warn',`Lote ${n} pasó a <b>reservado</b> · ${from==='phone'?'M. González desde el celular':'showroom'}`);
+  toast('Lote '+n+' reservado','Ya cambió de color en el showroom, la web y en el celular del equipo.');
+  renderAll();
+}
+function renderAll(){ renderShow(); if($('#v-sell').classList.contains('on')) renderPhone(); if($('#v-dir').classList.contains('on')) renderDir(); }
+
+/* ============ QR (ilustrativo, patrón determinista) ============ */
+function drawQR(cv, seed){
+  const ctx=cv.getContext('2d'); const N=cv.width; ctx.fillStyle='#fff'; ctx.fillRect(0,0,N,N); ctx.fillStyle='#1C231F';
+  let s=seed*2654435761>>>0; const rnd=()=>{s^=s<<13;s^=s>>>17;s^=s<<5;return (s>>>0)/4294967296;};
+  const finder=(x,y)=>{ctx.fillRect(x,y,7,7);ctx.fillStyle='#fff';ctx.fillRect(x+1,y+1,5,5);ctx.fillStyle='#1C231F';ctx.fillRect(x+2,y+2,3,3);};
+  for(let y=0;y<N;y++)for(let x=0;x<N;x++){ if((x<8&&y<8)||(x>=N-8&&y<8)||(x<8&&y>=N-8)) continue; if(rnd()>.55) ctx.fillRect(x,y,1,1); }
+  finder(0,0);finder(N-7,0);finder(0,N-7);
+}
+function openQR(n){
+  const l=lot(n); S.shared++;
+  $('#modalBody').innerHTML = `<h3 id="modalTitle">Ficha del Lote ${n} · Manzana ${l.mz}</h3><p class="lead">El interesado escanea y se lleva fotos, video, medidas y plan de cuotas al celular. Queda registrado como lead del lote.</p>
+    <div class="qrbig"><canvas id="qrBig" width="29" height="29"></canvas><div><p><b>solar.konnexys.com/aqua/lote-${n}</b></p><p style="margin-top:8px">Válido para este lote. Si el lote se reserva, la ficha lo muestra.</p><div class="row" style="margin-top:14px"><button class="btn sm" onclick="toast('Enviado por WhatsApp','La ficha del Lote ${n} salió al número del interesado.')">Enviar por WhatsApp</button><button class="btn ghost sm" onclick="toast('PDF generado','Ficha del Lote ${n} lista para imprimir.')">Descargar PDF</button></div></div></div>
+    <div class="row"><button class="btn ghost" onclick="closeModal()">Cerrar</button></div>`;
+  $('#modal').classList.add('on'); drawQR($('#qrBig'), n*7+3);
+  addFeed('ok',`Ficha del Lote ${n} <b>compartida por QR</b> en showroom`);
+  renderShow();
+}
+function closeModal(){ $('#modal').classList.remove('on'); }
+function openVisit(n){
+  $('#modalBody').innerHTML = `<h3 id="modalTitle">Agendar visita · Lote ${n}</h3><p class="lead">El vendedor recibe la asignación y el interesado su invitación con recordatorio.</p>
+    <form onsubmit="return saveVisit(event,${n})" novalidate>
+      <div class="f" id="f-name"><label for="vname">Interesado</label><input id="vname" placeholder="Nombre y apellido"><span class="err">Escribí el nombre del interesado.</span></div>
+      <div class="f"><label for="vwho">Vendedor</label><select id="vwho"><option>M. González</option><option>L. Benítez</option><option>C. Rojas</option></select></div>
+      <div class="f" style="grid-template-columns:1fr 1fr;display:grid;gap:8px"><div><label for="vday">Día</label><input id="vday" type="date" value="2026-09-24"></div><div><label for="vtime">Hora</label><input id="vtime" type="time" value="10:00"></div></div>
+      <div class="row"><button type="button" class="btn ghost" onclick="closeModal()">Cancelar</button><button type="submit" class="btn">Agendar y enviar invitación</button></div>
+    </form>`;
+  $('#modal').classList.add('on'); setTimeout(()=>$('#vname').focus(),50);
+}
+function saveVisit(e,n){
+  e.preventDefault(); const name=$('#vname').value.trim(); if(!name){$('#f-name').classList.add('invalid');$('#vname').focus();return false;}
+  const who=$('#vwho').value, t=$('#vtime').value;
+  S.visits.unshift({when:'Mié '+t, lot:n, who, arr:null, res:'Agendada', st:'soft'});
+  addFeed('ok',`Visita al Lote ${n} <b>agendada</b> · ${esc(who)} · invitación enviada a ${esc(name)}`);
+  closeModal(); toast('Visita agendada',`${who} recibió la asignación. ${name} tiene la invitación con el QR.`); renderAll(); return false;
+}
+
+/* ============ VENDEDOR ============ */
+const TABS=[['home','Visitas','i-cal'],['map','Mapa','i-map'],['leads','Interesados','i-users'],['more','Más','i-grid']];
+function go(t){ S.tab=t; renderPhone(); }
+function renderPhone(){
+  const l14=lot(14);
+  $('#hdr').innerHTML = `<div class="t"><div><small>Hoy · miércoles</small><h1>${S.tab==='home'?'Mis visitas':S.tab==='map'?'Aqua Village':S.tab==='leads'?'Interesados':'Más'}</h1></div><span class="gps"><i></i>GPS activo · horario laboral</span></div>`;
+  $('#ptabs').innerHTML = TABS.map(([id,lb,i])=>`<button role="tab" aria-selected="${S.tab===id}" onclick="go('${id}')">${ico(i)}${lb}</button>`).join('');
+  const b=$('#pbody');
+  if(S.tab==='home'){
+    const st=l14.st, c=COL[st];
+    b.innerHTML = `<div class="card">
+      <div class="minimap">
+        <svg viewBox="0 0 358 170" preserveAspectRatio="none" aria-hidden="true">
+          <rect width="358" height="170" fill="#9DB26F"/><rect x="0" y="34" width="358" height="20" fill="#8C8578"/><rect x="150" y="0" width="20" height="170" fill="#8C8578"/>
+          <rect x="20" y="62" width="120" height="100" fill="#D2C39A"/><rect x="182" y="62" width="160" height="100" fill="#D2C39A"/>
+          <rect x="188" y="68" width="46" height="88" rx="3" fill="rgba(183,71,58,.62)" stroke="#8F3327" stroke-width="1.5"/>
+          <rect x="240" y="68" width="46" height="88" rx="3" fill="${st==='reservado'?'rgba(224,165,58,.68)':'rgba(63,154,95,.62)'}" stroke="#fff" stroke-width="3"/>
+          <rect x="292" y="68" width="46" height="88" rx="3" fill="rgba(63,154,95,.62)" stroke="#2F7A4B" stroke-width="1.5"/>
+          <rect x="26" y="68" width="52" height="88" rx="3" fill="rgba(224,165,58,.68)" stroke="#B07F24" stroke-width="1.5"/><rect x="84" y="68" width="52" height="88" rx="3" fill="rgba(63,154,95,.62)" stroke="#2F7A4B" stroke-width="1.5"/>
+          <text x="256" y="118" font-family="Fraunces, Georgia, serif" font-size="16" font-weight="600" fill="#fff">14</text>
+          <circle cx="263" cy="112" r="50" fill="rgba(31,77,58,.12)" stroke="#1F4D3A" stroke-width="1.5" stroke-dasharray="6 5"/>
+          <circle cx="${S.arrived?258:120}" cy="${S.arrived?104:44}" r="9" fill="#1F4D3A" stroke="#F3EEE4" stroke-width="3" style="transition:cx 1.2s ease,cy 1.2s ease"/>
+        </svg>
+        <div class="arrive ${S.arrived?'':'wait'}"><i></i>${S.arrived?'Llegaste al Lote 14 · 15:52':'En camino · 6 min'}</div>
+      </div>
+      <div class="cbody">
+        <div class="t"><div><b>Lote 14 · Manzana B</b><small>Aqua Village, Etapa 2 · 450 m²</small></div><span class="chip ${c.cls}">${c.label}</span></div>
+        <div class="person"><span class="av">CR</span><div><b>[Nombre del interesado]</b><small>Visita 16:00 · agendada desde el showroom</small></div><a href="https://wa.me/" aria-label="Escribir por WhatsApp">${ico('i-msg')}</a></div>
+        <div class="steps">
+          <div><i class="done">${ico('i-check')}</i>Salida registrada · 15:20</div>
+          <div><i class="${S.arrived?'done':''}">${S.arrived?ico('i-check'):''}</i><span class="${S.arrived?'':'todo'}">${S.arrived?'Llegada al lote · 15:52 · detectada por GPS':'Llegada al lote · se registra sola al entrar al perímetro'}</span></div>
+          <div><i class="${S.visitDone?'done':''}">${S.visitDone?ico('i-check'):''}</i><span class="${S.visitDone?'':'todo'}">${S.visitDone?`Resultado: ${st==='reservado'?'reservó':'sin decisión'}`:'Resultado de la visita'}</span></div>
+        </div>
+        ${!S.arrived?`<button class="btn" onclick="simArrive()">${ico('i-nav')}Simular llegada al lote</button>`:
+          !S.visitStarted?`<button class="btn cta" onclick="startVisit()">Iniciar visita</button>`:
+          !S.visitDone?`<div class="row" style="margin:0"><button class="btn ghost" onclick="endVisit(false)">Sin decisión</button><button class="btn cta" onclick="endVisit(true)" ${st!=='disponible'?'disabled':''}>${st==='disponible'?'Reservar lote':'Ya reservado'}</button></div>`:
+          `<button class="btn ghost" onclick="toast('Prototipo','Abre el resumen de la visita para enviarlo al interesado.')">Ver resumen de la visita</button>`}
+      </div></div>
+      <div class="quick">
+        <button onclick="openQR(14)">${ico('i-qr')}Compartir QR</button>
+        <button onclick="reserve(14,'phone'); S.visitDone=true; renderPhone()" ${st!=='disponible'?'disabled':''}>${ico('i-tag')}Reservar lote</button>
+        <button onclick="setView('show'); pick(14)">${ico('i-doc')}Ver ficha</button>
+      </div>
+      <div class="lbl">Próximas</div>
+      <div class="nextv"><b>17:30</b><div>Lote 9 · Manzana B<small>[Nombre del interesado] · 6 min en auto</small></div><span class="dot ${COL[lot(9).st].cls}"></span></div>
+      <div class="priv">Tu ubicación se comparte solo durante el horario de trabajo y en visitas agendadas. Podés verla y descargarla cuando quieras.</div>`;
+  } else if(S.tab==='map'){
+    b.innerHTML = `<div class="lbl" style="margin-top:0">Disponibles cerca de tu visita</div><div class="lotlist">${S.lots.filter(l=>l.mz==='B'||l.mz==='C').map(l=>`<button onclick="openLot(${l.n})"><span class="dot ${COL[l.st].cls}"></span><div><b>Lote ${l.n}</b><small>Manzana ${l.mz} · ${l.m2} m² · ${l.dims}</small></div><span class="sp"></span><span class="chip ${COL[l.st].cls}">${COL[l.st].label}</span></button>`).join('')}</div>`;
+  } else if(S.tab==='leads'){
+    b.innerHTML = `<div class="lbl" style="margin-top:0">Esta semana</div><div class="lotlist">${[['[Interesado 1]','Lote 14 · visita hoy 16:00','warn','Visita hoy'],['[Interesado 2]','Lote 9 · visita hoy 17:30','soft','Agendada'],['[Interesado 3]','Lote 7 · reservó el lunes','ok','Reservó'],['[Interesado 4]','Ficha del Lote 3 por QR · sin visita','soft','Contactar']].map(r=>`<button onclick="toast('Prototipo','Abre la ficha del interesado con su historial.')"><div><b style="font-family:var(--body);font-size:14px">${r[0]}</b><small>${r[1]}</small></div><span class="sp"></span><span class="chip ${r[2]}">${r[3]}</span></button>`).join('')}</div>`;
+  } else {
+    b.innerHTML = `<div class="lotlist">${[['Mi ubicación y consentimiento','Qué se comparte, cuándo y cómo descargarlo','i-shield'],['Modo sin señal','Cambios guardados: 0 pendientes de sincronizar','i-zap'],['Mis comisiones','Reservas del mes y estado de cada una','i-money']].map(r=>`<button onclick="toast('Prototipo','${r[0]}')"><span class="circ soft" style="width:36px;height:36px">${ico(r[2])}</span><div><b style="font-family:var(--body);font-size:14px">${r[0]}</b><small>${r[1]}</small></div></button>`).join('')}</div>`;
+  }
+}
+function openLot(n){
+  const l=lot(n), c=COL[l.st];
+  $('#sheetBody').innerHTML = `<h3>Lote ${n} · Manzana ${l.mz}</h3><p>${l.m2} m² · ${l.dims} · ${l.esq?'esquina':'medio de cuadra'} · <span class="chip ${c.cls}">${c.label}</span></p>
+    <div class="price"><div><span>Precio contado</span><b>Gs. [PRECIO]</b></div><div class="cuota"><span>Plan en cuotas</span>[N] cuotas</div></div>
+    <div class="row"><button class="btn ghost" onclick="closeSheet()">Cerrar</button>${l.st==='disponible'?`<button class="btn cta" onclick="closeSheet(); reserve(${n},'phone')">Reservar</button>`:`<button class="btn" onclick="closeSheet(); openQR(${n})">Compartir ficha</button>`}</div>`;
+  $('#sheet').classList.add('on');
+}
+function closeSheet(){ $('#sheet').classList.remove('on'); }
+function simArrive(){
+  S.arrived=true; const v=S.visits.find(x=>x.lot===14); if(v) v.arr='15:52';
+  addFeed('ok','M. González <b>llegó</b> al Lote 14 · visita agendada','15:52');
+  toast('Llegada registrada','15:52 · detectada por GPS. La dirección ya la ve.');
+  renderAll();
+}
+function startVisit(){ S.visitStarted=true; renderPhone(); toast('Visita iniciada','Se cronometra el tiempo en el lote.'); }
+function endVisit(res){
+  S.visitDone=true;
+  if(res) reserve(14,'phone'); else { const v=S.visits.find(x=>x.lot===14); if(v){v.res='Sin decisión';v.st='soft';} addFeed('ok','Visita al Lote 14 <b>cerrada</b> sin decisión · seguimiento en 48 h'); renderAll(); }
+}
+
+/* ============ DIRECCIÓN ============ */
+function pane(id,btn){ document.querySelectorAll('.pane').forEach(p=>p.classList.toggle('on', p.id==='p-'+id)); document.querySelectorAll('.nav button').forEach(b=>b.removeAttribute('aria-current')); if(btn) btn.setAttribute('aria-current','page'); renderDir(); }
+const sem=(v,g,w)=>v>=g?'ok':v>=w?'warn':'sold';
+const semTxt={ok:'Esto está buenísimo',warn:'Hay que mejorar',sold:'No estamos bien'};
+const semCol={ok:'var(--ok)',warn:'var(--warn)',sold:'var(--sold)'};
+function renderDir(){
+  const total=S.lots.length, placed=count('vendido')+count('reservado')+count('mora'), pct=Math.round(placed/total*100);
+  const withArr=S.visits.filter(v=>v.arr&&v.arr!=='—').length, sched=S.visits.length, verif=Math.round(withArr/sched*100);
+  const moraPct=Math.round(count('mora')/(count('vendido')+count('mora'))*100);
+  const kp=[[pct+'%','Colocación · Aqua Village E2',`${placed} de ${total} lotes`,sem(pct,70,50)],[verif+'%','Visitas verificadas · semana',`${withArr} de ${sched} con llegada`,sem(verif,85,70)],['3,2','Visitas reales por reserva','meta ≤ 4','ok'],[moraPct+'%','Mora · lotes a plazo',`${count('mora')} lotes con 3+ cuotas`,moraPct<10?'ok':moraPct<=20?'warn':'sold']];
+  $('#kpis').innerHTML = kp.map(([n,l,d,s])=>`<div class="glass kpi"><span class="delta">${d}</span><div class="n tabular">${n}</div><div class="l">${l}</div><div class="s" style="color:${semCol[s]}"><span class="dot ${s}"></span>${semTxt[s]}</div></div>`).join('');
+  const proj=[['Aqua Village E2',pct],['Aqua Village E1',94],['Los Lapachos',61],['Costa Azul',38],['Barrio Norte',72]];
+  $('#hbars').innerHTML = proj.map(([c,v])=>{const s=sem(v,70,50);return `<div class="hb"><span>${c}</span><span class="tr"><i style="width:${v}%;background:${semCol[s]}"></i><u style="left:70%"></u></span><b class="tabular" style="color:${semCol[s]}">${v}%</b></div>`;}).join('');
+  $('#attention').innerHTML = [
+    ['sold','Costa Azul: 38% colocado a 7 meses, meta 70%','Revisar precio'],
+    ['warn',`Aqua Village E2: ${count('mora')} lotes con 3+ cuotas atrasadas`,'Ver cobranza'],
+    ['warn','C. Rojas: 1 visita agendada sin llegada registrada esta semana','Ver detalle'],
+  ].map(r=>`<li><span class="dot ${r[0]}"></span><span>${r[1]}</span><button class="btn ghost sm" onclick="toast('Prototipo','${r[2]}')">${r[2]}</button></li>`).join('');
+  $('#saveN').textContent=S.saved;
+  $('#visRows').innerHTML = S.visits.map(v=>`<tr><td>${esc(v.when)}</td><td><b>Lote ${v.lot}</b></td><td>${esc(v.who)}</td><td>${v.arr?`<span class="dot ${v.arr==='—'?'sold':'ok'}"></span> ${v.arr==='—'?'no registrada':v.arr}`:'<span class="dot warn"></span> pendiente'}</td><td><span class="chip ${v.st}">${esc(v.res)}</span></td></tr>`).join('');
+  const l14=lot(14);
+  $('#trace').innerHTML = [
+    [true,'Agendada desde el showroom','Lun 21 · 11:40 · invitación con QR enviada'],
+    [true,'Confirmada por el interesado','Lun 21 · 19:05 · por WhatsApp'],
+    [S.arrived,'Llegada del vendedor al lote',S.arrived?'Hoy · 15:52 · GPS, dentro del perímetro':'Pendiente'],
+    [S.visitDone,'Resultado',S.visitDone?(l14.st==='reservado'?'Reservó · cambió en el mapa al instante':'Sin decisión · seguimiento en 48 h'):'Pendiente'],
+  ].map(r=>`<li><i class="${r[0]?'':'pend'}">${r[0]?ico('i-check'):''}</i><div>${r[1]}<small>${r[2]}</small></div></li>`).join('');
+  const sp=$('#p-vis .spark'); if(sp) sp.innerHTML=[2,4,7,9,6,3,2,5,8,6].map((v,i)=>`<i class="${[2,3,8].includes(i)?'hot':''}" style="height:${v/9*100}%"></i>`).join('') ; const ax=$('#p-vis .axis'); if(!ax){ sp.insertAdjacentHTML('afterend','<div class="axis"><span>8 h</span><span>11 h</span><span>14 h</span><span>17 h</span></div><p style="margin:10px 0 0;font-size:13px;font-weight:600;color:var(--primary)">Las visitas que terminan en reserva se concentran de 10 a 12 y de 16 a 18.</p>'); }
+  $('#teamRows').innerHTML = [['M. González',6,S.arrived?5:4,S.lots.filter(l=>l.st==='reservado').length,'ok','Activo'],['L. Benítez',5,5,2,'ok','Activo'],['C. Rojas',4,3,0,'warn','1 visita sin llegada']].map(r=>`<tr><td><b>${r[0]}</b></td><td class="tabular">${r[1]}</td><td class="tabular"><span class="mini"><i style="width:${Math.round(r[2]/r[1]*100)}%"></i></span>${r[2]}</td><td class="tabular">${r[3]}</td><td><span class="dot ${r[4]}"></span> ${r[5]}</td></tr>`).join('');
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape'){ closeModal(); closeSheet(); } });
+$('#modal').addEventListener('click', e => { if(e.target===$('#modal')) closeModal(); });
+renderShow(); renderPhone(); renderDir();
+</script>
+</body>
+</html>
