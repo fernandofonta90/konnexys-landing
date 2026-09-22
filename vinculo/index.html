@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Vínculo · Prototipo</title>
 <meta name="description" content="Vínculo: un solo canal entre el colegio y las familias. Prototipo navegable de la app para familias y del panel del colegio.">
+<meta name="theme-color" content="#DA4E26">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Vínculo">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="./icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -149,7 +157,7 @@ h2{font-family:var(--display);font-weight:700;font-size:28px;line-height:1.15;ma
 .note .ico{width:16px;height:16px;margin-top:2px}
 .chip.resp{background:var(--assoc);color:#fff}
 /* ---------- SCHOOL (dashboard) ---------- */
-.sch,.asc{grid-template-columns:220px 1fr;gap:20px;min-height:70vh}
+.sch>*,.asc>*{min-width:0}.sch,.asc{grid-template-columns:220px 1fr;gap:20px;min-height:70vh}
 .nav{padding:16px;align-self:start}
 .nav .who{padding:8px 12px 16px;border-bottom:1px solid var(--line);margin-bottom:10px}
 .nav .who b{display:block;font-size:14px}.nav .who small{color:var(--muted);font-size:12px}
@@ -201,8 +209,25 @@ tr.link{cursor:pointer}tr.link:hover td{background:rgba(255,255,255,.5)}
 .f.invalid input{border-color:var(--danger)}.f.invalid .err{display:block}
 
 @media (max-width:1100px){.fam{grid-template-columns:1fr;justify-items:center}.fam .side{max-width:420px}.grid4{grid-template-columns:repeat(2,1fr)}.two,.detail{grid-template-columns:1fr}}
-@media (max-width:760px){main{padding:16px}.sch,.asc{grid-template-columns:1fr}.nav{display:flex;gap:6px;overflow-x:auto;padding:8px}.nav .who{display:none}.nav button{white-space:nowrap;width:auto}.phone{transform:scale(.88);transform-origin:top center;margin-bottom:-90px}.top{padding:10px 16px}.tag{display:none}.pend{grid-template-columns:1fr}}
-@media (max-width:480px){.phone{transform:scale(.82);margin-bottom:-140px}.grid4{grid-template-columns:1fr}.kpi .delta{float:none;display:block;margin-bottom:6px}}
+@media (max-width:760px){
+  main{padding:12px}.sch,.asc{grid-template-columns:1fr;gap:12px}.nav{display:flex;gap:6px;overflow-x:auto;padding:8px;border-radius:16px}.nav .who{display:none}.nav button{white-space:nowrap;width:auto;padding:10px 14px}
+  .top{padding:8px 12px;gap:8px}.brand{font-size:18px}.brand small{display:none}.tag{display:none}.seg{margin-left:auto}.seg button{padding:8px 12px;font-size:13px}
+  .pend{grid-template-columns:1fr}.kpi{padding:16px}.kpi .n{font-size:28px}.card{padding:16px}h2{font-size:22px}.lead{font-size:14px;margin-bottom:12px}
+  /* familia: app a pantalla completa, sin marco de teléfono */
+  .view.on.fam{display:block;margin:-12px}
+  .fam .side{display:none}
+  .phone{width:100%;max-width:none;height:calc(100dvh - 57px - env(safe-area-inset-top,0px));background:none;border-radius:0;padding:0;box-shadow:none;margin:0}
+  .phone::before,.phone::after,.island,.status,.homebar{display:none}
+  .screen{border:0;border-radius:0}
+  .hdr{padding:14px 16px 14px;margin-top:0}
+  .tabs{padding:6px 0 calc(6px + env(safe-area-inset-bottom,0px))}
+  .fab{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+  .ask{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+  .sheet{border-radius:0}.sheet>div{border-radius:24px 24px 0 0;padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))}
+  .toasts{left:12px;right:12px;top:calc(64px + env(safe-area-inset-top,0px))}.toast{max-width:none;min-width:0}
+}
+@media (display-mode:standalone){.top{padding-top:calc(8px + env(safe-area-inset-top,0px))}}
+@media (max-width:480px){.grid4{grid-template-columns:1fr}.kpi .delta{float:none;display:block;margin-bottom:6px}}
 </style>
 </head>
 <body>
@@ -238,6 +263,7 @@ tr.link{cursor:pointer}tr.link:hover td{background:rgba(255,255,255,.5)}
     <button role="tab" id="tab-asc" class="assoc" aria-selected="false" aria-controls="v-asc" onclick="setView('asc')">Asociación</button>
   </div>
   <span class="tag">Prototipo navegable · datos ilustrativos</span>
+  <button class="btn sm" id="installBtn" hidden aria-label="Instalar Vínculo como app">Instalar</button>
 </header>
 
 <main>
@@ -718,6 +744,12 @@ function sendCom(e){
 }
 document.addEventListener('keydown', e => { if(e.key==='Escape'){ closeModal(); closeAModal(); closeSheet(); } });
 renderPhone(); renderSchool(); renderAssoc();
+/* ============ PWA ============ */
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+let installEvt = null;
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; $('#installBtn').hidden = false; });
+$('#installBtn').addEventListener('click', async () => { if(!installEvt) return; installEvt.prompt(); const r = await installEvt.userChoice; if (r.outcome==='accepted') { $('#installBtn').hidden = true; toast('Vínculo instalada','Ya la tenés en la pantalla de inicio.'); } installEvt = null; });
+window.addEventListener('appinstalled', () => { $('#installBtn').hidden = true; });
 </script>
 </body>
 </html>

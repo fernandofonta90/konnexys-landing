@@ -1,0 +1,17 @@
+{
+  "name": "Vínculo · Colegio y familias",
+  "short_name": "Vínculo",
+  "description": "Un solo canal entre el colegio y las familias. Prototipo navegable.",
+  "lang": "es",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F8F0EE",
+  "theme_color": "#DA4E26",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
