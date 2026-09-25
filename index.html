@@ -21,7 +21,7 @@
     --t-approve-fg:#1C6B4C;--t-approve-bg:#E3F3EC;
     --t-output-fg:#4B4A44; --t-output-bg:#ECEBE5;
     --focus:#FB5C1C;
-    --r:10px; --r-sm:7px;
+    --r:10px; --r-sm:7px; --pill:999px;
     --maxw:1120px; --nav-h:64px;
     --step:clamp(20px,4vw,32px);
   }
@@ -52,7 +52,7 @@
   @media (prefers-reduced-motion:reduce){ .skip-link{transition:none} }
 
   /* Botones — esquinas medidas, no pill */
-  .btn{display:inline-flex; align-items:center; gap:8px; font-family:"Archivo"; font-weight:600; font-size:15.5px; padding:11px 20px; border-radius:var(--r-sm); border:1.5px solid transparent; cursor:pointer; transition:background .16s ease, color .16s ease, border-color .16s ease, transform .16s ease}
+  .btn{display:inline-flex; align-items:center; gap:8px; font-family:"Archivo"; font-weight:600; font-size:15.5px; padding:11px 22px; border-radius:var(--pill); border:1.5px solid transparent; cursor:pointer; transition:background .16s ease, color .16s ease, border-color .16s ease, transform .16s ease}
   .btn-primary{background:var(--orange); color:#fff}
   .btn-primary:hover{background:var(--orange-hover)}
   .btn-secondary{background:transparent; color:var(--ink); border-color:var(--line-strong)}
@@ -254,6 +254,14 @@
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g2)' opacity='.09'/%3E%3C/svg%3E")}
   @media (prefers-reduced-motion:no-preference){ #piloto::before{animation:aurora 17s ease-in-out infinite alternate} }
 
+  /* Escenas a pantalla completa en escritorio: cada sección llena la pantalla */
+  @media (min-width:861px){
+    html{scroll-snap-type:y mandatory}
+    .hero,.section,footer{scroll-snap-align:start; scroll-snap-stop:always}
+    .section{min-height:calc(100svh - var(--nav-h)); display:flex; flex-direction:column; justify-content:center; padding:36px 0 46px}
+    footer{min-height:calc(100svh - var(--nav-h)); display:flex; flex-direction:column; justify-content:center}
+  }
+
   /* RESPONSIVE */
   @media (max-width:860px){
     .hero{min-height:auto; justify-content:flex-start; padding:calc(var(--nav-h) + 22px) 0 44px}
@@ -297,7 +305,6 @@
       <a href="#piloto">piloto</a>
     </nav>
     <div class="nav-actions">
-      <a class="btn btn-ghost" href="#piloto">Iniciar sesión</a>
       <a class="btn btn-primary" href="#piloto">Solicitar acceso</a>
       <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Abrir menú">menú</button>
     </div>
@@ -416,13 +423,13 @@
   <section class="section" id="piloto" aria-labelledby="piloto-h">
     <div class="wrap cta-grid">
       <div class="cta-copy reveal">
-        <span class="eyebrow">Empezar</span>
-        <h2 id="piloto-h">Sé de los primeros en operar con Konnexys</h2>
-        <p>Abrimos un grupo reducido de empresas para implementar Konnexys con acompañamiento directo del equipo fundador.</p>
+        <span class="eyebrow">Piloto</span>
+        <h2 id="piloto-h">Lleva tus procesos a Konnexys</h2>
+        <p>Empresas de la región ya están automatizando sus procesos con Konnexys. Súmate al programa e implementa el tuyo con acompañamiento directo de nuestro equipo.</p>
         <ul class="cta-list">
           <li><span class="ck" aria-hidden="true">+</span> Implementación guiada de tu primer proceso</li>
-          <li><span class="ck" aria-hidden="true">+</span> Acompañamiento directo, sin intermediarios</li>
-          <li><span class="ck" aria-hidden="true">+</span> Condiciones preferenciales por entrar temprano</li>
+          <li><span class="ck" aria-hidden="true">+</span> Acompañamiento directo de nuestro equipo</li>
+          <li><span class="ck" aria-hidden="true">+</span> En marcha en semanas, no meses</li>
         </ul>
       </div>
       <div class="form reveal">
@@ -431,7 +438,7 @@
         <form id="pilotForm" novalidate>
           <div class="field" id="f-nombre">
             <label for="nombre">Nombre <span class="req" aria-hidden="true">*</span></label>
-            <input id="nombre" name="nombre" type="text" autocomplete="name" required aria-required="true" aria-describedby="e-nombre" placeholder="Ej.: Fernando Zárate">
+            <input id="nombre" name="nombre" type="text" autocomplete="name" required aria-required="true" aria-describedby="e-nombre" placeholder="Ej.: Juan Pérez">
             <p class="err" id="e-nombre">Escribe tu nombre.</p>
           </div>
           <div class="field" id="f-empresa">
@@ -449,7 +456,7 @@
           </div>
           <button class="btn btn-primary" type="submit">Enviar solicitud</button>
           <p class="form-status mono" id="formStatus" role="status" aria-live="polite"></p>
-          <p class="legal">Sin compromiso. Al enviar se abrirá tu correo con la solicitud lista.</p>
+          <p class="legal">Sin compromiso. Recibimos tu solicitud y te contactamos en menos de 48&nbsp;h.</p>
         </form>
       </div>
     </div>
@@ -564,7 +571,7 @@
     }
     form.addEventListener('submit', (e)=>{
       e.preventDefault();
-      status.textContent='';
+      status.style.color=''; status.textContent='';
       let firstBad=null;
       const nBad = nombre.value.trim()==='';
       const eBad = !emailOk(email.value.trim());
@@ -572,10 +579,22 @@
       setInvalid('f-email', eBad); if(eBad && !firstBad) firstBad=email;
       if(firstBad){ firstBad.focus(); status.style.color='#B23524'; status.textContent='Revisa los campos marcados.'; return; }
       const v=id=>(document.getElementById(id).value||'').trim();
-      const asunto=encodeURIComponent('Solicitud de piloto Konnexys'+(v('empresa')?' — '+v('empresa'):''));
-      const cuerpo=encodeURIComponent('Nombre: '+v('nombre')+'\nEmpresa: '+v('empresa')+'\nCorreo: '+v('email')+'\n\nProceso a automatizar:\n'+v('proceso'));
-      status.style.color='var(--t-approve-fg)'; status.textContent='Abriendo tu correo…';
-      window.location.href='mailto:hola@konnexys.com?subject='+asunto+'&body='+cuerpo; // cambia el correo o conéctalo a Formspree
+      const btn=form.querySelector('button[type="submit"]');
+      btn.disabled=true; status.style.color='var(--ink-2)'; status.textContent='Enviando…';
+      fetch('https://formsubmit.co/ajax/fzarate@konnexys.com',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Accept':'application/json'},
+        body:JSON.stringify({
+          Nombre:v('nombre'), Empresa:v('empresa'), Correo:v('email'),
+          Proceso:v('proceso') || '(no indicado)',
+          _subject:'Nueva solicitud de piloto Konnexys'+(v('empresa')?' — '+v('empresa'):''),
+          _template:'table', _captcha:'false'
+        })
+      })
+      .then(r=>r.json())
+      .then(()=>{ form.reset(); status.style.color='var(--t-approve-fg)'; status.textContent='¡Solicitud enviada! Te contactamos pronto.'; })
+      .catch(()=>{ status.style.color='#B23524'; status.textContent='No se pudo enviar. Escríbenos a fzarate@konnexys.com'; })
+      .finally(()=>{ btn.disabled=false; });
     });
     // limpia el error al corregir
     [nombre,email].forEach(inp=>inp.addEventListener('input', ()=>{
