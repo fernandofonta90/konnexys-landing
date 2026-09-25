@@ -258,6 +258,50 @@
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g2)' opacity='.09'/%3E%3C/svg%3E")}
   @media (prefers-reduced-motion:no-preference){ #piloto::before{animation:aurora 17s ease-in-out infinite alternate} }
 
+  /* ARQUITECTURA */
+  .arch{display:grid; grid-template-columns:1fr auto 1fr; gap:clamp(14px,3vw,34px); align-items:center; margin-bottom:34px}
+  .arch-col{display:flex; flex-direction:column; gap:10px}
+  .arch-label{font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3); margin-bottom:2px}
+  .arch-col.right{text-align:right}
+  .arch-node{background:rgba(255,255,255,.5); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,.6); border-radius:var(--r-sm); padding:12px 15px; font-weight:600; font-size:14.5px; box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 0 10px 26px -20px rgba(18,18,16,.4)}
+  .arch-core{display:flex; flex-direction:column; align-items:center; gap:6px; text-align:center; padding:26px 22px; border-radius:var(--r); background:linear-gradient(160deg,#22160E,#0E0B09); border:1px solid rgba(251,92,28,.45); box-shadow:0 0 44px rgba(251,92,28,.32), inset 0 0 22px rgba(251,92,28,.12); min-width:150px}
+  .arch-core .acm{width:40px; height:40px; border-radius:11px; background:linear-gradient(135deg,var(--orange),#BF3A0A); color:#fff; display:grid; place-items:center; font-family:"Archivo"; font-weight:800; font-size:19px; box-shadow:0 6px 16px rgba(251,92,28,.5)}
+  .arch-core strong{color:#fff; font-family:"Archivo"; font-size:17px}
+  .arch-core span{color:rgba(255,255,255,.6); font-size:12.5px; font-family:"JetBrains Mono"}
+  .arch-points{display:grid; grid-template-columns:repeat(4,1fr); gap:14px}
+  .arch-pt{padding:18px; border-radius:var(--r); background:rgba(255,255,255,.5); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border:1px solid rgba(255,255,255,.6); box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 0 14px 34px -26px rgba(18,18,16,.38)}
+  .arch-pt .apt-ic{color:var(--orange); margin-bottom:10px} .arch-pt .apt-ic svg{width:22px; height:22px}
+  .arch-pt h3{font-size:15.5px; margin-bottom:5px} .arch-pt p{font-size:13.5px; color:var(--ink-2)}
+
+  /* CASOS DE USO */
+  .cases{display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
+  .case{padding:24px; border-radius:var(--r); background:rgba(255,255,255,.5); backdrop-filter:blur(16px) saturate(1.4); -webkit-backdrop-filter:blur(16px) saturate(1.4); border:1px solid rgba(255,255,255,.6); box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 0 18px 44px -26px rgba(18,18,16,.38)}
+  .case .clbl{font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--orange-ink); background:var(--orange-wash); border:1px solid #F6D6C4; padding:4px 10px; border-radius:999px; display:inline-block; margin-bottom:14px}
+  .case h3{font-size:17px; margin-bottom:10px}
+  .case ul{list-style:none; display:flex; flex-direction:column; gap:7px}
+  .case ul li{display:flex; gap:9px; align-items:flex-start; font-size:14px; color:var(--ink-2)}
+  .case ul li::before{content:"›"; color:var(--orange); font-weight:700; flex-shrink:0}
+
+  /* SEGURIDAD */
+  .sec-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:22px}
+  .sec-card{padding:24px; border-radius:var(--r); background:rgba(255,255,255,.5); backdrop-filter:blur(16px) saturate(1.4); -webkit-backdrop-filter:blur(16px) saturate(1.4); border:1px solid rgba(255,255,255,.6); box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 0 18px 44px -26px rgba(18,18,16,.38)}
+  .sec-card .sic{width:42px; height:42px; border-radius:12px; background:var(--orange-wash); border:1px solid rgba(251,92,28,.2); color:var(--orange); display:grid; place-items:center; margin-bottom:14px}
+  .sec-card .sic svg{width:22px; height:22px}
+  .sec-card h3{font-size:16px; margin-bottom:7px} .sec-card p{font-size:13.5px; color:var(--ink-2)}
+  .sec-note{font-size:13px; color:var(--ink-3); max-width:70ch}
+
+  /* EQUIPO */
+  .team{display:grid; grid-template-columns:1fr 1fr; gap:clamp(28px,5vw,56px); align-items:center}
+  .team-quote{font-family:"Archivo"; font-weight:500; font-size:clamp(20px,2.5vw,27px); line-height:1.35; letter-spacing:-.01em}
+  .team-quote .q{color:var(--orange)}
+  .team-sign{margin-top:20px; font-family:"JetBrains Mono",monospace; font-size:13px; color:var(--ink-2)}
+  .team-stats{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+  .team-stat{padding:22px; border-radius:var(--r); background:rgba(255,255,255,.5); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border:1px solid rgba(255,255,255,.6); box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 0 14px 34px -26px rgba(18,18,16,.38)}
+  .team-stat .n{font-family:"Archivo"; font-weight:800; font-size:clamp(26px,3.4vw,36px); color:var(--orange); line-height:1}
+  .team-stat .l{margin-top:6px; font-size:13.5px; color:var(--ink-2)}
+
+  @supports not ((backdrop-filter:blur(2px)) or (-webkit-backdrop-filter:blur(2px))){ .arch-node,.arch-pt,.case,.sec-card,.team-stat{background:rgba(255,255,255,.92)} }
+
   /* Escenas a pantalla completa en escritorio: cada sección llena la pantalla */
   @media (min-width:861px){
     html{scroll-snap-type:y proximity}
@@ -275,6 +319,11 @@
     .hero .lead{max-width:none}
     .caps{grid-template-columns:repeat(2,1fr)}
     .steps{grid-template-columns:1fr 1fr}
+    .cases,.sec-grid,.arch-points{grid-template-columns:1fr 1fr}
+    .arch{grid-template-columns:1fr; gap:16px}
+    .arch-col.right{text-align:left}
+    .arch-core{margin:4px auto}
+    .team{grid-template-columns:1fr; gap:28px}
     .section{padding:clamp(48px,10vw,72px) 0}
     .nav-links{display:none}
     .nav-toggle{display:inline-flex}
@@ -282,7 +331,7 @@
     header.nav[data-open="true"] .nav-links a{padding:12px 0; width:100%; font-size:15px}
   }
   @media (max-width:520px){
-    .caps,.steps{grid-template-columns:1fr}
+    .caps,.steps,.cases,.sec-grid,.arch-points,.team-stats{grid-template-columns:1fr}
     .spec-row{grid-template-columns:74px 1fr}
     .spec-meta{display:none}
     .spec-body{padding:14px}
@@ -303,9 +352,10 @@
   <div class="nav-in">
     <a class="brand" href="#top" translate="no"><span class="brand-mark" aria-hidden="true">K</span>Konnexys</a>
     <nav class="nav-links" id="navLinks" aria-label="Principal">
-      <a href="#proceso">proceso</a>
+      <a href="#arquitectura">cómo funciona</a>
       <a href="#capacidades">capacidades</a>
-      <a href="#operacion">operación</a>
+      <a href="#casos">casos</a>
+      <a href="#seguridad">seguridad</a>
       <a href="#piloto">piloto</a>
     </nav>
     <div class="nav-actions">
@@ -373,6 +423,44 @@
     </div>
   </section>
 
+  <!-- ARQUITECTURA -->
+  <section class="section" id="arquitectura" aria-labelledby="arch-h">
+    <div class="wrap">
+      <div class="sec-head center reveal">
+        <span class="eyebrow">Cómo funciona</span>
+        <h2 id="arch-h">Un SaaS que orquesta toda tu operación</h2>
+        <p>Konnexys se sienta en el centro: recibe de tus canales, ejecuta el proceso y actúa sobre tus sistemas. Todo en la nube, sin instalar nada.</p>
+      </div>
+      <div class="arch reveal">
+        <div class="arch-col left">
+          <span class="arch-label">Entradas</span>
+          <div class="arch-node">WhatsApp</div>
+          <div class="arch-node">Correo</div>
+          <div class="arch-node">API / Webhooks</div>
+          <div class="arch-node">Formularios</div>
+        </div>
+        <div class="arch-core">
+          <span class="acm" aria-hidden="true">K</span>
+          <strong translate="no">Konnexys</strong>
+          <span>Motor de procesos en la nube</span>
+        </div>
+        <div class="arch-col right">
+          <span class="arch-label">Tus sistemas</span>
+          <div class="arch-node">CRM</div>
+          <div class="arch-node">ERP</div>
+          <div class="arch-node">Base de datos</div>
+          <div class="arch-node">PDF / Reportes</div>
+        </div>
+      </div>
+      <div class="arch-points stagger">
+        <div class="arch-pt"><span class="apt-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 12a9 9 0 1018 0 9 9 0 00-18 0zM3 12h18M12 3c2.5 2.7 2.5 15.3 0 18M12 3C9.5 5.7 9.5 18.3 12 21"/></svg></span><h3>100% en la nube</h3><p>Sin servidores ni instalaciones. Entras desde el navegador.</p></div>
+        <div class="arch-pt"><span class="apt-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg></span><h3>Multi-tenant</h3><p>Cada organización con sus datos aislados y su propia configuración.</p></div>
+        <div class="arch-pt"><span class="apt-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M8 6l-4 6 4 6M16 6l4 6-4 6"/></svg></span><h3>API-first</h3><p>Todo lo que hace la interfaz también se hace por API y webhooks.</p></div>
+        <div class="arch-pt"><span class="apt-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span><h3>Motor robusto</h3><p>Basado en un motor de procesos de nivel empresarial.</p></div>
+      </div>
+    </div>
+  </section>
+
   <!-- CAPACIDADES -->
   <section class="section" id="capacidades" aria-labelledby="cap-h">
     <div class="wrap">
@@ -388,6 +476,25 @@
         <div class="cap"><span class="cap-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="10" width="6" height="4" rx="1"/><rect x="15" y="4" width="6" height="4" rx="1"/><rect x="15" y="16" width="6" height="4" rx="1"/><path d="M9 12h3m0-6v12"/></svg></span><span class="lbl">flow</span><h3>Diagrama de proceso</h3><p>Visualiza el flujo completo, siempre editable.</p></div>
         <div class="cap"><span class="cap-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M8 6l-4 6 4 6M16 6l4 6-4 6"/></svg></span><span class="lbl">api</span><h3>Integraciones y webhooks</h3><p>Conecta con tus sistemas y dispara eventos en tiempo real.</p></div>
         <div class="cap"><span class="cap-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span><span class="lbl">docs</span><h3>Generación de PDF</h3><p>Comprobantes y reportes generados automáticamente.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CASOS DE USO -->
+  <section class="section" id="casos" aria-labelledby="casos-h">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Casos de uso</span>
+        <h2 id="casos-h">Un proceso de cada área, resuelto</h2>
+        <p>Si hoy vive en correos, planillas o aprobaciones manuales, se puede automatizar con Konnexys.</p>
+      </div>
+      <div class="cases stagger">
+        <div class="case"><span class="clbl">Finanzas</span><h3>Cuentas por pagar</h3><ul><li>Aprobación de facturas</li><li>Solicitudes de gasto</li><li>Órdenes de compra</li></ul></div>
+        <div class="case"><span class="clbl">RR. HH.</span><h3>Gestión de personas</h3><ul><li>Onboarding de empleados</li><li>Solicitudes de vacaciones</li><li>Permisos y ausencias</li></ul></div>
+        <div class="case"><span class="clbl">Operaciones</span><h3>Flujos internos</h3><ul><li>Tickets y solicitudes</li><li>Autorizaciones internas</li><li>Control de calidad</li></ul></div>
+        <div class="case"><span class="clbl">Seguros</span><h3>Siniestros</h3><ul><li>Registro de siniestros</li><li>Evaluación y peritaje</li><li>Resolución y notificación</li></ul></div>
+        <div class="case"><span class="clbl">Comercial</span><h3>Ciclo de ventas</h3><ul><li>Alta de clientes</li><li>Aprobación de descuentos</li><li>Contratos y firmas</li></ul></div>
+        <div class="case"><span class="clbl">Servicios</span><h3>Atención</h3><ul><li>Solicitudes de servicio</li><li>Escalamientos con SLA</li><li>Encuestas de cierre</li></ul></div>
       </div>
     </div>
   </section>
@@ -419,6 +526,43 @@
           <div class="log-row"><span class="log-time tnum">09:45</span><span class="log-text">Aprobado por gerencia</span><span class="log-badge lb-ok">aprobado</span></div>
           <div class="log-row"><span class="log-time tnum">09:46</span><span class="log-text">Comprobante generado</span><span class="log-badge lb-ok">listo</span></div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEGURIDAD -->
+  <section class="section" id="seguridad" aria-labelledby="seg-h">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Seguridad</span>
+        <h2 id="seg-h">Listo para producción desde el día uno</h2>
+        <p>Konnexys se diseñó con criterios de seguridad empresarial: control de acceso, cifrado y trazabilidad, incorporados de fábrica.</p>
+      </div>
+      <div class="sec-grid stagger">
+        <div class="sec-card"><span class="sic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span><h3>Control de acceso por rol</h3><p>Permisos granulares (RBAC) por rol y área. Cada quien ve y hace solo lo que le corresponde.</p></div>
+        <div class="sec-card"><span class="sic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg></span><h3>Cifrado</h3><p>Datos cifrados en tránsito y en reposo, con conexiones seguras de extremo a extremo.</p></div>
+        <div class="sec-card"><span class="sic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg></span><h3>Aislamiento multi-tenant</h3><p>Los datos de cada organización están separados de forma lógica, sin cruces entre clientes.</p></div>
+        <div class="sec-card"><span class="sic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9 12l2 2 4-4"/><rect x="4" y="4" width="16" height="16" rx="3"/></svg></span><h3>Trazabilidad completa</h3><p>Registro de quién hizo qué y cuándo en cada proceso, para auditoría y cumplimiento.</p></div>
+        <div class="sec-card"><span class="sic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 7h16M4 12h16M4 17h10"/><circle cx="18" cy="17" r="3"/></svg></span><h3>Webhooks firmados</h3><p>Cada evento hacia tus sistemas viaja firmado y con control de tasa, para integraciones confiables.</p></div>
+        <div class="sec-card"><span class="sic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 12a8 8 0 018-8 8 8 0 017 4M20 12a8 8 0 01-8 8 8 8 0 01-7-4"/><path d="M16 8h4V4M8 16H4v4"/></svg></span><h3>Respaldos</h3><p>Copias de seguridad periódicas para proteger la continuidad de tu operación.</p></div>
+      </div>
+      <p class="sec-note reveal">Konnexys está en etapa de piloto y evoluciona hacia estándares formales de la industria. Hoy no reclamamos certificaciones que aún no tenemos; sí operamos con estas prácticas desde el inicio.</p>
+    </div>
+  </section>
+
+  <!-- RESPALDO DEL EQUIPO -->
+  <section class="section" id="equipo" aria-labelledby="equipo-h">
+    <div class="wrap team">
+      <div class="reveal">
+        <span class="eyebrow">Quiénes están detrás</span>
+        <p class="team-quote" id="equipo-h">Konnexys nace de un equipo que <span class="q">opera software empresarial real</span> en varios mercados de LATAM. Conocemos de primera mano lo que cuesta poner un proceso en producción y sostenerlo.</p>
+        <p class="team-sign">— El equipo de Konnexys</p>
+      </div>
+      <div class="team-stats stagger">
+        <div class="team-stat"><div class="n tnum">8</div><div class="l">mercados de LATAM en el radar</div></div>
+        <div class="team-stat"><div class="n">Español</div><div class="l">producto y soporte, sin barreras</div></div>
+        <div class="team-stat"><div class="n">Semanas</div><div class="l">de la idea a producción</div></div>
+        <div class="team-stat"><div class="n">Directo</div><div class="l">acompañamiento sin intermediarios</div></div>
       </div>
     </div>
   </section>
@@ -500,10 +644,11 @@
     <div class="foot-in">
       <a class="foot-brand" href="#top" translate="no"><span class="brand-mark" aria-hidden="true">K</span>Konnexys</a>
       <nav class="foot-links" aria-label="Pie de página">
-        <a href="#proceso">Proceso</a>
+        <a href="#arquitectura">Cómo funciona</a>
         <a href="#capacidades">Capacidades</a>
+        <a href="#casos">Casos de uso</a>
+        <a href="#seguridad">Seguridad</a>
         <a href="#piloto">Piloto</a>
-        <a href="#top">Privacidad</a>
       </nav>
     </div>
     <div class="foot-meta">
