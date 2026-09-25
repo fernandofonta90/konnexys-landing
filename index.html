@@ -204,6 +204,10 @@
   .field input:hover,.field textarea:hover{border-color:#CFCEC7}
   .field input:focus-visible,.field textarea:focus-visible{outline:none; border-color:var(--orange); box-shadow:0 0 0 3px rgba(251,92,28,.16)}
   .field textarea{resize:vertical; min-height:74px}
+  .phone-row{display:flex; gap:8px}
+  .phone-row select{flex:0 0 auto; width:104px; font-family:"Archivo"; font-size:15px; color:var(--ink); background:var(--paper); border:1.5px solid var(--line); border-radius:var(--r-sm); padding:11px 8px; cursor:pointer; transition:border-color .16s ease, box-shadow .16s ease}
+  .phone-row select:focus-visible{outline:none; border-color:var(--orange); box-shadow:0 0 0 3px rgba(251,92,28,.16)}
+  .phone-row input{flex:1 1 auto; min-width:0}
   .field[data-invalid="true"] input,.field[data-invalid="true"] textarea{border-color:#C6402F; box-shadow:0 0 0 3px rgba(198,64,47,.14)}
   .err{display:none; font-size:13px; color:#B23524; margin-top:6px}
   .field[data-invalid="true"] .err{display:block}
@@ -257,9 +261,9 @@
   /* Escenas a pantalla completa en escritorio: cada sección llena la pantalla */
   @media (min-width:861px){
     html{scroll-snap-type:y mandatory}
-    .hero,.section,footer{scroll-snap-align:start; scroll-snap-stop:always}
+    .hero,.section{scroll-snap-align:start; scroll-snap-stop:always}
     .section{min-height:calc(100svh - var(--nav-h)); display:flex; flex-direction:column; justify-content:center; padding:36px 0 46px}
-    footer{min-height:calc(100svh - var(--nav-h)); display:flex; flex-direction:column; justify-content:center}
+    #piloto{scroll-snap-align:none}
   }
 
   /* RESPONSIVE */
@@ -450,6 +454,33 @@
             <input id="email" name="email" type="email" autocomplete="email" inputmode="email" spellcheck="false" required aria-required="true" aria-describedby="e-email" placeholder="Ej.: nombre@empresa.com">
             <p class="err" id="e-email">Escribe un correo válido, por ejemplo nombre@empresa.com.</p>
           </div>
+          <div class="field" id="f-wa">
+            <label for="wa-num">WhatsApp <span style="color:var(--ink-3);font-weight:400">(opcional)</span></label>
+            <div class="phone-row">
+              <select id="wa-cc" name="wa_cc" aria-label="Código de país" autocomplete="tel-country-code">
+                <option value="+52" data-flag="🇲🇽" selected>🇲🇽 +52</option>
+                <option value="+595" data-flag="🇵🇾">🇵🇾 +595</option>
+                <option value="+54" data-flag="🇦🇷">🇦🇷 +54</option>
+                <option value="+57" data-flag="🇨🇴">🇨🇴 +57</option>
+                <option value="+51" data-flag="🇵🇪">🇵🇪 +51</option>
+                <option value="+56" data-flag="🇨🇱">🇨🇱 +56</option>
+                <option value="+593" data-flag="🇪🇨">🇪🇨 +593</option>
+                <option value="+598" data-flag="🇺🇾">🇺🇾 +598</option>
+                <option value="+591" data-flag="🇧🇴">🇧🇴 +591</option>
+                <option value="+502" data-flag="🇬🇹">🇬🇹 +502</option>
+                <option value="+503" data-flag="🇸🇻">🇸🇻 +503</option>
+                <option value="+504" data-flag="🇭🇳">🇭🇳 +504</option>
+                <option value="+505" data-flag="🇳🇮">🇳🇮 +505</option>
+                <option value="+506" data-flag="🇨🇷">🇨🇷 +506</option>
+                <option value="+507" data-flag="🇵🇦">🇵🇦 +507</option>
+                <option value="+55" data-flag="🇧🇷">🇧🇷 +55</option>
+                <option value="+1" data-flag="🇺🇸">🇺🇸 +1</option>
+                <option value="+34" data-flag="🇪🇸">🇪🇸 +34</option>
+              </select>
+              <input id="wa-num" name="wa_num" type="tel" autocomplete="tel-national" inputmode="numeric" aria-describedby="e-wa" placeholder="Número de WhatsApp">
+            </div>
+            <p class="err" id="e-wa">Escribe solo números, sin el prefijo del país.</p>
+          </div>
           <div class="field" id="f-proceso">
             <label for="proceso">¿Qué proceso quieres automatizar?</label>
             <textarea id="proceso" name="proceso" placeholder="Ej.: aprobación de facturas de proveedores…"></textarea>
@@ -579,13 +610,18 @@
       setInvalid('f-email', eBad); if(eBad && !firstBad) firstBad=email;
       if(firstBad){ firstBad.focus(); status.style.color='#B23524'; status.textContent='Revisa los campos marcados.'; return; }
       const v=id=>(document.getElementById(id).value||'').trim();
+      const waNum=v('wa-num').replace(/[^\d]/g,'');
+      const whatsapp = waNum ? (document.getElementById('wa-cc').value+' '+waNum) : '(no indicado)';
       const btn=form.querySelector('button[type="submit"]');
       btn.disabled=true; status.style.color='var(--ink-2)'; status.textContent='Enviando…';
       fetch('https://formsubmit.co/ajax/fzarate@konnexys.com',{
         method:'POST',
         headers:{'Content-Type':'application/json','Accept':'application/json'},
         body:JSON.stringify({
-          Nombre:v('nombre'), Empresa:v('empresa'), Correo:v('email'),
+          Nombre:v('nombre'),
+          Empresa:v('empresa') || '(no indicado)',
+          Correo:v('email'),
+          WhatsApp:whatsapp,
           Proceso:v('proceso') || '(no indicado)',
           _subject:'Nueva solicitud de piloto Konnexys'+(v('empresa')?' — '+v('empresa'):''),
           _template:'table', _captcha:'false'
