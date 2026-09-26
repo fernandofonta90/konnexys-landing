@@ -302,6 +302,20 @@
 
   @supports not ((backdrop-filter:blur(2px)) or (-webkit-backdrop-filter:blur(2px))){ .arch-node,.arch-pt,.case,.sec-card,.team-stat{background:rgba(255,255,255,.92)} }
 
+  /* IMPACTO (números que decrecen) */
+  .impact{display:grid; grid-template-columns:repeat(4,1fr); gap:14px}
+  .ist{padding:22px; border-radius:var(--r); background:rgba(255,255,255,.5); backdrop-filter:blur(16px) saturate(1.4); -webkit-backdrop-filter:blur(16px) saturate(1.4); border:1px solid rgba(255,255,255,.6); box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 0 18px 44px -26px rgba(18,18,16,.38)}
+  .ist-lbl{font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-2); margin-bottom:12px}
+  .ist-fig{display:flex; align-items:baseline; gap:5px; margin-bottom:13px; line-height:1}
+  .ist-fig .pre{font-size:14px; color:var(--ink-3)}
+  .ist-num{font-family:"Archivo"; font-weight:800; font-size:clamp(30px,4vw,40px); color:var(--orange); font-variant-numeric:tabular-nums; letter-spacing:-.01em}
+  .ist-track{height:7px; border-radius:99px; background:rgba(251,92,28,.16); overflow:hidden}
+  .ist-bar{display:block; height:100%; width:100%; border-radius:99px; background:linear-gradient(90deg,var(--orange-soft,#FC954C),var(--orange))}
+  .ist-sub{font-size:13px; color:var(--ink-2); margin-top:11px}
+  .impact-note{font-size:12px; color:var(--ink-3); margin-top:20px; max-width:64ch}
+
+  @supports not ((backdrop-filter:blur(2px)) or (-webkit-backdrop-filter:blur(2px))){ .ist{background:rgba(255,255,255,.92)} }
+
   /* Escenas a pantalla completa en escritorio: cada sección llena la pantalla */
   @media (min-width:861px){
     html{scroll-snap-type:y proximity}
@@ -319,7 +333,7 @@
     .hero .lead{max-width:none}
     .caps{grid-template-columns:repeat(2,1fr)}
     .steps{grid-template-columns:1fr 1fr}
-    .cases,.sec-grid,.arch-points{grid-template-columns:1fr 1fr}
+    .cases,.sec-grid,.arch-points,.impact{grid-template-columns:1fr 1fr}
     .arch{grid-template-columns:1fr; gap:16px}
     .arch-col.right{text-align:left}
     .arch-core{margin:4px auto}
@@ -331,7 +345,7 @@
     header.nav[data-open="true"] .nav-links a{padding:12px 0; width:100%; font-size:15px}
   }
   @media (max-width:520px){
-    .caps,.steps,.cases,.sec-grid,.arch-points,.team-stats{grid-template-columns:1fr}
+    .caps,.steps,.cases,.sec-grid,.arch-points,.team-stats,.impact{grid-template-columns:1fr}
     .spec-row{grid-template-columns:74px 1fr}
     .spec-meta{display:none}
     .spec-body{padding:14px}
@@ -355,6 +369,7 @@
       <a href="#arquitectura">cómo funciona</a>
       <a href="#capacidades">capacidades</a>
       <a href="#casos">casos</a>
+      <a href="#impacto">impacto</a>
       <a href="#seguridad">seguridad</a>
       <a href="#piloto">piloto</a>
     </nav>
@@ -530,6 +545,44 @@
     </div>
   </section>
 
+  <!-- IMPACTO -->
+  <section class="section" id="impacto" aria-labelledby="imp-h">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">El impacto</span>
+        <h2 id="imp-h">El ROI aparece cuando mejoras tus procesos</h2>
+        <p>Konnexys mide cada paso y te muestra dónde está el cuello de botella. Lo que no se mide, no se mejora: al automatizar, esto es lo que se puede reducir.</p>
+      </div>
+      <div class="impact stagger" id="impactGrid">
+        <div class="ist" data-to="85">
+          <p class="ist-lbl">Tiempo de gestión</p>
+          <p class="ist-fig"><span class="pre">hasta</span><span class="ist-num">−0%</span></p>
+          <div class="ist-track"><span class="ist-bar"></span></div>
+          <p class="ist-sub">menos tiempo por proceso</p>
+        </div>
+        <div class="ist" data-to="90">
+          <p class="ist-lbl">Trabajo manual</p>
+          <p class="ist-fig"><span class="pre">hasta</span><span class="ist-num">−0%</span></p>
+          <div class="ist-track"><span class="ist-bar"></span></div>
+          <p class="ist-sub">menos pasos manuales</p>
+        </div>
+        <div class="ist" data-to="95">
+          <p class="ist-lbl">Errores</p>
+          <p class="ist-fig"><span class="pre">hasta</span><span class="ist-num">−0%</span></p>
+          <div class="ist-track"><span class="ist-bar"></span></div>
+          <p class="ist-sub">menos retrabajo</p>
+        </div>
+        <div class="ist" data-to="40">
+          <p class="ist-lbl">Costos ocultos</p>
+          <p class="ist-fig"><span class="pre">hasta</span><span class="ist-num">−0%</span></p>
+          <div class="ist-track"><span class="ist-bar"></span></div>
+          <p class="ist-sub">menos costo operativo</p>
+        </div>
+      </div>
+      <p class="impact-note reveal">Rangos aproximados de reducción según el tipo de proceso. Los resultados varían en cada caso.</p>
+    </div>
+  </section>
+
   <!-- SEGURIDAD -->
   <section class="section" id="seguridad" aria-labelledby="seg-h">
     <div class="wrap">
@@ -647,6 +700,7 @@
         <a href="#arquitectura">Cómo funciona</a>
         <a href="#capacidades">Capacidades</a>
         <a href="#casos">Casos de uso</a>
+        <a href="#impacto">Impacto</a>
         <a href="#seguridad">Seguridad</a>
         <a href="#piloto">Piloto</a>
       </nav>
@@ -732,6 +786,24 @@
     const play=()=>{ stop(); rows.forEach((r,i)=>timers.push(setTimeout(()=>r.classList.add('in'), 200+i*320))); };
     const stop=()=>{ timers.forEach(clearTimeout); timers=[]; rows.forEach(r=>r.classList.remove('in')); };
     new IntersectionObserver((es)=>{es.forEach(e=>{ e.isIntersecting?play():stop(); })},{threshold:.35}).observe(log);
+  })();
+
+  /* Impacto: números que decrecen + barra al entrar en vista */
+  (function(){
+    const grid=document.getElementById('impactGrid'); if(!grid) return;
+    const cards=[...grid.querySelectorAll('.ist')];
+    function fill(card){
+      const to=parseFloat(card.dataset.to);
+      const num=card.querySelector('.ist-num'), bar=card.querySelector('.ist-bar');
+      if(reduce){ num.textContent='−'+to+'%'; bar.style.width=(100-to)+'%'; return; }
+      bar.style.transition='none'; bar.style.width='100%'; void bar.offsetWidth;
+      bar.style.transition='width 1.5s cubic-bezier(.22,.61,.36,1)'; bar.style.width=(100-to)+'%';
+      let start=null;
+      (function step(ts){ if(!start)start=ts; const p=Math.min((ts-start)/1500,1), e=1-Math.pow(1-p,3);
+        num.textContent='−'+Math.round(to*e)+'%'; if(p<1) requestAnimationFrame(step); })(performance.now());
+    }
+    let done=false;
+    new IntersectionObserver((es)=>{es.forEach(e=>{ if(e.isIntersecting && !done){ done=true; cards.forEach(fill); } })},{threshold:.4}).observe(grid);
   })();
 
   /* Formulario: validación accesible + mailto */
