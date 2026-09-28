@@ -1,6 +1,6 @@
 // Service worker de la demo Blinds. Guarda solo la pantalla de acceso, el manifiesto y los íconos.
 // La demo descifrada nunca pasa por la red ni por la caché, así la contraseña sigue protegiendo.
-const CACHE = 'blinds-demo-v7';
+const CACHE = 'blinds-demo-v8';
 const SHELL = ['/blinds/', '/blinds/index.html', '/blinds/manifest.json', '/blinds/icon-192.png', '/blinds/icon-512.png', '/blinds/icon-512-maskable.png', '/blinds/badge-96.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
