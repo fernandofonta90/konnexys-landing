@@ -1,7 +1,7 @@
 // Service worker de la demo Blinds. Guarda solo la pantalla de acceso, el manifiesto y los íconos.
 // La demo descifrada nunca pasa por la red ni por la caché, así la contraseña sigue protegiendo.
-const CACHE = 'blinds-demo-v4';
-const SHELL = ['/blinds/', '/blinds/index.html', '/blinds/manifest.json', '/blinds/icon-192.png', '/blinds/icon-512.png', '/blinds/icon-512-maskable.png'];
+const CACHE = 'blinds-demo-v5';
+const SHELL = ['/blinds/', '/blinds/index.html', '/blinds/manifest.json', '/blinds/icon-192.png', '/blinds/icon-512.png', '/blinds/icon-512-maskable.png', '/blinds/badge-96.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', e => {
@@ -11,7 +11,7 @@ self.addEventListener('fetch', e => {
 
 self.addEventListener('push', e => {
   let d = {}; try { d = e.data ? e.data.json() : {}; } catch(_) { d = { title: 'Blinds', body: e.data ? e.data.text() : '' }; }
-  e.waitUntil(self.registration.showNotification(d.title || 'Blinds', { body: d.body || '', icon: '/blinds/icon-192.png', badge: '/blinds/icon-192.png', tag: d.tag || 'blinds', data: { url: d.url || '/blinds/' } }));
+  e.waitUntil(self.registration.showNotification(d.title || 'Blinds', { body: d.body || '', icon: '/blinds/icon-192.png', badge: '/blinds/badge-96.png', tag: d.tag || 'blinds', data: { url: d.url || '/blinds/' } }));
 });
 self.addEventListener('notificationclick', e => {
   e.notification.close();
