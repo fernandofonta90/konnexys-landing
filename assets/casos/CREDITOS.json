@@ -1,0 +1,32 @@
+{
+ "finanzas": {
+  "id": "photo-1758876201660-103984519266",
+  "page": "https://unsplash.com/es/fotos/mujer-trabajando-con-documentos-en-el-escritorio-de-la-oficina-Vvn0OD0IxBM",
+  "alt": "Mujer trabajando con documentos en el escritorio de la oficina"
+ },
+ "rrhh": {
+  "id": "photo-1758518730264-9235a1e5416b",
+  "page": "https://unsplash.com/es/fotos/mujer-en-traje-revisa-documento-con-hombre-nwmRGqPNu7M",
+  "alt": "Mujer en traje revisa documento con hombre"
+ },
+ "operaciones": {
+  "id": "photo-1709803857195-dbd9eb6dc4bf",
+  "page": "https://unsplash.com/es/fotos/un-hombre-con-casco-esta-mirando-un-pedazo-de-papel-N_nAAwnBDy8",
+  "alt": "Un hombre con casco está mirando un pedazo de papel"
+ },
+ "seguros": {
+  "id": "photo-1630406144797-821be1f35d75",
+  "page": "https://unsplash.com/es/fotos/instructor-y-estudiante-del-examen-de-conducir-tyhpK_QelPo",
+  "alt": "Un hombre señalando hacia un coche mientras sostiene una carpeta para un examen de conduci"
+ },
+ "comercial": {
+  "id": "photo-1562564055-71e051d33c19",
+  "page": "https://unsplash.com/es/fotos/woman-signing-on-white-printer-paper-beside-woman-about-to-touch-the-documents-HJckKnwCXxQ",
+  "alt": "woman signing on white printer paper beside woman about to touch the documents"
+ },
+ "servicios": {
+  "id": "photo-1560264280-88b68371db39",
+  "page": "https://unsplash.com/es/fotos/gente-trabajando-en-escritorios-en-una-oficina-abierta-kN_kViDchA0",
+  "alt": "Gente trabajando en escritorios en una oficina abierta"
+ }
+}

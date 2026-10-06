@@ -28,3 +28,6 @@ build/
 .cache/
 .vercel
 .netlify
+
+# Diagnósticos locales de diseño
+.impeccable/

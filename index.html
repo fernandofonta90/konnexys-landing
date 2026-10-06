@@ -6,13 +6,14 @@
 <meta name="theme-color" content="#F5F5F2">
 <meta name="description" content="Konnexys es la plataforma low-code de LATAM que compila una frase en español en una aplicación funcional: disparadores, formularios, reglas y aprobaciones, sin escribir código.">
 <title>Konnexys · Del lenguaje a la aplicación</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23FB5C1C'/%3E%3Cpath d='M22 16v32M22 34l18-18M28 28l14 20' stroke='%23fff' stroke-width='7' fill='none' stroke-linecap='square'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --paper:#F5F5F2; --card:#FFFFFF; --wash:#EFEFEA;
-    --ink:#121210; --ink-2:#57564F; --ink-3:#8B8A80;
+    --ink:#121210; --ink-2:#57564F; --ink-3:#6E6D65;
     --line:#E3E2DC; --line-strong:#121210;
     --orange:#FB5C1C; --orange-hover:#E84A0E; --orange-ink:#B03A08; --orange-wash:#FFF1EA;
     --t-trigger-fg:#2C5573; --t-trigger-bg:#E9F1F8;
@@ -40,6 +41,7 @@
   h1,h2,h3{font-family:"Archivo",sans-serif; font-weight:800; line-height:1.04; letter-spacing:-.025em; text-wrap:balance}
   p{text-wrap:pretty}
   a{color:inherit; text-decoration:none}
+  ::selection{background:rgba(251,92,28,.28); color:var(--ink)}
   .mono{font-family:"JetBrains Mono",ui-monospace,monospace}
   .tnum{font-variant-numeric:tabular-nums}
   .wrap{max-width:var(--maxw); margin:0 auto; padding:0 clamp(18px,4vw,28px); position:relative; z-index:1}
@@ -53,7 +55,7 @@
 
   /* Botones — esquinas medidas, no pill */
   .btn{display:inline-flex; align-items:center; gap:8px; font-family:"Archivo"; font-weight:600; font-size:15.5px; padding:11px 22px; border-radius:var(--pill); border:1.5px solid transparent; cursor:pointer; transition:background .16s ease, color .16s ease, border-color .16s ease, transform .16s ease}
-  .btn-primary{background:var(--orange); color:#fff}
+  .btn-primary{background:var(--orange); color:var(--ink)}
   .btn-primary:hover{background:var(--orange-hover)}
   .btn-secondary{background:transparent; color:var(--ink); border-color:var(--line-strong)}
   .btn-secondary:hover{background:var(--ink); color:var(--paper)}
@@ -144,7 +146,7 @@
   main{position:relative; z-index:1}
   .section{padding:clamp(56px,8vw,96px) 0; border-top:1px solid var(--line)}
   .sec-head{max-width:62ch; margin-bottom:clamp(32px,5vw,48px)}
-  .sec-head h2{font-size:clamp(28px,3.8vw,42px); margin:14px 0 12px}
+  .sec-head h2{font-size:clamp(28px,3.8vw,42px); margin:0 0 12px}
   .sec-head p{color:var(--ink-2); font-size:clamp(16px,1.8vw,18.5px)}
 
   /* VIDEO (promo 15 s) */
@@ -163,21 +165,43 @@
     .promo-sound span{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
   }
 
-  /* PROCESO (secuencia real 01–04) */
-  .steps{display:grid; grid-template-columns:repeat(4,1fr); gap:14px}
-  .step{padding:26px 22px; display:flex; flex-direction:column; gap:10px; border-radius:var(--r); background:rgba(255,255,255,.5); backdrop-filter:blur(16px) saturate(1.4); -webkit-backdrop-filter:blur(16px) saturate(1.4); border:1px solid rgba(255,255,255,.6); box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 0 18px 44px -26px rgba(18,18,16,.38)}
-  .step .idx{font-family:"JetBrains Mono",monospace; font-size:13px; font-weight:700; color:var(--orange); letter-spacing:.05em}
-  .step h3{font-size:19px; font-weight:700; letter-spacing:-.01em}
-  .step p{font-size:14.5px; color:var(--ink-2)}
+  /* MARCOS DE PRODUCTO (capturas reales) */
+  .frame{background:var(--card); border:1px solid var(--line); border-radius:14px; overflow:hidden; box-shadow:0 2px 4px rgba(18,18,16,.04), 0 28px 56px -30px rgba(18,18,16,.32)}
+  .frame-bar{display:flex; align-items:center; gap:7px; padding:10px 14px; border-bottom:1px solid var(--line); background:var(--wash)}
+  .frame-bar .d{width:9px; height:9px; border-radius:50%; background:#DAD8D0}
+  .frame-bar .fname{margin-left:8px; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-family:"JetBrains Mono",monospace; font-size:12px; color:var(--ink-2)}
+  .frame img{display:block; width:100%; height:auto}
+  .shot-cap{margin-top:14px; font-size:14.5px; color:var(--ink-2); max-width:62ch}
+  .shot-cap strong{color:var(--ink); font-weight:600}
+  .phone{width:min(260px,62vw); border-radius:38px; padding:9px; background:var(--ink); box-shadow:0 30px 60px -24px rgba(18,18,16,.55)}
+  .phone-screen{border-radius:30px; overflow:hidden; background:var(--paper)}
+  .phone img{display:block; width:100%; height:auto}
 
-  /* CAPACIDADES */
-  .caps{display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
-  .cap{padding:24px; display:flex; flex-direction:column; gap:12px; border-radius:var(--r); background:rgba(255,255,255,.5); backdrop-filter:blur(16px) saturate(1.4); -webkit-backdrop-filter:blur(16px) saturate(1.4); border:1px solid rgba(255,255,255,.6); box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 0 18px 44px -26px rgba(18,18,16,.38)}
-  .cap-ic{width:34px; height:34px; color:var(--orange)}
-  .cap-ic svg{width:100%; height:100%; display:block}
-  .cap h3{font-size:16.5px; font-weight:700}
-  .cap p{font-size:14px; color:var(--ink-2)}
-  .cap .lbl{font-family:"JetBrains Mono",monospace; font-size:11px; color:var(--ink-3); letter-spacing:.06em; text-transform:uppercase}
+  /* PROCESO: línea de tiempo + editor real */
+  .timeline{list-style:none; display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-bottom:clamp(36px,5vw,56px); position:relative}
+  .timeline::before{content:""; position:absolute; left:0; right:0; top:9px; height:2px; background:linear-gradient(90deg,var(--orange) 0 75%, var(--line) 75%)}
+  .tl-step{position:relative; padding:34px 22px 0 0}
+  .tl-step::before{content:""; position:absolute; left:0; top:2px; width:16px; height:16px; border-radius:50%; background:var(--paper); border:3px solid var(--orange)}
+  .tl-step:last-child::before{border-color:var(--ink)}
+  .tl-step h3{font-size:clamp(19px,2vw,22px); font-weight:800; letter-spacing:-.015em; margin-bottom:6px}
+  .tl-step p{font-size:15px; color:var(--ink-2); max-width:28ch}
+  .proc-shot{display:grid; grid-template-columns:minmax(0,1.55fr) minmax(0,1fr); gap:clamp(24px,4vw,48px); align-items:center}
+  .proc-notes{list-style:none; display:flex; flex-direction:column; gap:18px}
+  .proc-notes li{padding-left:18px; border-left:1px solid var(--line); font-size:15px; color:var(--ink-2)}
+  .proc-notes strong{display:block; color:var(--ink); font-size:16.5px; font-weight:700; margin-bottom:2px}
+
+  /* CAPACIDADES: el portal real + lista */
+  .caps-wrap{display:grid; grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); gap:clamp(28px,5vw,64px); align-items:center}
+  .devices{position:relative; padding-bottom:40px}
+  .devices .frame{width:92%}
+  .devices .phone{position:absolute; right:0; bottom:0; width:min(200px,34%)}
+  .devices .shot-cap{max-width:58%}
+  .caplist{list-style:none; display:flex; flex-direction:column}
+  .caplist li{display:grid; grid-template-columns:28px 1fr; gap:4px 16px; padding:16px 0; border-top:1px solid var(--line)}
+  .caplist li:last-child{border-bottom:1px solid var(--line)}
+  .caplist svg{width:24px; height:24px; color:var(--orange-ink); grid-row:span 2; margin-top:2px}
+  .caplist h3{font-size:17px; font-weight:700; letter-spacing:-.01em}
+  .caplist p{font-size:14.5px; color:var(--ink-2)}
 
   /* OPERACIÓN (log) */
   .ops-grid{display:grid; grid-template-columns:1fr 1.15fr; gap:clamp(28px,5vw,56px); align-items:center}
@@ -186,7 +210,7 @@
   .ops-copy .points .pk{font-family:"JetBrains Mono",monospace; color:var(--orange); font-weight:700; flex-shrink:0}
   .log{background:rgba(15,12,9,.9); backdrop-filter:blur(20px) saturate(1.2); -webkit-backdrop-filter:blur(20px) saturate(1.2); border:1px solid rgba(255,255,255,.14); border-radius:var(--r); overflow:hidden; box-shadow:inset 0 1px 0 rgba(255,255,255,.1), 0 30px 60px -28px rgba(0,0,0,.7)}
   .log-bar{display:flex; align-items:center; gap:10px; padding:11px 14px; border-bottom:1px solid rgba(255,255,255,.1)}
-  .log-bar .live{width:8px; height:8px; border-radius:50%; background:#4BD08A; box-shadow:0 0 9px #4BD08A}
+  .log-bar .live{width:8px; height:8px; border-radius:50%; background:#4BD08A}
   @media (prefers-reduced-motion:no-preference){ .log-bar .live{animation:pulse 1.7s ease-in-out infinite} }
   @keyframes pulse{50%{opacity:.35}}
   .log-title{font-family:"JetBrains Mono",monospace; font-size:12.5px; color:#EDEDEA}
@@ -197,7 +221,7 @@
   @media (prefers-reduced-motion:reduce){ .log-row{opacity:1; transform:none; transition:none} }
   .log-time{font-size:11.5px; color:rgba(255,255,255,.4)}
   .log-text{font-size:13px; color:#F1F1EE; font-family:"Archivo"; font-weight:500; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
-  .log-badge{font-size:10.5px; font-weight:700; padding:3px 8px; border-radius:5px; white-space:nowrap}
+  .log-badge{font-size:12px; font-weight:700; padding:3px 8px; border-radius:5px; white-space:nowrap}
   .lb-info{color:#9CC2E0; background:rgba(60,110,150,.22)}
   .lb-ok{color:#7FDDB0; background:rgba(40,150,100,.2)}
   .lb-warn{color:#E7C77A; background:rgba(160,120,30,.22)}
@@ -205,7 +229,7 @@
 
   /* PILOTO / FORM */
   .cta-grid{display:grid; grid-template-columns:1fr 1fr; gap:clamp(28px,5vw,56px); align-items:start}
-  .cta-copy h2{font-size:clamp(30px,4vw,46px); margin:14px 0 14px}
+  .cta-copy h2{font-size:clamp(30px,4vw,46px); margin:0 0 14px}
   .cta-copy p{color:var(--ink-2); font-size:17.5px; margin-bottom:20px}
   .cta-list{list-style:none; display:flex; flex-direction:column; gap:11px}
   .cta-list li{display:flex; gap:11px; align-items:center; font-size:15.5px}
@@ -256,7 +280,7 @@
   .stagger.in > *:nth-child(6){transition-delay:.39s}
   @media (prefers-reduced-motion:reduce){ .stagger > *{opacity:1; transform:none; transition:none} }
 
-  @supports not ((backdrop-filter:blur(2px)) or (-webkit-backdrop-filter:blur(2px))){ .step,.cap,.form{background:rgba(255,255,255,.92)} .log{background:#151009} }
+  @supports not ((backdrop-filter:blur(2px)) or (-webkit-backdrop-filter:blur(2px))){ .form{background:rgba(255,255,255,.92)} .log{background:#151009} }
 
   /* Aurora también en la sección del piloto */
   #piloto{position:relative; isolation:isolate; overflow:hidden; background:var(--paper); border-top:0}
@@ -275,82 +299,227 @@
   @media (prefers-reduced-motion:no-preference){ #piloto::before{animation:aurora 17s ease-in-out infinite alternate} }
 
   /* ARQUITECTURA */
-  .arch{display:grid; grid-template-columns:1fr auto 1fr; gap:clamp(14px,3vw,34px); align-items:center; margin-bottom:34px}
+  .arch{display:grid; grid-template-columns:1fr auto 1fr; gap:clamp(40px,7vw,104px); align-items:center; margin-bottom:34px}
   .arch-col{display:flex; flex-direction:column; gap:10px}
   .arch-label{font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3); margin-bottom:2px}
   .arch-col.right{text-align:right}
   .arch-node{background:rgba(255,255,255,.5); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,.6); border-radius:var(--r-sm); padding:12px 15px; font-weight:600; font-size:14.5px; box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 0 10px 26px -20px rgba(18,18,16,.4)}
-  .arch-core{display:flex; flex-direction:column; align-items:center; gap:6px; text-align:center; padding:26px 22px; border-radius:var(--r); background:linear-gradient(160deg,#22160E,#0E0B09); border:1px solid rgba(251,92,28,.45); box-shadow:0 0 44px rgba(251,92,28,.32), inset 0 0 22px rgba(251,92,28,.12); min-width:150px}
-  .arch-core .acm{width:40px; height:40px; border-radius:11px; background:linear-gradient(135deg,var(--orange),#BF3A0A); color:#fff; display:grid; place-items:center; font-family:"Archivo"; font-weight:800; font-size:19px; box-shadow:0 6px 16px rgba(251,92,28,.5)}
+  .arch-core{display:flex; flex-direction:column; align-items:center; gap:6px; text-align:center; padding:26px 22px; border-radius:var(--r); background:linear-gradient(160deg,#22160E,#0E0B09); border:1px solid rgba(251,92,28,.45); box-shadow:0 22px 44px -22px rgba(18,18,16,.6); min-width:150px}
+  .arch-core .acm{width:40px; height:40px; border-radius:11px; background:linear-gradient(135deg,var(--orange),#BF3A0A); color:#fff; display:grid; place-items:center; font-family:"Archivo"; font-weight:800; font-size:19px; box-shadow:0 4px 10px rgba(0,0,0,.35)}
   .arch-core strong{color:#fff; font-family:"Archivo"; font-size:17px}
   .arch-core span{color:rgba(255,255,255,.6); font-size:12.5px; font-family:"JetBrains Mono"}
-  .arch-points{display:grid; grid-template-columns:repeat(4,1fr); gap:14px}
-  .arch-pt{padding:18px; border-radius:var(--r); background:rgba(255,255,255,.5); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border:1px solid rgba(255,255,255,.6); box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 0 14px 34px -26px rgba(18,18,16,.38)}
-  .arch-pt .apt-ic{color:var(--orange); margin-bottom:10px} .arch-pt .apt-ic svg{width:22px; height:22px}
-  .arch-pt h3{font-size:15.5px; margin-bottom:5px} .arch-pt p{font-size:13.5px; color:var(--ink-2)}
+  .arch-points{display:grid; grid-template-columns:repeat(4,1fr); gap:0; border-top:1px solid var(--line)}
+  .arch-pt{padding:20px 22px 4px 0}
+  .arch-pt + .arch-pt{padding-left:22px; border-left:1px solid var(--line)}
+  .arch-pt h3{font-size:16px; margin-bottom:5px} .arch-pt p{font-size:14px; color:var(--ink-2)}
 
-  /* CASOS DE USO */
-  .cases{display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
-  .case{padding:24px; border-radius:var(--r); background:rgba(255,255,255,.5); backdrop-filter:blur(16px) saturate(1.4); -webkit-backdrop-filter:blur(16px) saturate(1.4); border:1px solid rgba(255,255,255,.6); box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 0 18px 44px -26px rgba(18,18,16,.38)}
-  .case .clbl{font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--orange-ink); background:var(--orange-wash); border:1px solid #F6D6C4; padding:4px 10px; border-radius:999px; display:inline-block; margin-bottom:14px}
-  .case h3{font-size:17px; margin-bottom:10px}
-  .case ul{list-style:none; display:flex; flex-direction:column; gap:7px}
-  .case ul li{display:flex; gap:9px; align-items:flex-start; font-size:14px; color:var(--ink-2)}
-  .case ul li::before{content:"›"; color:var(--orange); font-weight:700; flex-shrink:0}
+  /* ARQUITECTURA: conexiones punteadas que fluyen hacia y desde Konnexys */
+  .arch{position:relative}
+  .arch-wires{position:absolute; inset:0; width:100%; height:100%; pointer-events:none; overflow:visible; z-index:0}
+  .arch-wires path{fill:none; stroke:var(--orange); stroke-width:1.6; stroke-linecap:round; stroke-dasharray:3 7; opacity:.75}
+  .arch-col,.arch-core{position:relative; z-index:1}
+  @media (prefers-reduced-motion:no-preference){
+    .arch-wires path{animation:wire 1.1s linear infinite}
+    .arch-wires path.out{animation-duration:1.1s}
+  }
+  @keyframes wire{to{stroke-dashoffset:-10}}
 
-  /* SEGURIDAD */
-  .sec-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:22px}
-  .sec-card{padding:24px; border-radius:var(--r); background:rgba(255,255,255,.5); backdrop-filter:blur(16px) saturate(1.4); -webkit-backdrop-filter:blur(16px) saturate(1.4); border:1px solid rgba(255,255,255,.6); box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 0 18px 44px -26px rgba(18,18,16,.38)}
-  .sec-card .sic{width:42px; height:42px; border-radius:12px; background:var(--orange-wash); border:1px solid rgba(251,92,28,.2); color:var(--orange); display:grid; place-items:center; margin-bottom:14px}
-  .sec-card .sic svg{width:22px; height:22px}
-  .sec-card h3{font-size:16px; margin-bottom:7px} .sec-card p{font-size:13.5px; color:var(--ink-2)}
-  .sec-note{font-size:13px; color:var(--ink-3); max-width:70ch}
+  /* CASOS DE USO: elige un área y mira el proceso compilado */
+  .case-tabs{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:clamp(24px,3vw,32px)}
+  .case-tab{font-family:"Archivo"; font-size:15px; font-weight:600; color:var(--ink); background:transparent; border:1.5px solid var(--line); border-radius:999px; padding:10px 18px; min-height:44px; cursor:pointer; transition:background .16s ease, border-color .16s ease, color .16s ease}
+  .case-tab:hover{border-color:var(--ink)}
+  .case-tab[aria-selected="true"]{background:var(--ink); border-color:var(--ink); color:#fff}
+  .case-stage{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.25fr); gap:clamp(24px,4vw,56px); align-items:start}
+  .case-hero{position:relative; aspect-ratio:12/7; border-radius:14px; overflow:hidden; background:#17100C; margin-bottom:6px}
+  .case-hero img{display:block; width:100%; height:100%; object-fit:cover; transition:opacity .22s ease}
+  .case-hero img.swap{opacity:0}
+  .case-hero::after{content:""; position:absolute; inset:0; background:linear-gradient(to top, rgba(23,16,12,.88) 0%, rgba(23,16,12,.5) 34%, rgba(23,16,12,0) 62%); pointer-events:none}
+  .case-hero-txt{position:absolute; left:0; right:0; bottom:0; z-index:1; padding:clamp(16px,2.4vw,24px)}
+  .case-area .case-hero .kicker{color:#FFD2BC}
+  .case-area .case-hero h3{color:#fff; margin:4px 0 0}
+  @media (prefers-reduced-motion:reduce){ .case-hero img{transition:none} }
+  .case-area .kicker{font-family:"JetBrains Mono",monospace; font-size:12.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--orange-ink)}
+  .case-area h3{font-size:clamp(28px,3.4vw,40px); font-weight:800; letter-spacing:-.025em; line-height:1.05; margin:6px 0 20px}
+  .case-opts{list-style:none; display:flex; flex-direction:column; border-top:1px solid var(--line)}
+  .case-opt{width:100%; display:flex; align-items:center; justify-content:space-between; gap:12px; text-align:left; font-family:"Archivo"; font-size:17px; font-weight:600; color:var(--ink-2); background:none; border:0; border-bottom:1px solid var(--line); padding:16px 4px; min-height:52px; cursor:pointer; transition:color .16s ease}
+  .case-opt::after{content:"→"; color:var(--line); transition:color .16s ease, transform .16s ease}
+  .case-opt:hover{color:var(--ink)}
+  .case-opt[aria-pressed="true"]{color:var(--ink)}
+  .case-opt[aria-pressed="true"]::after{color:var(--orange); transform:translateX(3px)}
+  .case-spec{background:var(--card); backdrop-filter:none; -webkit-backdrop-filter:none; border:1px solid var(--line); box-shadow:0 2px 4px rgba(18,18,16,.04), 0 28px 56px -30px rgba(18,18,16,.32)}
+  .case-spec .spec-bar{background:var(--wash); border-bottom:1px solid var(--line)}
+  .case-spec .spec-body{padding:20px 20px 22px}
+  .case-spec .spec-label{font-size:15.5px}
+  @media (prefers-reduced-motion:reduce){ .case-tab,.case-opt,.case-opt::after{transition:none} }
+
+  /* SEGURIDAD: checklist densa */
+  .sec-layout{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.5fr); gap:clamp(28px,5vw,64px); align-items:start}
+  .checklist{list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:0 32px}
+  .checklist li{display:grid; grid-template-columns:22px 1fr; gap:4px 12px; padding:16px 0; border-top:1px solid var(--line)}
+  .checklist svg{width:20px; height:20px; color:var(--t-approve-fg); grid-row:span 2; margin-top:2px}
+  .checklist h3{font-size:16px; font-weight:700}
+  .checklist p{font-size:14px; color:var(--ink-2)}
+  .sec-note{font-size:14.5px; color:var(--ink-2); max-width:46ch; margin-top:16px}
 
   /* EQUIPO */
-  .team{display:grid; grid-template-columns:1fr 1fr; gap:clamp(28px,5vw,56px); align-items:center}
-  .team-quote{font-family:"Archivo"; font-weight:500; font-size:clamp(20px,2.5vw,27px); line-height:1.35; letter-spacing:-.01em}
-  .team-quote .q{color:var(--orange)}
+  .team{display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:clamp(28px,5vw,64px); align-items:center}
+  .team-quote{font-family:"Archivo"; font-weight:600; font-size:clamp(22px,2.8vw,32px); line-height:1.3; letter-spacing:-.015em}
+  .team-quote .q{color:var(--orange-ink)}
   .team-sign{margin-top:20px; font-family:"JetBrains Mono",monospace; font-size:13px; color:var(--ink-2)}
-  .team-stats{display:grid; grid-template-columns:1fr 1fr; gap:14px}
-  .team-stat{padding:22px; border-radius:var(--r); background:rgba(255,255,255,.5); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border:1px solid rgba(255,255,255,.6); box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 0 14px 34px -26px rgba(18,18,16,.38)}
-  .team-stat .n{font-family:"Archivo"; font-weight:800; font-size:clamp(26px,3.4vw,36px); color:var(--orange); line-height:1}
-  .team-stat .l{margin-top:6px; font-size:13.5px; color:var(--ink-2)}
+  .facts{list-style:none; display:grid; grid-template-columns:1fr 1fr; border-top:2px solid var(--ink)}
+  .facts li{padding:18px 18px 18px 0; border-bottom:1px solid var(--line)}
+  .facts li:nth-child(even){padding-left:18px; border-left:1px solid var(--line)}
+  .facts .n{font-family:"Archivo"; font-weight:800; font-size:clamp(24px,3vw,32px); letter-spacing:-.02em; line-height:1.1}
+  .facts .l{margin-top:4px; font-size:14px; color:var(--ink-2)}
+  /* Fotos del equipo: agregar <figure class="person"> dentro de .people cuando estén las fotos */
+  .people{display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:20px; margin-top:clamp(36px,5vw,56px)}
+  .people:empty{display:none}
+  .person img{display:block; width:100%; aspect-ratio:4/5; object-fit:cover; border-radius:12px}
+  .person figcaption{margin-top:10px; font-size:15px; font-weight:700}
+  .person figcaption span{display:block; font-weight:400; font-size:13.5px; color:var(--ink-2)}
 
-  @supports not ((backdrop-filter:blur(2px)) or (-webkit-backdrop-filter:blur(2px))){ .arch-node,.arch-pt,.case,.sec-card,.team-stat{background:rgba(255,255,255,.92)} }
-
-  /* IMPACTO (números que decrecen) */
-  .impact{display:grid; grid-template-columns:repeat(4,1fr); gap:14px}
-  .ist{padding:22px; border-radius:var(--r); background:rgba(255,255,255,.5); backdrop-filter:blur(16px) saturate(1.4); -webkit-backdrop-filter:blur(16px) saturate(1.4); border:1px solid rgba(255,255,255,.6); box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 0 18px 44px -26px rgba(18,18,16,.38)}
-  .ist-lbl{font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-2); margin-bottom:12px}
-  .ist-fig{display:flex; align-items:baseline; gap:5px; margin-bottom:13px; line-height:1}
-  .ist-fig .pre{font-size:14px; color:var(--ink-3)}
-  .ist-num{font-family:"Archivo"; font-weight:800; font-size:clamp(30px,4vw,40px); color:var(--orange); font-variant-numeric:tabular-nums; letter-spacing:-.01em}
-  .ist-track{height:7px; border-radius:99px; background:rgba(251,92,28,.16); overflow:hidden}
-  .ist-bar{display:block; height:100%; width:100%; border-radius:99px; background:linear-gradient(90deg,var(--orange-soft,#FC954C),var(--orange))}
-  .ist-sub{font-size:13px; color:var(--ink-2); margin-top:11px}
-  .impact-note{font-size:12px; color:var(--ink-3); margin-top:20px; max-width:64ch}
-
-  @supports not ((backdrop-filter:blur(2px)) or (-webkit-backdrop-filter:blur(2px))){ .ist{background:rgba(255,255,255,.92)} }
-
-  /* Escenas a pantalla completa en escritorio: cada sección llena la pantalla */
-  @media (min-width:861px){
-    html{scroll-snap-type:y proximity}
-    .hero,.section{scroll-snap-align:start}
-    .section{min-height:calc(100svh - var(--nav-h)); display:flex; flex-direction:column; justify-content:center; padding:36px 0 46px}
-    #piloto{scroll-snap-align:none}
+  /* FRANJA OSCURA: operación + impacto */
+  .band-dark{background:var(--ink); color:#F1F0EB; border-top:0}
+  .band-dark + .band-dark{padding-top:0}
+  .band-dark .sec-head p,.band-dark .ops-copy p,.band-dark .ops-copy .points li,.band-dark .shot-cap{color:#B5B3A8}
+  .band-dark .shot-cap strong{color:#F1F0EB}
+  .band-dark .frame{border-color:rgba(255,255,255,.12); box-shadow:0 30px 70px -30px rgba(0,0,0,.8)}
+  .band-dark .log{background:#1C1915; backdrop-filter:none; -webkit-backdrop-filter:none}
+  /* OPERACIÓN: un caso que avanza solo, paso a paso */
+  .flowdemo{--dwell:2.6s; margin-top:clamp(40px,6vw,72px); background:#1C1915; border:1px solid rgba(255,255,255,.12); border-radius:16px; padding:clamp(22px,3.4vw,44px); box-shadow:0 30px 70px -30px rgba(0,0,0,.8)}
+  .fd-head{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:clamp(20px,3vw,30px)}
+  .fd-case{font-family:"JetBrains Mono",monospace; font-size:13.5px; color:#B5B3A8}
+  .fd-case strong{color:#F1F0EB; font-weight:500}
+  .fd-meta{display:flex; align-items:center; gap:10px}
+  .fd-count{font-family:"JetBrains Mono",monospace; font-size:12.5px; color:#8F8D83; font-variant-numeric:tabular-nums}
+  .fd-state{font-family:"JetBrains Mono",monospace; font-size:12.5px; font-weight:700; padding:5px 12px; border-radius:999px; color:#F4A77E; background:rgba(251,92,28,.2); transition:color .2s ease, background .2s ease}
+  .fd-state.done{color:#7FDDB0; background:rgba(40,150,100,.22)}
+  .fd-track{position:relative; list-style:none; display:grid; grid-template-columns:repeat(5,1fr); padding-top:38px}
+  .fd-rail{position:absolute; left:10%; right:10%; top:63px; height:2px; background:rgba(255,255,255,.14)}
+  .fd-fill{display:block; height:100%; width:100%; background:var(--orange); transform-origin:0 50%; transform:scaleX(0); transition:transform .42s cubic-bezier(.3,.9,.3,1)}
+  /* el caso viaja: etiqueta que se desliza hasta el paso activo */
+  .fd-token{position:absolute; top:0; left:10%; transform:translateX(-50%); font-family:"JetBrains Mono",monospace; font-size:12px; font-weight:700; color:var(--ink); background:#F5F5F2; padding:4px 10px; border-radius:999px; white-space:nowrap; transition:left .42s cubic-bezier(.3,.9,.3,1), background .2s ease, color .2s ease}
+  .fd-token::after{content:""; position:absolute; left:50%; bottom:-4px; width:8px; height:8px; background:inherit; transform:translateX(-50%) rotate(45deg); border-radius:1px}
+  .fd-token.done{background:#1F6B4B; color:#fff}
+  .fd-node{position:relative; display:flex; flex-direction:column; align-items:center; gap:10px; width:100%; background:none; border:0; padding:0 4px; cursor:pointer; color:#8F8D83; font-family:"Archivo"; text-align:center}
+  .fd-dot{position:relative; width:52px; height:52px; border-radius:50%; display:grid; place-items:center; background:#1C1915; border:2px solid rgba(255,255,255,.2); transition:border-color .2s ease, background .2s ease, color .2s ease, transform .3s cubic-bezier(.3,1.4,.4,1)}
+  .fd-dot > svg{width:24px; height:24px}
+  .fd-dot .ck{display:none}
+  .fd-ring{position:absolute; inset:-8px; width:calc(100% + 16px); height:calc(100% + 16px); transform:rotate(-90deg); opacity:0; pointer-events:none}
+  .fd-ring circle{fill:none; stroke:#fff; stroke-width:2.5; stroke-linecap:round; stroke-dasharray:201; stroke-dashoffset:201}
+  .fd-name{font-size:15.5px; font-weight:700; line-height:1.2; transition:color .2s ease}
+  .fd-who{font-family:"JetBrains Mono",monospace; font-size:12px; color:#8F8D83}
+  .fd-node:hover .fd-dot{border-color:rgba(255,255,255,.55)}
+  .fd-node.is-done .fd-dot{background:#1F6B4B; border-color:#1F6B4B; color:#fff}
+  .fd-node.is-done .fd-dot .ic{display:none}
+  .fd-node.is-done .fd-dot .ck{display:block}
+  .fd-node.is-done .fd-name{color:#D8D6CE}
+  .fd-node.is-active .fd-dot{background:var(--orange); border-color:var(--orange); color:var(--ink); transform:scale(1.1)}
+  .fd-node.is-active .fd-name{color:#fff}
+  .fd-node.is-active .fd-who{color:#F4A77E}
+  .flowdemo.playing .fd-node.is-active .fd-ring{opacity:1}
+  .flowdemo.playing .fd-node.is-active .fd-ring circle{animation:fdRing var(--dwell) linear forwards}
+  @keyframes fdRing{to{stroke-dashoffset:0}}
+  .fd-node:focus-visible{outline:none}
+  .fd-node:focus-visible .fd-dot{outline:2.5px solid #fff; outline-offset:3px}
+  .fd-stage{display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); gap:clamp(20px,4vw,48px); align-items:center; margin-top:clamp(24px,3.4vw,38px); padding-top:clamp(22px,3vw,34px); border-top:1px solid rgba(255,255,255,.12)}
+  .fd-copy{transition:opacity .14s ease, transform .22s cubic-bezier(.3,.9,.3,1)}
+  .fd-copy.swap{opacity:0; transform:translateY(10px)}
+  .fd-title{font-family:"Archivo"; font-weight:800; font-size:clamp(26px,3.4vw,40px); letter-spacing:-.025em; line-height:1.06; color:#fff; text-wrap:balance}
+  .fd-text{margin-top:10px; font-size:clamp(16px,1.7vw,18.5px); color:#B5B3A8; max-width:42ch}
+  .fd-side{position:relative; height:216px}
+  .fd-card{position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center; gap:14px; background:#F5F5F2; color:var(--ink); border-radius:14px; padding:18px 20px; box-shadow:0 18px 40px -20px rgba(0,0,0,.7); opacity:0; transform:translateX(18px) scale(.985); transition:opacity .16s ease, transform .3s cubic-bezier(.3,.9,.3,1); pointer-events:none}
+  .fd-card.show{opacity:1; transform:none}
+  .fd-top{display:flex; align-items:center; gap:13px}
+  .fk{width:42px; height:42px; flex:none; border-radius:11px; display:grid; place-items:center; background:var(--orange); color:var(--ink); font-weight:800; font-size:21px}
+  .fk.ok{background:#1F6B4B; color:#fff}
+  .fk.ai{background:var(--ink); color:#fff}
+  .fk svg{width:23px; height:23px}
+  .fl{display:block; font-family:"JetBrains Mono",monospace; font-size:12px; color:var(--ink-3)}
+  .ft{display:block; font-size:17px; font-weight:700; line-height:1.25}
+  /* contenido que "pasa" dentro de cada tarjeta */
+  .fd-list{list-style:none; display:flex; flex-direction:column; gap:7px}
+  .fd-list li{display:flex; align-items:center; gap:10px; font-size:14.5px; color:var(--ink-2); opacity:0; transform:translateY(6px); transition:opacity .2s ease, transform .25s ease}
+  .tick{width:18px; height:18px; flex:none; border-radius:50%; display:grid; place-items:center; background:#1F6B4B; color:#fff; transform:scale(0); transition:transform .28s cubic-bezier(.3,1.6,.4,1)}
+  .tick svg{width:11px; height:11px}
+  .fd-card.show .fd-list li{opacity:1; transform:none}
+  .fd-card.show .fd-list li:nth-child(1){transition-delay:.22s} .fd-card.show .fd-list li:nth-child(1) .tick{transform:scale(1); transition-delay:.5s}
+  .fd-card.show .fd-list li:nth-child(2){transition-delay:.44s} .fd-card.show .fd-list li:nth-child(2) .tick{transform:scale(1); transition-delay:.85s}
+  .fd-card.show .fd-list li:nth-child(3){transition-delay:.66s} .fd-card.show .fd-list li:nth-child(3) .tick{transform:scale(1); transition-delay:1.2s}
+  .fd-routes{display:flex; flex-wrap:wrap; gap:8px}
+  .route{font-size:14.5px; font-weight:600; padding:8px 14px; border-radius:999px; border:1.5px solid var(--line); color:var(--ink-3); background:transparent; transition:background .22s ease, color .22s ease, border-color .22s ease, opacity .22s ease}
+  .fd-card.show .route.no{opacity:.55; text-decoration:line-through; transition-delay:.7s}
+  .fd-card.show .route.yes{background:var(--ink); border-color:var(--ink); color:#fff; transition-delay:.7s}
+  .fd-sub{font-size:14.5px; color:var(--ink-2)}
+  .fd-act{position:relative; height:44px; border-radius:999px; overflow:hidden; background:var(--orange)}
+  .fd-act span{position:absolute; inset:0; display:grid; place-items:center; font-size:15.5px; font-weight:700}
+  .fd-act .a1{color:var(--ink)}
+  .fd-act .a2{background:#1F6B4B; color:#fff; opacity:0; transition:opacity .18s ease}
+  .fd-card.show .fd-act{animation:fdPress .32s ease 1s both}
+  .fd-card.show .fd-act .a2{opacity:1; transition-delay:1.16s}
+  @keyframes fdPress{50%{transform:scale(.96)}}
+  .fd-sign{display:flex; align-items:flex-end; gap:14px; border-bottom:1.5px solid var(--line); padding-bottom:6px}
+  .fd-sign svg{width:150px; height:46px; flex:none}
+  .fd-sign path{fill:none; stroke:var(--ink); stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:420; stroke-dashoffset:420; transition:stroke-dashoffset 0s}
+  .fd-card.show .fd-sign path{stroke-dashoffset:0; transition:stroke-dashoffset .9s cubic-bezier(.4,0,.2,1) .3s}
+  .fd-sign span{font-family:"JetBrains Mono",monospace; font-size:12px; color:var(--ink-3); padding-bottom:4px}
+  @media (prefers-reduced-motion:reduce){
+    .fd-fill,.fd-token,.fd-dot,.fd-copy,.fd-card,.fd-state,.fd-name,.fd-list li,.tick,.route,.fd-act .a2,.fd-sign path{transition:none !important}
+    .fd-card.show .fd-act{animation:none}
   }
+  @media (max-width:860px){
+    .fd-stage{grid-template-columns:minmax(0,1fr)}
+    .fd-copy{min-height:150px}
+  }
+  @media (max-width:640px){
+    .fd-who,.fd-count{display:none}
+    .fd-name{font-size:11.5px; font-weight:600}
+    .fd-dot{width:42px; height:42px} .fd-dot > svg{width:20px; height:20px}
+    .fd-rail{top:58px}
+    .fd-copy{min-height:176px}
+    .fd-side{height:226px}
+  }
+  .impact{display:grid; grid-template-columns:minmax(0,1.3fr) repeat(3,minmax(0,1fr)); gap:0; border-top:1px solid rgba(255,255,255,.16)}
+  .ist{padding:26px 24px 8px 0}
+  .ist + .ist{padding-left:24px; border-left:1px solid rgba(255,255,255,.16)}
+  .ist-lbl{font-size:14.5px; font-weight:600; color:#F1F0EB; margin-bottom:10px}
+  .ist-fig{line-height:.95}
+  .ist-fig .pre{display:block; font-size:14px; line-height:1.4; color:#B5B3A8; margin-bottom:4px}
+  .ist-num{display:block; font-family:"Archivo"; font-weight:800; font-size:clamp(38px,4.2vw,56px); color:#FF8A55; font-variant-numeric:tabular-nums; letter-spacing:-.03em}
+  .ist.lead .ist-num{font-size:clamp(60px,7.4vw,104px); color:var(--orange)}
+  .ist-sub{font-size:14px; color:#B5B3A8; margin-top:10px}
+  .impact-note{font-size:13px; color:#B5B3A8; margin-top:24px; max-width:64ch}
+
+  /* FRANJA NARANJA: CTA intermedio */
+  .band-orange{background:var(--orange); color:var(--ink); padding:clamp(36px,5vw,56px) 0; position:relative; z-index:1}
+  .band-orange .wrap{display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap}
+  .band-orange p{font-family:"Archivo"; font-weight:800; font-size:clamp(24px,3.2vw,38px); letter-spacing:-.025em; line-height:1.08; max-width:24ch}
+  .btn-ink{background:var(--ink); color:#fff}
+  .btn-ink:hover{background:#2A2A26}
+
+  .section > .wrap{width:100%}
 
   /* RESPONSIVE */
   @media (max-width:860px){
-    .hero{min-height:auto; justify-content:flex-start; padding:calc(var(--nav-h) + 22px) 0 44px}
+    .hero{min-height:auto; justify-content:flex-start; padding:28px 0 44px}
     .hero-grid,.ops-grid,.cta-grid{grid-template-columns:1fr}
     .hero-grid{gap:30px}
     .hero h1 br{display:none}
     .hero .lead{max-width:none}
-    .caps{grid-template-columns:repeat(2,1fr)}
-    .steps{grid-template-columns:1fr 1fr}
-    .cases,.sec-grid,.arch-points,.impact{grid-template-columns:1fr 1fr}
+    .proc-shot,.caps-wrap,.sec-layout{grid-template-columns:minmax(0,1fr)}
+    .timeline{grid-template-columns:1fr 1fr; row-gap:28px}
+    .timeline::before{display:none}
+    .arch-points{grid-template-columns:1fr 1fr}
+    .arch-pt:nth-child(3){padding-left:0; border-left:0}
+    .impact{grid-template-columns:1fr 1fr}
+    .ist.lead{grid-column:1 / -1}
+    .ist:nth-child(2){padding-left:0; border-left:0}
+    .ist{border-top:1px solid rgba(255,255,255,.16)}
     .arch{grid-template-columns:1fr; gap:16px}
+    .arch-wires{display:none}
+    .arch-core::before,.arch-core::after{content:""; position:absolute; left:50%; height:16px; border-left:2px dashed var(--orange); opacity:.75}
+    .arch-core::before{top:-18px} .arch-core::after{bottom:-18px}
+    .case-stage{grid-template-columns:minmax(0,1fr)}
     .arch-col.right{text-align:left}
     .arch-core{margin:4px auto}
     .team{grid-template-columns:1fr; gap:28px}
@@ -361,7 +530,13 @@
     header.nav[data-open="true"] .nav-links a{padding:12px 0; width:100%; font-size:15px}
   }
   @media (max-width:520px){
-    .caps,.steps,.cases,.sec-grid,.arch-points,.team-stats,.impact{grid-template-columns:1fr}
+    .timeline,.arch-points,.checklist,.impact{grid-template-columns:1fr}
+    .arch-pt + .arch-pt,.ist + .ist{padding-left:0; border-left:0}
+    .ist{padding-right:0}
+    .devices .frame{width:100%}
+    .devices .phone{position:relative; margin:-60px 12px 0 auto}
+    .devices{padding-bottom:0}
+    .devices .shot-cap{max-width:none}
     .spec-row{grid-template-columns:74px 1fr}
     .spec-meta{display:none}
     .spec-body{padding:14px}
@@ -382,7 +557,8 @@
   <div class="nav-in">
     <a class="brand" href="#top" translate="no"><span class="brand-mark" aria-hidden="true">K</span>Konnexys</a>
     <nav class="nav-links" id="navLinks" aria-label="Principal">
-      <a href="#arquitectura">cómo funciona</a>
+      <a href="#proceso">cómo funciona</a>
+      <a href="#video">video</a>
       <a href="#capacidades">capacidades</a>
       <a href="#casos">casos</a>
       <a href="#impacto">impacto</a>
@@ -402,7 +578,7 @@
     <div class="wrap hero-grid">
       <div class="hero-copy">
         <span class="eyebrow">Konnexys · plataforma low-code</span>
-        <h1 id="hero-h">Del lenguaje<br>a la <span class="hl">aplicación</span>.</h1>
+        <h1 id="hero-h">Del lenguaje<br> a la <span class="hl">aplicación</span>.</h1>
         <p class="lead">Escribe tu proceso en español. Konnexys lo compila en una app funcional —disparadores, formularios, reglas y aprobaciones— sin una línea de código.</p>
         <div class="hero-cta">
           <a class="btn btn-primary" href="#piloto">Conoce Konnexys</a>
@@ -440,7 +616,6 @@
   <section class="section" id="video" aria-labelledby="video-h">
     <div class="wrap">
       <div class="sec-head reveal">
-        <span class="eyebrow">Konnexys en 15 segundos</span>
         <h2 id="video-h">Tus procesos, hechos aplicación</h2>
         <p>Del caos de correos y planillas a una app con agentes de IA y avisos en el celular de quien tiene que actuar.</p>
       </div>
@@ -457,19 +632,32 @@
     </div>
   </section>
 
-  <!-- PROCESO (secuencia real) -->
+  <!-- PROCESO: cuatro pasos + el editor real -->
   <section class="section" id="proceso" aria-labelledby="proceso-h">
     <div class="wrap">
       <div class="sec-head reveal">
-        <span class="eyebrow">El proceso</span>
         <h2 id="proceso-h">Cuatro pasos, cero jerga técnica</h2>
         <p>Tú aportas la idea en tu idioma. La plataforma la estructura, la conecta y la publica.</p>
       </div>
-      <div class="steps stagger">
-        <div class="step"><span class="idx mono">01</span><h3>Descríbelo</h3><p>Cuéntale el proceso a Konnexys como se lo explicarías a un colega.</p></div>
-        <div class="step"><span class="idx mono">02</span><h3>Se compila</h3><p>La IA detecta disparadores, tareas, responsables, datos y reglas.</p></div>
-        <div class="step"><span class="idx mono">03</span><h3>Se ajusta</h3><p>Revisas el resultado como nodos editables y afinas formularios y SLA.</p></div>
-        <div class="step"><span class="idx mono">04</span><h3>Se publica</h3><p>Tu equipo opera con tablero, notificaciones y aprobaciones.</p></div>
+      <ol class="timeline stagger">
+        <li class="tl-step"><h3>Descríbelo</h3><p>Cuéntale el proceso a Konnexys como se lo explicarías a un colega.</p></li>
+        <li class="tl-step"><h3>Se compila</h3><p>La IA detecta disparadores, tareas, responsables, datos y reglas.</p></li>
+        <li class="tl-step"><h3>Se ajusta</h3><p>Revisas el resultado como nodos editables y afinas formularios y SLA.</p></li>
+        <li class="tl-step"><h3>Se publica</h3><p>Tu equipo opera con tablero, notificaciones y aprobaciones.</p></li>
+      </ol>
+      <div class="proc-shot">
+        <figure class="reveal">
+          <div class="frame">
+            <div class="frame-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="fname" translate="no">konnexys › procesos › Solicitud de crédito</span></div>
+            <img src="assets/app/editor-etapas.jpg" width="1400" height="1098" loading="lazy" decoding="async" alt="Editor de Konnexys con las etapas del proceso Solicitud de crédito: recepción automática, carga de documentos por el cliente, verificación con agente de IA, análisis de riesgo, decisión del analista y firma del contrato, cada una con sus campos, notificaciones, SLA y reglas.">
+          </div>
+          <figcaption class="shot-cap"><strong>Captura real del editor.</strong> Un proceso de solicitud de crédito ya compilado, listo para ajustar.</figcaption>
+        </figure>
+        <ul class="proc-notes reveal">
+          <li><strong>Cada etapa sabe quién actúa</strong>Un formulario para el cliente, una decisión para el analista o un agente de IA que verifica por su cuenta.</li>
+          <li><strong>Plazos y reglas a la vista</strong>SLA por etapa y reglas de negocio visibles, sin abrir código.</li>
+          <li><strong>Avisos incluidos</strong>Cada paso notifica a quien le toca seguir.</li>
+        </ul>
       </div>
     </div>
   </section>
@@ -477,12 +665,12 @@
   <!-- ARQUITECTURA -->
   <section class="section" id="arquitectura" aria-labelledby="arch-h">
     <div class="wrap">
-      <div class="sec-head center reveal">
-        <span class="eyebrow">Cómo funciona</span>
+      <div class="sec-head reveal">
         <h2 id="arch-h">Un SaaS que orquesta toda tu operación</h2>
         <p>Konnexys se sienta en el centro: recibe de tus canales, ejecuta el proceso y actúa sobre tus sistemas. Todo en la nube, sin instalar nada.</p>
       </div>
-      <div class="arch reveal">
+      <div class="arch reveal" id="archMap">
+        <svg class="arch-wires" id="archWires" aria-hidden="true"></svg>
         <div class="arch-col left">
           <span class="arch-label">Entradas</span>
           <div class="arch-node">WhatsApp</div>
@@ -503,115 +691,199 @@
           <div class="arch-node">PDF / Reportes</div>
         </div>
       </div>
-      <div class="arch-points stagger">
-        <div class="arch-pt"><span class="apt-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 12a9 9 0 1018 0 9 9 0 00-18 0zM3 12h18M12 3c2.5 2.7 2.5 15.3 0 18M12 3C9.5 5.7 9.5 18.3 12 21"/></svg></span><h3>100% en la nube</h3><p>Sin servidores ni instalaciones. Entras desde el navegador.</p></div>
-        <div class="arch-pt"><span class="apt-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg></span><h3>Multi-tenant</h3><p>Cada organización con sus datos aislados y su propia configuración.</p></div>
-        <div class="arch-pt"><span class="apt-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M8 6l-4 6 4 6M16 6l4 6-4 6"/></svg></span><h3>API-first</h3><p>Todo lo que hace la interfaz también se hace por API y webhooks.</p></div>
-        <div class="arch-pt"><span class="apt-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span><h3>Motor robusto</h3><p>Basado en un motor de procesos de nivel empresarial.</p></div>
+      <div class="arch-points reveal">
+        <div class="arch-pt"><h3>100% en la nube</h3><p>Sin servidores ni instalaciones. Entras desde el navegador.</p></div>
+        <div class="arch-pt"><h3>Multi-tenant</h3><p>Cada organización con sus datos aislados y su propia configuración.</p></div>
+        <div class="arch-pt"><h3>API-first</h3><p>Todo lo que hace la interfaz también se hace por API y webhooks.</p></div>
+        <div class="arch-pt"><h3>Motor robusto</h3><p>Basado en un motor de procesos de nivel empresarial.</p></div>
       </div>
     </div>
   </section>
 
-  <!-- CAPACIDADES -->
+  <!-- CAPACIDADES: el portal real -->
   <section class="section" id="capacidades" aria-labelledby="cap-h">
     <div class="wrap">
       <div class="sec-head reveal">
-        <span class="eyebrow">Capacidades</span>
         <h2 id="cap-h">Lo que tu proceso necesita, en una plataforma</h2>
         <p>La potencia de un motor de procesos robusto, con la simplicidad de una herramienta hecha para el negocio.</p>
       </div>
-      <div class="caps stagger">
-        <div class="cap"><span class="cap-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 5h16v11H8l-4 3z"/></svg></span><span class="lbl">nlp</span><h3>Entrada conversacional</h3><p>Describe el proceso en lenguaje natural y la IA lo estructura.</p></div>
-        <div class="cap"><span class="cap-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h5"/></svg></span><span class="lbl">forms</span><h3>Constructor de formularios</h3><p>Arrastra y suelta campos, con sugerencias de IA.</p></div>
-        <div class="cap"><span class="cap-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v6m0 0l3-2m-3 2L9 7M6 21a3 3 0 100-6 3 3 0 000 6zm12 0a3 3 0 100-6 3 3 0 000 6z"/></svg></span><span class="lbl">rules</span><h3>Motor de reglas y SLA</h3><p>Condiciones, validaciones y plazos, sin programar.</p></div>
-        <div class="cap"><span class="cap-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="10" width="6" height="4" rx="1"/><rect x="15" y="4" width="6" height="4" rx="1"/><rect x="15" y="16" width="6" height="4" rx="1"/><path d="M9 12h3m0-6v12"/></svg></span><span class="lbl">flow</span><h3>Diagrama de proceso</h3><p>Visualiza el flujo completo, siempre editable.</p></div>
-        <div class="cap"><span class="cap-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M8 6l-4 6 4 6M16 6l4 6-4 6"/></svg></span><span class="lbl">api</span><h3>Integraciones y webhooks</h3><p>Conecta con tus sistemas y dispara eventos en tiempo real.</p></div>
-        <div class="cap"><span class="cap-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span><span class="lbl">docs</span><h3>Generación de PDF</h3><p>Comprobantes y reportes generados automáticamente.</p></div>
+      <div class="caps-wrap">
+        <figure class="devices reveal">
+          <div class="frame">
+            <div class="frame-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="fname" translate="no">konnexys › apps › Gestión de Obra</span></div>
+            <img src="assets/app/portal-app.jpg" width="1400" height="800" loading="lazy" decoding="async" alt="Portal Gestión de Obra en Konnexys: botones para iniciar procesos de viáticos y solicitud de crédito, buzón de tareas y contadores de casos en curso.">
+          </div>
+          <div class="phone"><div class="phone-screen"><img src="assets/app/portal-movil.jpg" width="540" height="1168" loading="lazy" decoding="async" alt="El mismo portal en el celular."></div></div>
+          <figcaption class="shot-cap"><strong>Capturas reales.</strong> Una app armada con Konnexys, en escritorio y en el celular.</figcaption>
+        </figure>
+        <ul class="caplist stagger">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 5h16v11H8l-4 3z"/></svg><h3>Entrada conversacional</h3><p>Describe el proceso en lenguaje natural y la IA lo estructura.</p></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h5"/></svg><h3>Constructor de formularios</h3><p>Arrastra y suelta campos, con sugerencias de IA.</p></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 3v6m0 0l3-2m-3 2L9 7M6 21a3 3 0 100-6 3 3 0 000 6zm12 0a3 3 0 100-6 3 3 0 000 6z"/></svg><h3>Motor de reglas y SLA</h3><p>Condiciones, validaciones y plazos, sin programar.</p></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="10" width="6" height="4" rx="1"/><rect x="15" y="4" width="6" height="4" rx="1"/><rect x="15" y="16" width="6" height="4" rx="1"/><path d="M9 12h3m0-6v12"/></svg><h3>Diagrama de proceso</h3><p>Visualiza el flujo completo, siempre editable.</p></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M8 6l-4 6 4 6M16 6l4 6-4 6"/></svg><h3>Integraciones y webhooks</h3><p>Conecta con tus sistemas y dispara eventos en tiempo real.</p></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg><h3>Generación de PDF</h3><p>Comprobantes y reportes generados automáticamente.</p></li>
+        </ul>
       </div>
     </div>
   </section>
 
-  <!-- CASOS DE USO -->
+  <!-- CASOS DE USO: interactivo -->
   <section class="section" id="casos" aria-labelledby="casos-h">
     <div class="wrap">
       <div class="sec-head reveal">
-        <span class="eyebrow">Casos de uso</span>
         <h2 id="casos-h">Un proceso de cada área, resuelto</h2>
-        <p>Si hoy vive en correos, planillas o aprobaciones manuales, se puede automatizar con Konnexys.</p>
+        <p>Si hoy vive en correos, planillas o aprobaciones manuales, se puede automatizar con Konnexys. Elige un área y mira cómo se arma.</p>
       </div>
-      <div class="cases stagger">
-        <div class="case"><span class="clbl">Finanzas</span><h3>Cuentas por pagar</h3><ul><li>Aprobación de facturas</li><li>Solicitudes de gasto</li><li>Órdenes de compra</li></ul></div>
-        <div class="case"><span class="clbl">RR. HH.</span><h3>Gestión de personas</h3><ul><li>Onboarding de empleados</li><li>Solicitudes de vacaciones</li><li>Permisos y ausencias</li></ul></div>
-        <div class="case"><span class="clbl">Operaciones</span><h3>Flujos internos</h3><ul><li>Tickets y solicitudes</li><li>Autorizaciones internas</li><li>Control de calidad</li></ul></div>
-        <div class="case"><span class="clbl">Seguros</span><h3>Siniestros</h3><ul><li>Registro de siniestros</li><li>Evaluación y peritaje</li><li>Resolución y notificación</li></ul></div>
-        <div class="case"><span class="clbl">Comercial</span><h3>Ciclo de ventas</h3><ul><li>Alta de clientes</li><li>Aprobación de descuentos</li><li>Contratos y firmas</li></ul></div>
-        <div class="case"><span class="clbl">Servicios</span><h3>Atención</h3><ul><li>Solicitudes de servicio</li><li>Escalamientos con SLA</li><li>Encuestas de cierre</li></ul></div>
+      <div class="case-tabs reveal" role="tablist" aria-label="Áreas">
+        <button class="case-tab" type="button" role="tab" id="ctab-fin" aria-controls="casePanel" aria-selected="true" tabindex="0" data-area="0">Finanzas</button>
+        <button class="case-tab" type="button" role="tab" id="ctab-rrhh" aria-controls="casePanel" aria-selected="false" tabindex="-1" data-area="1">RR. HH.</button>
+        <button class="case-tab" type="button" role="tab" id="ctab-ops" aria-controls="casePanel" aria-selected="false" tabindex="-1" data-area="2">Operaciones</button>
+        <button class="case-tab" type="button" role="tab" id="ctab-seg" aria-controls="casePanel" aria-selected="false" tabindex="-1" data-area="3">Seguros</button>
+        <button class="case-tab" type="button" role="tab" id="ctab-com" aria-controls="casePanel" aria-selected="false" tabindex="-1" data-area="4">Comercial</button>
+        <button class="case-tab" type="button" role="tab" id="ctab-ser" aria-controls="casePanel" aria-selected="false" tabindex="-1" data-area="5">Servicios</button>
+      </div>
+      <div class="case-stage reveal" id="casePanel" role="tabpanel" aria-labelledby="ctab-fin">
+        <div class="case-area">
+          <div class="case-hero">
+            <img id="caseImg" src="assets/casos/finanzas.jpg" width="1200" height="700" loading="lazy" decoding="async" alt="Una persona revisa documentos en su escritorio.">
+            <div class="case-hero-txt">
+              <p class="kicker" id="caseKicker">Finanzas</p>
+              <h3 id="caseTitle">Cuentas por pagar</h3>
+            </div>
+          </div>
+          <ul class="case-opts" id="caseOpts" aria-label="Procesos de ejemplo">
+            <li><button class="case-opt" type="button" aria-pressed="true" data-item="0">Aprobación de facturas</button></li>
+            <li><button class="case-opt" type="button" aria-pressed="false" data-item="1">Solicitudes de gasto</button></li>
+            <li><button class="case-opt" type="button" aria-pressed="false" data-item="2">Órdenes de compra</button></li>
+          </ul>
+        </div>
+        <div class="spec case-spec" aria-live="polite">
+          <div class="spec-bar">
+            <span class="d d1" aria-hidden="true"></span><span class="d d2" aria-hidden="true"></span><span class="d d3" aria-hidden="true"></span>
+            <span class="spec-name" translate="no">konnexys › editor</span>
+            <span class="spec-flag" id="caseFlag">compilado</span>
+          </div>
+          <div class="spec-body">
+            <p class="spec-prompt"><span class="car" aria-hidden="true">›</span> <span id="casePrompt">Aprobar facturas de proveedores</span></p>
+            <div class="spec-sep" role="presentation"></div>
+            <ol class="spec-out" id="caseRows">
+            <li class="spec-row in"><span class="tag t-trigger">TRIGGER</span><span class="spec-label">Factura recibida</span><span class="spec-meta">correo</span></li>
+            <li class="spec-row in"><span class="tag t-form">FORM</span><span class="spec-label">Datos del proveedor</span><span class="spec-meta">6 campos</span></li>
+            <li class="spec-row in"><span class="tag t-rule">RULE</span><span class="spec-label">Monto > $5.000</span><span class="spec-meta">condición</span></li>
+            <li class="spec-row in"><span class="tag t-approve">APPROVE</span><span class="spec-label">Gerencia</span><span class="spec-meta">SLA 48 h</span></li>
+            <li class="spec-row in"><span class="tag t-output">OUTPUT</span><span class="spec-label">Notificar + PDF</span><span class="spec-meta">automático</span></li>
+            </ol>
+            <div class="spec-sep" role="presentation"></div>
+            <p class="spec-done"><span class="ok" aria-hidden="true">✓</span> app generada · <span class="tnum">5</span> pasos · <span class="tnum">0</span> líneas de código</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- OPERACIÓN -->
-  <section class="section" id="operacion" aria-labelledby="ops-h">
-    <div class="wrap ops-grid">
-      <div class="ops-copy reveal">
-        <span class="eyebrow">En operación</span>
-        <h2 id="ops-h" style="font-size:clamp(28px,3.6vw,40px);margin:14px 0 12px">Tus procesos, corriendo solos</h2>
-        <p style="color:var(--ink-2);font-size:17.5px">Publicada la app, Konnexys ejecuta cada paso, avisa a las personas correctas y deja registro de todo, en tiempo real.</p>
-        <ul class="points">
-          <li><span class="pk" aria-hidden="true">›</span> Cada tarea avanza sola, sin recordatorios manuales.</li>
-          <li><span class="pk" aria-hidden="true">›</span> Trazabilidad completa: quién, qué y cuándo.</li>
-          <li><span class="pk" aria-hidden="true">›</span> Notificaciones y aprobaciones automáticas.</li>
-        </ul>
-      </div>
-      <div class="log reveal" id="opsLog" aria-label="Registro de ejecución en vivo (ejemplo)">
-        <div class="log-bar">
-          <span class="live" aria-hidden="true"></span>
-          <span class="log-title" translate="no">konnexys › run</span>
-          <span class="log-meta">proceso · facturas</span>
+  <!-- OPERACIÓN (franja oscura) -->
+  <section class="section band-dark" id="operacion" aria-labelledby="ops-h">
+    <div class="wrap">
+      <div class="ops-grid">
+        <div class="ops-copy sec-head reveal">
+          <h2 id="ops-h">Tus procesos, corriendo solos</h2>
+          <p>Publicada la app, Konnexys ejecuta cada paso, avisa a las personas correctas y deja registro de todo, en tiempo real.</p>
+          <ul class="points">
+            <li><span class="pk" aria-hidden="true">›</span> Cada tarea avanza sola, sin recordatorios manuales.</li>
+            <li><span class="pk" aria-hidden="true">›</span> Trazabilidad completa: quién, qué y cuándo.</li>
+            <li><span class="pk" aria-hidden="true">›</span> Notificaciones y aprobaciones automáticas.</li>
+          </ul>
         </div>
-        <div class="log-body">
-          <div class="log-row"><span class="log-time tnum">09:41</span><span class="log-text">Factura recibida</span><span class="log-badge lb-info">registrada</span></div>
-          <div class="log-row"><span class="log-time tnum">09:41</span><span class="log-text">Datos extraídos</span><span class="log-badge lb-run">completado</span></div>
-          <div class="log-row"><span class="log-time tnum">09:42</span><span class="log-text">Validación de monto</span><span class="log-badge lb-warn">en revisión</span></div>
-          <div class="log-row"><span class="log-time tnum">09:43</span><span class="log-text">Enviado a aprobación</span><span class="log-badge lb-info">en curso</span></div>
-          <div class="log-row"><span class="log-time tnum">09:45</span><span class="log-text">Aprobado por gerencia</span><span class="log-badge lb-ok">aprobado</span></div>
-          <div class="log-row"><span class="log-time tnum">09:46</span><span class="log-text">Comprobante generado</span><span class="log-badge lb-ok">listo</span></div>
+        <div class="log reveal" id="opsLog" aria-label="Registro de ejecución en vivo (ejemplo)">
+          <div class="log-bar">
+            <span class="live" aria-hidden="true"></span>
+            <span class="log-title" translate="no">konnexys › run</span>
+            <span class="log-meta">proceso · facturas</span>
+          </div>
+          <div class="log-body">
+            <div class="log-row"><span class="log-time tnum">09:41</span><span class="log-text">Factura recibida</span><span class="log-badge lb-info">registrada</span></div>
+            <div class="log-row"><span class="log-time tnum">09:41</span><span class="log-text">Datos extraídos</span><span class="log-badge lb-run">completado</span></div>
+            <div class="log-row"><span class="log-time tnum">09:42</span><span class="log-text">Validación de monto</span><span class="log-badge lb-warn">en revisión</span></div>
+            <div class="log-row"><span class="log-time tnum">09:43</span><span class="log-text">Enviado a aprobación</span><span class="log-badge lb-info">en curso</span></div>
+            <div class="log-row"><span class="log-time tnum">09:45</span><span class="log-text">Aprobado por gerencia</span><span class="log-badge lb-ok">aprobado</span></div>
+            <div class="log-row"><span class="log-time tnum">09:46</span><span class="log-text">Comprobante generado</span><span class="log-badge lb-ok">listo</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="flowdemo reveal" id="flowDemo" role="group" aria-label="Ejemplo: una solicitud de crédito avanza paso a paso">
+        <div class="fd-head">
+          <span class="fd-case"><strong>Solicitud de crédito</strong> · caso #1042</span>
+          <span class="fd-meta"><span class="fd-count" id="fdCount">1 / 5</span><span class="fd-state" id="fdState">en curso</span></span>
+        </div>
+        <ol class="fd-track" id="fdTrack">
+          <li class="fd-rail" aria-hidden="true" role="presentation"><span class="fd-fill" id="fdFill"></span></li>
+          <li class="fd-token" id="fdToken" aria-hidden="true" role="presentation">#1042</li>
+          <li><button class="fd-node" type="button" data-step="0"><span class="fd-dot"><svg class="fd-ring" viewBox="0 0 68 68" aria-hidden="true"><circle cx="34" cy="34" r="32"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 12h5M10 16h5"/></svg><svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="fd-name">Solicitud</span><span class="fd-who">Cliente</span></button></li>
+          <li><button class="fd-node" type="button" data-step="1"><span class="fd-dot"><svg class="fd-ring" viewBox="0 0 68 68" aria-hidden="true"><circle cx="34" cy="34" r="32"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M18 15l.8 2.2L21 18l-2.2.8L18 21l-.8-2.2L15 18l2.2-.8z"/></svg><svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="fd-name">Verificación</span><span class="fd-who">Agente de IA</span></button></li>
+          <li><button class="fd-node" type="button" data-step="2"><span class="fd-dot"><svg class="fd-ring" viewBox="0 0 68 68" aria-hidden="true"><circle cx="34" cy="34" r="32"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4v6a4 4 0 004 4h8M6 10v10"/><path d="M15 11l3 3-3 3"/></svg><svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="fd-name">Reglas</span><span class="fd-who">Automático</span></button></li>
+          <li><button class="fd-node" type="button" data-step="3"><span class="fd-dot"><svg class="fd-ring" viewBox="0 0 68 68" aria-hidden="true"><circle cx="34" cy="34" r="32"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="8" r="3.5"/><path d="M3.5 20a6.5 6.5 0 0113 0"/><path d="M16 11l2 2 3.5-4"/></svg><svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="fd-name">Aprobación</span><span class="fd-who">Analista</span></button></li>
+          <li><button class="fd-node" type="button" data-step="4"><span class="fd-dot"><svg class="fd-ring" viewBox="0 0 68 68" aria-hidden="true"><circle cx="34" cy="34" r="32"/></svg><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16"/><path d="M6 16l9.5-9.5a2.1 2.1 0 013 3L9 19l-4 1z"/></svg><svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="fd-name">Firma</span><span class="fd-who">Cliente</span></button></li>
+        </ol>
+        <div class="fd-stage">
+          <div class="fd-copy" id="fdCopy">
+            <p class="fd-title" id="fdTitle">Llega la solicitud</p>
+            <p class="fd-text" id="fdText">El cliente la envía desde su celular, con sus documentos. Nadie tiene que cargarla a mano.</p>
+          </div>
+          <div class="fd-side" aria-hidden="true">
+            <div class="fd-card show" data-for="0">
+              <div class="fd-top"><span class="fk">K</span><span><span class="fl">Nuevo caso · #1042</span><span class="ft">Solicitud de crédito</span></span></div>
+              <ul class="fd-list"><li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Identificación oficial</li><li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Comprobante de ingresos</li><li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Comprobante de domicilio</li></ul>
+            </div>
+            <div class="fd-card" data-for="1">
+              <div class="fd-top"><span class="fk ai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M18 15l.8 2.2L21 18l-2.2.8L18 21l-.8-2.2L15 18l2.2-.8z"/></svg></span><span><span class="fl">Agente de IA</span><span class="ft">Revisando los documentos</span></span></div>
+              <ul class="fd-list"><li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>La identidad coincide</li><li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Ingresos comprobados</li><li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Domicilio vigente</li></ul>
+            </div>
+            <div class="fd-card" data-for="2">
+              <div class="fd-top"><span class="fk ai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4v6a4 4 0 004 4h8M6 10v10"/><path d="M15 11l3 3-3 3"/></svg></span><span><span class="fl">Regla de negocio</span><span class="ft">¿Monto mayor a $50.000?</span></span></div>
+              <div class="fd-routes"><span class="route no">Aprobación automática</span><span class="route yes">Pasa a un analista</span></div>
+            </div>
+            <div class="fd-card" data-for="3">
+              <div class="fd-top"><span class="fk">K</span><span><span class="fl">Konnexys · ahora</span><span class="ft">Tienes una tarea nueva</span></span></div>
+              <p class="fd-sub">Aprobación · Solicitud de crédito</p>
+              <div class="fd-act"><span class="a1">Aprobar</span><span class="a2">Aprobado</span></div>
+            </div>
+            <div class="fd-card" data-for="4">
+              <div class="fd-top"><span class="fk ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span><span class="fl">Caso #1042</span><span class="ft">Contrato firmado</span></span></div>
+              <div class="fd-sign"><svg viewBox="0 0 150 46"><path d="M6 34c10-18 18-26 22-22 5 5-10 26-6 26 5 0 12-20 18-20 5 0-2 16 3 16 6 0 9-14 15-14 4 0 0 12 5 12 7 0 12-10 20-12 9-2 20 4 34-2 8-3 14-8 22-10"/></svg><span>firmado en línea</span></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- IMPACTO -->
-  <section class="section" id="impacto" aria-labelledby="imp-h">
+  <!-- IMPACTO (sigue la franja oscura) -->
+  <section class="section band-dark" id="impacto" aria-labelledby="imp-h">
     <div class="wrap">
       <div class="sec-head reveal">
-        <span class="eyebrow">El impacto</span>
         <h2 id="imp-h">El ROI aparece cuando mejoras tus procesos</h2>
         <p>Konnexys mide cada paso y te muestra dónde está el cuello de botella. Lo que no se mide, no se mejora: al automatizar, esto es lo que se puede reducir.</p>
       </div>
       <div class="impact stagger" id="impactGrid">
-        <div class="ist" data-to="85">
-          <p class="ist-lbl">Tiempo de gestión</p>
-          <p class="ist-fig"><span class="pre">hasta</span><span class="ist-num">−0%</span></p>
-          <div class="ist-track"><span class="ist-bar"></span></div>
-          <p class="ist-sub">menos tiempo por proceso</p>
+        <div class="ist lead" data-to="95">
+          <p class="ist-lbl">Errores</p>
+          <p class="ist-fig"><span class="pre">hasta</span><span class="ist-num">−95%</span></p>
+          <p class="ist-sub">menos retrabajo</p>
         </div>
         <div class="ist" data-to="90">
           <p class="ist-lbl">Trabajo manual</p>
-          <p class="ist-fig"><span class="pre">hasta</span><span class="ist-num">−0%</span></p>
-          <div class="ist-track"><span class="ist-bar"></span></div>
+          <p class="ist-fig"><span class="pre">hasta</span><span class="ist-num">−90%</span></p>
           <p class="ist-sub">menos pasos manuales</p>
         </div>
-        <div class="ist" data-to="95">
-          <p class="ist-lbl">Errores</p>
-          <p class="ist-fig"><span class="pre">hasta</span><span class="ist-num">−0%</span></p>
-          <div class="ist-track"><span class="ist-bar"></span></div>
-          <p class="ist-sub">menos retrabajo</p>
+        <div class="ist" data-to="85">
+          <p class="ist-lbl">Tiempo de gestión</p>
+          <p class="ist-fig"><span class="pre">hasta</span><span class="ist-num">−85%</span></p>
+          <p class="ist-sub">menos tiempo por proceso</p>
         </div>
         <div class="ist" data-to="40">
           <p class="ist-lbl">Costos ocultos</p>
-          <p class="ist-fig"><span class="pre">hasta</span><span class="ist-num">−0%</span></p>
-          <div class="ist-track"><span class="ist-bar"></span></div>
+          <p class="ist-fig"><span class="pre">hasta</span><span class="ist-num">−40%</span></p>
           <p class="ist-sub">menos costo operativo</p>
         </div>
       </div>
@@ -619,40 +891,51 @@
     </div>
   </section>
 
+  <!-- FRANJA NARANJA: CTA intermedio -->
+  <aside class="band-orange" aria-label="Solicitar piloto">
+    <div class="wrap">
+      <p>¿Tu proceso vive en correos y planillas? Escríbelo en una frase y lo armamos contigo.</p>
+      <a class="btn btn-ink" href="#piloto">Solicitar piloto</a>
+    </div>
+  </aside>
+
   <!-- SEGURIDAD -->
   <section class="section" id="seguridad" aria-labelledby="seg-h">
-    <div class="wrap">
+    <div class="wrap sec-layout">
       <div class="sec-head reveal">
-        <span class="eyebrow">Seguridad</span>
         <h2 id="seg-h">Listo para producción desde el día uno</h2>
         <p>Konnexys se diseñó con criterios de seguridad empresarial: control de acceso, cifrado y trazabilidad, incorporados de fábrica.</p>
+        <p class="sec-note">La seguridad no es un módulo aparte: está incorporada en cada capa de Konnexys, desde el control de acceso hasta el registro de cada acción. Protegemos tus datos y tu operación con las mismas prácticas que exige una plataforma empresarial.</p>
       </div>
-      <div class="sec-grid stagger">
-        <div class="sec-card"><span class="sic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span><h3>Control de acceso por rol</h3><p>Permisos granulares (RBAC) por rol y área. Cada quien ve y hace solo lo que le corresponde.</p></div>
-        <div class="sec-card"><span class="sic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg></span><h3>Cifrado</h3><p>Datos cifrados en tránsito y en reposo, con conexiones seguras de extremo a extremo.</p></div>
-        <div class="sec-card"><span class="sic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg></span><h3>Aislamiento multi-tenant</h3><p>Los datos de cada organización están separados de forma lógica, sin cruces entre clientes.</p></div>
-        <div class="sec-card"><span class="sic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9 12l2 2 4-4"/><rect x="4" y="4" width="16" height="16" rx="3"/></svg></span><h3>Trazabilidad completa</h3><p>Registro de quién hizo qué y cuándo en cada proceso, para auditoría y cumplimiento.</p></div>
-        <div class="sec-card"><span class="sic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 7h16M4 12h16M4 17h10"/><circle cx="18" cy="17" r="3"/></svg></span><h3>Webhooks firmados</h3><p>Cada evento hacia tus sistemas viaja firmado y con control de tasa, para integraciones confiables.</p></div>
-        <div class="sec-card"><span class="sic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 12a8 8 0 018-8 8 8 0 017 4M20 12a8 8 0 01-8 8 8 8 0 01-7-4"/><path d="M16 8h4V4M8 16H4v4"/></svg></span><h3>Respaldos</h3><p>Copias de seguridad periódicas para proteger la continuidad de tu operación.</p></div>
-      </div>
-      <p class="sec-note reveal">La seguridad no es un módulo aparte: está incorporada en cada capa de Konnexys, desde el control de acceso hasta el registro de cada acción. Protegemos tus datos y tu operación con las mismas prácticas que exige una plataforma empresarial.</p>
+      <ul class="checklist stagger">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><h3>Control de acceso por rol</h3><p>Permisos granulares (RBAC) por rol y área. Cada quien ve y hace solo lo que le corresponde.</p></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><h3>Cifrado</h3><p>Datos cifrados en tránsito y en reposo, con conexiones seguras de extremo a extremo.</p></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><h3>Aislamiento multi-tenant</h3><p>Los datos de cada organización están separados de forma lógica, sin cruces entre clientes.</p></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><h3>Trazabilidad completa</h3><p>Registro de quién hizo qué y cuándo en cada proceso, para auditoría y cumplimiento.</p></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><h3>Webhooks firmados</h3><p>Cada evento hacia tus sistemas viaja firmado y con control de tasa, para integraciones confiables.</p></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><h3>Respaldos</h3><p>Copias de seguridad periódicas para proteger la continuidad de tu operación.</p></li>
+      </ul>
     </div>
   </section>
 
   <!-- RESPALDO DEL EQUIPO -->
   <section class="section" id="equipo" aria-labelledby="equipo-h">
-    <div class="wrap team">
-      <div class="reveal">
-        <span class="eyebrow">Quiénes están detrás</span>
-        <p class="team-quote" id="equipo-h">Konnexys nace de un equipo que <span class="q">opera software empresarial real</span> en varios mercados de LATAM. Conocemos de primera mano lo que cuesta poner un proceso en producción y sostenerlo.</p>
-        <p class="team-sign">— El equipo de Konnexys</p>
+    <div class="wrap">
+      <div class="team">
+        <div class="reveal">
+          <h2 id="equipo-h" class="team-quote">Konnexys nace de un equipo que <span class="q">opera software empresarial real</span> en varios mercados de LATAM. Conocemos de primera mano lo que cuesta poner un proceso en producción y sostenerlo.</h2>
+          <p class="team-sign">— El equipo de Konnexys</p>
+        </div>
+        <ul class="facts stagger">
+          <li><div class="n tnum">8</div><div class="l">mercados de LATAM en el radar</div></li>
+          <li><div class="n">Español</div><div class="l">producto y soporte, sin barreras</div></li>
+          <li><div class="n">Semanas</div><div class="l">de la idea a producción</div></li>
+          <li><div class="n">Directo</div><div class="l">acompañamiento sin intermediarios</div></li>
+        </ul>
       </div>
-      <div class="team-stats stagger">
-        <div class="team-stat"><div class="n tnum">8</div><div class="l">mercados de LATAM en el radar</div></div>
-        <div class="team-stat"><div class="n">Español</div><div class="l">producto y soporte, sin barreras</div></div>
-        <div class="team-stat"><div class="n">Semanas</div><div class="l">de la idea a producción</div></div>
-        <div class="team-stat"><div class="n">Directo</div><div class="l">acompañamiento sin intermediarios</div></div>
-      </div>
+      <!-- Fotos del equipo (assets/team/*.jpg, 4:5). Una por persona:
+           <figure class="person"><img src="assets/team/nombre.jpg" width="800" height="1000" loading="lazy" alt="Nombre Apellido"><figcaption>Nombre Apellido<span>Rol · País</span></figcaption></figure> -->
+      <div class="people"></div>
     </div>
   </section>
 
@@ -660,7 +943,6 @@
   <section class="section" id="piloto" aria-labelledby="piloto-h">
     <div class="wrap cta-grid">
       <div class="cta-copy reveal">
-        <span class="eyebrow">Piloto</span>
         <h2 id="piloto-h">Lleva tus procesos a Konnexys</h2>
         <p>Empresas de la región ya están automatizando sus procesos con Konnexys. Súmate al programa e implementa el tuyo con acompañamiento directo de nuestro equipo.</p>
         <ul class="cta-list">
@@ -680,7 +962,7 @@
           </div>
           <div class="field" id="f-empresa">
             <label for="empresa">Empresa</label>
-            <input id="empresa" name="empresa" type="text" autocomplete="organization" placeholder="Ej.: Konnexys">
+            <input id="empresa" name="empresa" type="text" autocomplete="organization" placeholder="Ej.: Constructora Andina">
           </div>
           <div class="field" id="f-email">
             <label for="email">Correo <span class="req" aria-hidden="true">*</span></label>
@@ -744,7 +1026,7 @@
     </div>
     <div class="foot-meta">
       <span id="footCopy" translate="no">© Konnexys</span>
-      <span>Hecho en LATAM · <span id="footStamp"></span></span>
+      <span>Hecho en LATAM</span>
     </div>
   </div>
 </footer>
@@ -792,6 +1074,172 @@
       btn.setAttribute('aria-pressed', String(on));
       if(on){ v.currentTime=0; play(); }
       else if(!visible || reduce){ v.pause(); }
+    });
+  })();
+
+  /* Videos de producto: se reproducen mudos solo mientras están a la vista */
+  (function(){
+    document.querySelectorAll('video[data-autoplay]').forEach(v=>{
+      if(reduce){ v.setAttribute('controls',''); v.preload='metadata'; return; }
+      const io=new IntersectionObserver((es)=>{es.forEach(e=>{ if(e.isIntersecting){ const p=v.play(); if(p&&p.catch) p.catch(()=>{}); } else v.pause(); })},{threshold:.35});
+      io.observe(v);
+    });
+  })();
+
+  /* Operación: el caso avanza solo por sus cinco pasos; se pausa al pasar el mouse y se puede elegir un paso */
+  (function(){
+    const root=document.getElementById('flowDemo'); if(!root) return;
+    const STEPS=[
+      ["Llega la solicitud","El cliente la envía desde su celular, con sus documentos. Nadie tiene que cargarla a mano."],
+      ["La IA revisa los documentos","Un agente verifica la identidad y los ingresos en segundos, y deja anotado lo que encontró."],
+      ["Las reglas deciden el camino","Según el monto y el resultado, el caso sigue solo o pasa a una persona. Tú defines esas reglas."],
+      ["Le avisa a quien le toca","El analista recibe la tarea en su celular y aprueba. Si no responde a tiempo, el caso escala."],
+      ["Contrato firmado","Se genera el contrato y el cliente lo firma en línea. De solicitud a firma, sin perseguir a nadie."]
+    ];
+    const DWELL=2600, HOLD=3600;
+    const nodes=[...root.querySelectorAll('.fd-node')], cards=[...root.querySelectorAll('.fd-card')];
+    const fill=document.getElementById('fdFill'), copy=document.getElementById('fdCopy'), token=document.getElementById('fdToken');
+    const title=document.getElementById('fdTitle'), text=document.getElementById('fdText');
+    const state=document.getElementById('fdState'), count=document.getElementById('fdCount');
+    const last=STEPS.length-1; let cur=0, timer=null, swapT=null, visible=false, held=false;
+    function show(i, instant){
+      cur=i;
+      nodes.forEach((n,j)=>{
+        n.classList.remove('is-active'); void n.offsetWidth; /* reinicia el anillo */
+        n.classList.toggle('is-done', j<i || (i===last && j===last));
+        n.classList.toggle('is-active', j===i && i!==last);
+        if(j===i) n.setAttribute('aria-current','step'); else n.removeAttribute('aria-current');
+      });
+      fill.style.transform='scaleX('+(i/last)+')';
+      token.style.left=(10+20*i)+'%'; token.classList.toggle('done', i===last);
+      cards.forEach(c=>c.classList.toggle('show', +c.dataset.for===i));
+      state.textContent = i===last ? 'completado' : 'en curso'; state.classList.toggle('done', i===last);
+      count.textContent=(i+1)+' / '+STEPS.length;
+      clearTimeout(swapT);
+      const put=()=>{ title.textContent=STEPS[i][0]; text.textContent=STEPS[i][1]; copy.classList.remove('swap'); };
+      if(instant || reduce){ put(); } else { copy.classList.add('swap'); swapT=setTimeout(put, 130); }
+    }
+    function run(){
+      clearTimeout(timer);
+      const on = !reduce && visible && !held;
+      root.classList.toggle('playing', on);
+      if(!on) return;
+      timer=setTimeout(()=>{ show(cur===last ? 0 : cur+1); run(); }, cur===last ? HOLD : DWELL);
+    }
+    const go=i=>{ show(i); run(); };
+    nodes.forEach((n,i)=>{
+      n.addEventListener('click', ()=>go(i));
+      n.addEventListener('keydown', e=>{
+        let t=null;
+        if(e.key==='ArrowRight') t=Math.min(last,i+1); else if(e.key==='ArrowLeft') t=Math.max(0,i-1);
+        if(t!==null){ e.preventDefault(); nodes[t].focus(); go(t); }
+      });
+    });
+    /* con mouse, se pausa mientras el visitante lo mira de cerca */
+    const hold=v=>{ if(held===v) return; held=v; if(!v) show(cur,true); run(); };
+    root.addEventListener('pointerenter', e=>{ if(e.pointerType==='mouse') hold(true); });
+    root.addEventListener('pointerleave', e=>{ if(e.pointerType==='mouse') hold(false); });
+    show(reduce ? last : 0, true);
+    if(!reduce) new IntersectionObserver((es)=>{es.forEach(e=>{ visible=e.isIntersecting; run(); })},{threshold:.35}).observe(root);
+  })();
+
+  /* Arquitectura: curvas punteadas de cada entrada hacia Konnexys y de Konnexys hacia tus sistemas */
+  (function(){
+    const map=document.getElementById('archMap'), svg=document.getElementById('archWires');
+    if(!map || !svg) return;
+    const core=map.querySelector('.arch-core');
+    const ns='http://www.w3.org/2000/svg';
+    function draw(){
+      svg.textContent='';
+      if(getComputedStyle(svg).display==='none') return;
+      const m=map.getBoundingClientRect(), c=core.getBoundingClientRect();
+      const cy=c.top+c.height/2-m.top;
+      const add=(d,cls)=>{ const p=document.createElementNS(ns,'path'); p.setAttribute('d',d); if(cls) p.setAttribute('class',cls); svg.appendChild(p); };
+      map.querySelectorAll('.arch-col.left .arch-node').forEach(n=>{
+        const r=n.getBoundingClientRect(), sx=r.right-m.left, sy=r.top+r.height/2-m.top, ex=c.left-m.left, dx=(ex-sx)/2;
+        add(`M${sx} ${sy} C${sx+dx} ${sy}, ${ex-dx} ${cy}, ${ex} ${cy}`);
+      });
+      map.querySelectorAll('.arch-col.right .arch-node').forEach(n=>{
+        const r=n.getBoundingClientRect(), sx=c.right-m.left, ex=r.left-m.left, ey=r.top+r.height/2-m.top, dx=(ex-sx)/2;
+        add(`M${sx} ${cy} C${sx+dx} ${cy}, ${ex-dx} ${ey}, ${ex} ${ey}`,'out');
+      });
+    }
+    draw();
+    if('ResizeObserver' in window) new ResizeObserver(draw).observe(map); else window.addEventListener('resize',draw);
+    if(document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
+  })();
+
+  /* Casos de uso: elige un área y un proceso; el compilador lo arma */
+  (function(){
+    const DATA=[{"area": "Finanzas", "title": "Cuentas por pagar", "k": "fin", "items": [{"n": "Aprobación de facturas", "p": "Aprobar facturas de proveedores", "r": [["Factura recibida", "correo"], ["Datos del proveedor", "6 campos"], ["Monto > $5.000", "condición"], ["Gerencia", "SLA 48 h"], ["Notificar + PDF", "automático"]]}, {"n": "Solicitudes de gasto", "p": "Aprobar solicitudes de gasto del equipo", "r": [["Solicitud enviada", "portal"], ["Concepto y comprobante", "5 campos"], ["¿Supera el presupuesto?", "condición"], ["Jefe de área", "SLA 24 h"], ["Registrar en el ERP", "integración"]]}, {"n": "Órdenes de compra", "p": "Emitir órdenes de compra a proveedores", "r": [["Requisición aprobada", "evento"], ["Ítems y proveedor", "7 campos"], ["Monto > $20.000", "condición"], ["Compras y Finanzas", "SLA 72 h"], ["Orden de compra", "PDF"]]}]}, {"area": "RR. HH.", "title": "Gestión de personas", "k": "rrhh", "items": [{"n": "Onboarding de empleados", "p": "Dar de alta nuevos empleados", "r": [["Ingreso confirmado", "portal"], ["Datos y documentos", "8 campos"], ["¿Requiere equipo?", "condición"], ["TI lo asigna", "SLA 72 h"], ["Generar contrato", "PDF"]]}, {"n": "Solicitudes de vacaciones", "p": "Gestionar solicitudes de vacaciones", "r": [["Solicitud enviada", "portal"], ["Fechas y motivo", "4 campos"], ["¿Quedan días?", "condición"], ["Jefatura aprueba", "SLA 24 h"], ["Avisar a RR. HH.", "automático"]]}, {"n": "Permisos y ausencias", "p": "Registrar permisos y ausencias", "r": [["Aviso del colaborador", "WhatsApp"], ["Tipo y fechas", "4 campos"], ["¿Con goce de sueldo?", "condición"], ["Jefatura", "SLA 24 h"], ["Actualizar nómina", "integración"]]}]}, {"area": "Operaciones", "title": "Flujos internos", "k": "ops", "items": [{"n": "Tickets y solicitudes", "p": "Gestionar tickets internos", "r": [["Ticket creado", "correo"], ["Categoría y prioridad", "5 campos"], ["Prioridad alta", "escala"], ["Responsable del área", "SLA 8 h"], ["Cierre + encuesta", "automático"]]}, {"n": "Autorizaciones internas", "p": "Autorizar accesos y excepciones", "r": [["Solicitud enviada", "portal"], ["Motivo y alcance", "4 campos"], ["¿Acceso sensible?", "condición"], ["Seguridad y jefatura", "SLA 24 h"], ["Registrar en bitácora", "automático"]]}, {"n": "Control de calidad", "p": "Registrar inspecciones de calidad", "r": [["Lote terminado", "evento"], ["Checklist de inspección", "10 campos"], ["¿Fuera de tolerancia?", "condición"], ["Jefe de calidad", "SLA 4 h"], ["Informe del lote", "PDF"]]}]}, {"area": "Seguros", "title": "Siniestros", "k": "seg", "items": [{"n": "Registro de siniestros", "p": "Registrar siniestros de seguros", "r": [["Reporte del cliente", "app"], ["Datos del siniestro", "7 campos"], ["¿Cobertura vigente?", "condición"], ["Perito evalúa", "SLA 5 d"], ["Resolución + PDF", "automático"]]}, {"n": "Evaluación y peritaje", "p": "Asignar y evaluar peritajes", "r": [["Siniestro registrado", "evento"], ["Informe del perito", "6 campos"], ["¿Supera el deducible?", "condición"], ["Ajustador", "SLA 72 h"], ["Dictamen", "PDF"]]}, {"n": "Resolución y notificación", "p": "Resolver y notificar siniestros", "r": [["Dictamen listo", "evento"], ["Datos de pago", "4 campos"], ["¿Pago parcial?", "condición"], ["Gerencia de siniestros", "SLA 48 h"], ["Avisar al asegurado", "WhatsApp"]]}]}, {"area": "Comercial", "title": "Ciclo de ventas", "k": "com", "items": [{"n": "Alta de clientes", "p": "Dar de alta clientes nuevos", "r": [["Formulario web", "portal"], ["Datos fiscales", "9 campos"], ["¿Documentación completa?", "condición"], ["Crédito y cobranza", "SLA 24 h"], ["Crear en el CRM", "integración"]]}, {"n": "Aprobación de descuentos", "p": "Aprobar descuentos especiales", "r": [["Cotización enviada", "CRM"], ["Descuento y margen", "4 campos"], ["Descuento > 15%", "condición"], ["Dirección comercial", "SLA 12 h"], ["Cotización final", "PDF"]]}, {"n": "Contratos y firmas", "p": "Preparar y firmar contratos", "r": [["Oportunidad ganada", "CRM"], ["Condiciones", "6 campos"], ["¿Requiere revisión legal?", "condición"], ["Legal revisa", "SLA 48 h"], ["Firma electrónica", "automático"]]}]}, {"area": "Servicios", "title": "Atención", "k": "ser", "items": [{"n": "Solicitudes de servicio", "p": "Atender solicitudes de servicio", "r": [["Mensaje del cliente", "WhatsApp"], ["Tipo de solicitud", "5 campos"], ["¿Cliente prioritario?", "condición"], ["Agente asignado", "SLA 4 h"], ["Respuesta al cliente", "automático"]]}, {"n": "Escalamientos con SLA", "p": "Escalar casos que están por vencer", "r": [["SLA en riesgo", "evento"], ["Contexto del caso", "3 campos"], ["Vence en menos de 2 h", "condición"], ["Supervisor", "SLA 2 h"], ["Aviso al cliente", "correo"]]}, {"n": "Encuestas de cierre", "p": "Enviar encuestas al cerrar casos", "r": [["Caso cerrado", "evento"], ["Encuesta de satisfacción", "3 campos"], ["Nota de 6 o menos", "seguimiento"], ["Supervisor revisa", "SLA 48 h"], ["Reporte mensual", "PDF"]]}]}];
+    const tabs=[...document.querySelectorAll('.case-tab')];
+    const panel=document.getElementById('casePanel');
+    if(!tabs.length || !panel) return;
+    const kicker=document.getElementById('caseKicker'), title=document.getElementById('caseTitle');
+    const opts=document.getElementById('caseOpts'), prompt=document.getElementById('casePrompt');
+    const flag=document.getElementById('caseFlag');
+    const rowEls=[...document.querySelectorAll('#caseRows .spec-row')];
+    const img=document.getElementById('caseImg');
+    const PHOTOS={
+      fin:['finanzas','Una persona revisa documentos en su escritorio.'],
+      rrhh:['rrhh','Una entrevista de trabajo en una oficina.'],
+      ops:['operaciones','Un operario registra mercadería en un depósito.'],
+      seg:['seguros','Dos personas inspeccionan un auto con una planilla.'],
+      com:['comercial','Dos personas firman un contrato sobre una mesa.'],
+      ser:['servicios','Una oficina de atención con personas trabajando.']
+    };
+    const srcOf=k=>'assets/casos/'+PHOTOS[k][0]+'.jpg';
+    let imgReq=0;
+    function setPhoto(k){
+      if(!img) return; const my=++imgReq, pre=new Image();
+      const put=()=>{ if(my!==imgReq) return; img.src=srcOf(k); img.alt=PHOTOS[k][1]; img.classList.remove('swap'); };
+      if(reduce){ put(); return; }
+      img.classList.add('swap'); pre.onload=pre.onerror=()=>setTimeout(put, 120); pre.src=srcOf(k);
+    }
+    let area=0, timers=[];
+    const clear=()=>{ timers.forEach(clearTimeout); timers=[]; };
+    function compile(item){
+      clear();
+      const fill=()=>item.r.forEach((t,i)=>{ rowEls[i].querySelector('.spec-label').textContent=t[0]; rowEls[i].querySelector('.spec-meta').textContent=t[1]; });
+      if(reduce){ prompt.textContent=item.p; fill(); rowEls.forEach(r=>r.classList.add('in')); flag.textContent='compilado'; return; }
+      rowEls.forEach(r=>r.classList.remove('in')); flag.textContent='compilando'; prompt.textContent='';
+      const chars=[...item.p], step=Math.max(14, Math.min(28, 520/chars.length));
+      chars.forEach((ch,i)=>timers.push(setTimeout(()=>{ prompt.textContent+=ch; }, i*step)));
+      const t0=chars.length*step+120;
+      timers.push(setTimeout(fill, t0));
+      rowEls.forEach((r,i)=>timers.push(setTimeout(()=>r.classList.add('in'), t0+80+i*110)));
+      timers.push(setTimeout(()=>{ flag.textContent='compilado'; }, t0+80+rowEls.length*110));
+    }
+    function renderOpts(){
+      opts.textContent='';
+      DATA[area].items.forEach((it,j)=>{
+        const li=document.createElement('li'), b=document.createElement('button');
+        b.className='case-opt'; b.type='button'; b.textContent=it.n; b.dataset.item=j; b.setAttribute('aria-pressed', j===0?'true':'false');
+        li.appendChild(b); opts.appendChild(li);
+      });
+    }
+    function selectArea(i, focus){
+      area=i;
+      tabs.forEach((t,j)=>{ const on=j===i; t.setAttribute('aria-selected',String(on)); t.tabIndex=on?0:-1; });
+      if(focus) tabs[i].focus();
+      panel.setAttribute('aria-labelledby', tabs[i].id);
+      kicker.textContent=DATA[i].area; title.textContent=DATA[i].title; setPhoto(DATA[i].k);
+      renderOpts(); compile(DATA[i].items[0]);
+    }
+    tabs.forEach((t,i)=>{
+      t.addEventListener('click', ()=>selectArea(i));
+      t.addEventListener('keydown', e=>{
+        const k=e.key; let n=null;
+        if(k==='ArrowRight'||k==='ArrowDown') n=(i+1)%tabs.length;
+        else if(k==='ArrowLeft'||k==='ArrowUp') n=(i-1+tabs.length)%tabs.length;
+        else if(k==='Home') n=0; else if(k==='End') n=tabs.length-1;
+        if(n!==null){ e.preventDefault(); selectArea(n,true); }
+      });
+    });
+    opts.addEventListener('click', e=>{
+      const b=e.target.closest('.case-opt'); if(!b) return;
+      opts.querySelectorAll('.case-opt').forEach(o=>o.setAttribute('aria-pressed', o===b?'true':'false'));
+      compile(DATA[area].items[+b.dataset.item]);
     });
   })();
 
@@ -851,14 +1299,13 @@
     const cards=[...grid.querySelectorAll('.ist')];
     function fill(card){
       const to=parseFloat(card.dataset.to);
-      const num=card.querySelector('.ist-num'), bar=card.querySelector('.ist-bar');
-      if(reduce){ num.textContent='−'+to+'%'; bar.style.width=(100-to)+'%'; return; }
-      bar.style.transition='none'; bar.style.width='100%'; void bar.offsetWidth;
-      bar.style.transition='width 1.5s cubic-bezier(.22,.61,.36,1)'; bar.style.width=(100-to)+'%';
+      const num=card.querySelector('.ist-num');
+      if(reduce){ num.textContent='−'+to+'%'; return; }
       let start=null;
       (function step(ts){ if(!start)start=ts; const p=Math.min((ts-start)/1500,1), e=1-Math.pow(1-p,3);
         num.textContent='−'+Math.round(to*e)+'%'; if(p<1) requestAnimationFrame(step); })(performance.now());
     }
+    if(!reduce) cards.forEach(c=>{ c.querySelector('.ist-num').textContent='−0%'; });
     let done=false;
     new IntersectionObserver((es)=>{es.forEach(e=>{ if(e.isIntersecting && !done){ done=true; cards.forEach(fill); } })},{threshold:.4}).observe(grid);
   })();

@@ -24,11 +24,16 @@ Everything the page needs is inline:
 - All graphics are inline `<svg>` plus a JS-drawn `<canvas>`
 - The only decorative texture is a `data:` URI
 
-The one exception is `assets/`, which holds the 15 s promo video shown in the
-`#video` section (`konnexys-promo.mp4` 1080p, `konnexys-promo-720.mp4` for
-screens ≤ 800 px, and `konnexys-promo-poster.jpg`). Its source project is
-`~/videos/konnexys-promo` (HyperFrames); re-render there and copy the files
-over to update it.
+The one exception is `assets/`:
+
+- `konnexys-promo.mp4` (1080p), `konnexys-promo-720.mp4` (screens ≤ 800 px) and
+  `konnexys-promo-poster.jpg` — the 15 s promo video in `#video`. Source project:
+  `~/videos/konnexys-promo` (HyperFrames); re-render there and copy the files over.
+- `app/` — real screenshots of the Konnexys app (process editor, App portal on
+  desktop and mobile) used in `#proceso` and `#capacidades`. Captured without the
+  user menu; re-capture from the app if the UI changes.
+- `casos/` — one duotone context photo per area for the interactive `#casos`
+  section. Sources are listed in `casos/CREDITOS.json` (Unsplash license).
 
 The single external dependency is **Google Fonts**
 (`fonts.googleapis.com` / `fonts.gstatic.com`) for the Bricolage Grotesque and
