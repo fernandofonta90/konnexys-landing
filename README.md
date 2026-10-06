@@ -24,6 +24,12 @@ Everything the page needs is inline:
 - All graphics are inline `<svg>` plus a JS-drawn `<canvas>`
 - The only decorative texture is a `data:` URI
 
+The one exception is `assets/`, which holds the 15 s promo video shown in the
+`#video` section (`konnexys-promo.mp4` 1080p, `konnexys-promo-720.mp4` for
+screens ≤ 800 px, and `konnexys-promo-poster.jpg`). Its source project is
+`~/videos/konnexys-promo` (HyperFrames); re-render there and copy the files
+over to update it.
+
 The single external dependency is **Google Fonts**
 (`fonts.googleapis.com` / `fonts.gstatic.com`) for the Bricolage Grotesque and
 Hanken Grotesk families. If zero third-party requests are ever required, those
