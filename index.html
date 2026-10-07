@@ -586,6 +586,44 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   @media (max-width:640px){ .fd-copy{min-height:0} }
   /* celular acostado */
   @media (max-height:480px) and (orientation:landscape){ header.nav{position:static} html{scroll-padding-top:20px} }
+
+  /* CELULAR Y TABLET: una sola columna que se lee de corrido */
+  @media (max-width:960px){
+    /* hero: titular, bajada, el ejemplo armado y recién después los botones */
+    .hero-grid{gap:0}
+    .hero-grid > div:first-child{display:contents}
+    .hero h1{order:0} .hero .lead{order:1; margin:16px 0 22px} .hero .rt{order:2} .hero-cta{order:3; margin-top:26px}
+    .hero{padding-bottom:56px}
+    /* cuatro pasos: una línea vertical; cada parada trae su imagen pegada */
+    .how{display:block}
+    .how-stage{display:none}
+    .acc-item{padding-bottom:6px}
+    .acc-item::before{height:100% !important; animation:none !important}
+    .acc-item h3::before{border-color:var(--orange); top:26px; margin-top:0}
+    .acc-btn{pointer-events:none; color:var(--ink); padding:14px 0 4px}
+    .acc-btn svg{display:none}
+    .acc-panel{grid-template-rows:1fr}
+    .acc-panel p{padding-bottom:14px !important; max-width:none}
+    .acc-item .how-vis{position:static; display:block; opacity:1; transform:none; pointer-events:auto; padding:16px; margin:0 0 30px; border-radius:18px; background:linear-gradient(160deg,#FFF6F0,#FFE9DC)}
+    .acc-item:last-child .how-vis{margin-bottom:0}
+    .acc-item .files li{opacity:1; transform:none}
+    .acc-item .how-vis .rt .spec-out{padding-left:34px}
+    /* las miniaturas del mosaico quedan en su estado final: nunca se ven vacías */
+    .mini *,.m-bell{animation:none !important; opacity:1 !important; transform:none !important}
+    .m-ai .dotc{animation:mSpin 1s linear infinite !important}
+  }
+  @media (max-width:640px){
+    .acc-btn{font-size:24px}
+    /* seguridad: lista corta de títulos */
+    .legend p{display:none}
+    .legend li{padding:13px 0; align-items:center}
+    .legend h3{font-size:18px}
+    .case-area h3{font-size:30px; margin:8px 0 14px}
+    .case-opt{padding:11px 0; min-height:48px; font-size:18px}
+    .case-stage{gap:22px}
+  }
+  /* pantallas muy angostas: las etiquetas pasan a dos renglones en vez de cortarse */
+  @media (max-width:380px){ .spec-row{grid-template-columns:74px minmax(0,1fr); gap:10px} .spec-label{white-space:normal; overflow:visible; font-size:16px; line-height:1.2} .tag{font-size:10.5px} }
   /* La línea ocupa el margen izquierdo en pantallas anchas */
   @media (min-width:1100px){ .wrap{padding-left:104px} .nav-in{padding-left:104px} }
   @media (max-width:1099px){ #spine,#stops{display:none} }
@@ -715,7 +753,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
             <li class="spec-row in"><span class="tag t-form">FORM</span><span class="spec-label">Datos del cliente</span><span class="spec-meta">4 campos</span></li>
             <li class="spec-row in"><span class="tag t-rule">RULE</span><span class="spec-label">Monto > $50.000</span><span class="spec-meta">condición</span></li>
             <li class="spec-row in"><span class="tag t-approve">APPROVE</span><span class="spec-label">Analista de crédito</span><span class="spec-meta">SLA 8 h</span></li>
-            <li class="spec-row in"><span class="tag t-output">OUTPUT</span><span class="spec-label">Contrato para firma</span><span class="spec-meta">PDF</span></li>
+            <li class="spec-row in"><span class="tag t-output">OUTPUT</span><span class="spec-label">Contrato listo</span><span class="spec-meta">PDF</span></li>
           </ol></div></div>
           <div class="how-vis" data-step="2"><img src="assets/app/editor-etapas.jpg" width="1100" height="862" loading="lazy" decoding="async" alt=""></div>
           <div class="how-vis" data-step="3"><div class="duo"><img src="assets/app/portal-app.jpg" width="1100" height="628" loading="lazy" decoding="async" alt=""><div class="ph"><img src="assets/app/portal-movil.jpg" width="360" height="780" loading="lazy" decoding="async" alt=""></div></div></div>
@@ -1005,7 +1043,10 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     function show(i){ cur=i;
       items.forEach((it,j)=>{ it.classList.remove('is-open'); void it.offsetWidth; it.classList.toggle('is-open', j===i); btns[j].setAttribute('aria-expanded', String(j===i)); });
       vis.forEach(v=>v.classList.toggle('on', +v.dataset.step===i)); }
-    function run(){ clearTimeout(timer); const on=!reduce && visible && !held; root.classList.toggle('playing', on); if(!on) return;
+    const mqM=window.matchMedia('(max-width:960px)'), stageEl=root.querySelector('.how-stage');
+    function place(){ vis.forEach((v,i)=>{ const home=mqM.matches ? items[i] : stageEl; if(v.parentElement!==home) home.appendChild(v); }); if(!mqM.matches) show(cur); }
+    place(); mqM.addEventListener('change', ()=>{ place(); run(); });
+    function run(){ clearTimeout(timer); const on=!reduce && visible && !held && !mqM.matches; root.classList.toggle('playing', on); if(!on) return;
       timer=setTimeout(()=>{ show((cur+1)%items.length); run(); }, DWELL); }
     btns.forEach((b,i)=>b.addEventListener('click', ()=>{ show(i); run(); }));
     root.addEventListener('pointerenter', e=>{ if(e.pointerType==='mouse'){ held=true; run(); } });
@@ -1207,6 +1248,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
         await sleep(220);
         for(let i=0;i<rows.length;i++){ rows[i].classList.add('in'); await sleep(230); }
         if(flag) flag.textContent='compilado';
+        if(window.matchMedia('(max-width:960px)').matches) return; /* en celular queda armado: sin huecos mientras se reescribe */
         await sleep(2800);
         rows.forEach((r,i)=>setTimeout(()=>r.classList.remove('in'), i*60));
         await sleep(560);
