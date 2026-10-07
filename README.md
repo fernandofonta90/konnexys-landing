@@ -26,20 +26,15 @@ Everything the page needs is inline:
 
 The one exception is `assets/`:
 
-- `konnexys-promo.mp4` (1080p), `konnexys-promo-720.mp4` (screens ≤ 800 px) and
-  `konnexys-promo-poster.jpg` — the 15 s promo video in `#video`. Source project:
-  `~/videos/konnexys-promo` (HyperFrames); re-render there and copy the files over.
+- `fonts/DMSans-latin.woff2` — DM Sans, self-hosted (the same typeface the app
+  uses). The page makes **no third-party requests on load**: no Google Fonts, no CDN.
 - `app/` — real screenshots of the Konnexys app (process editor, App portal on
-  desktop and mobile) used in `#proceso` and `#capacidades`. Captured without the
-  user menu; re-capture from the app if the UI changes.
-- `casos/` — one duotone context photo per area for the interactive `#casos`
-  section. Sources are listed in `casos/CREDITOS.json` (Unsplash license).
+  desktop and mobile). Captured without the user menu; re-capture from the app
+  if the UI changes.
+- `og.jpg` (1200×630) — the preview image for WhatsApp / LinkedIn shares;
+  `icon-512.png` and `icon-180.png` — logo for structured data and iOS.
 
-The single external dependency is **Google Fonts**
-(`fonts.googleapis.com` / `fonts.gstatic.com`) for the Bricolage Grotesque and
-Hanken Grotesk families. If zero third-party requests are ever required, those
-two families can be self-hosted — that is the only change that would introduce
-an asset folder.
+`robots.txt` and `sitemap.xml` live at the repository root next to `index.html`.
 
 ## Local preview
 
