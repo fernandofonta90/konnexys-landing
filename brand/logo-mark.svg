@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Konnexys">
+  <defs>
+    <clipPath id="kxB"><rect x="26" y="26" width="31" height="31" rx="8.5"/></clipPath>
+  </defs>
+  <rect x="7" y="7" width="31" height="31" rx="8.5" fill="#FC954C"/>
+  <rect x="26" y="26" width="31" height="31" rx="8.5" fill="#FB5C1C"/>
+  <rect x="7" y="7" width="31" height="31" rx="8.5" fill="#B23F13" clip-path="url(#kxB)"/>
+</svg>

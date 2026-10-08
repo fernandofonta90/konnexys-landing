@@ -26,6 +26,9 @@ Everything the page needs is inline:
 
 The one exception is `assets/`:
 
+- `fonts/HankenGrotesk-latin.woff2` — Hanken Grotesk 800, self-hosted, used only for the
+  "konnexys" wordmark. Brand rules and source files live in `brand/`; `favicon.ico`
+  sits at the repository root.
 - `fonts/DMSans-latin.woff2` — DM Sans, self-hosted (the same typeface the app
   uses). The page makes **no third-party requests on load**: no Google Fonts, no CDN.
 - `app/` — real screenshots of the Konnexys app (process editor, App portal on

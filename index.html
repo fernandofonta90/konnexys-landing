@@ -6,7 +6,8 @@
 <meta name="theme-color" content="#FCF9F5">
 <meta name="description" content="Konnexys es la plataforma low-code de LATAM que convierte un proceso descrito en español en una aplicación funcional: disparadores, formularios, reglas y aprobaciones, sin escribir código.">
 <title>Konnexys · Describe tu proceso, Konnexys arma la app</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23FF5B1F'/%3E%3Cpath d='M22 16v32M22 34l18-18M28 28l14 20' stroke='%23fff' stroke-width='7' fill='none' stroke-linecap='square'/%3E%3C/svg%3E">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="/brand/logo-mark.svg">
 <link rel="canonical" href="https://konnexys.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Konnexys">
@@ -19,10 +20,11 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Konnexys: describe tu proceso y Konnexys arma la app.">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="apple-touch-icon" href="assets/icon-180.png">
+<link rel="apple-touch-icon" href="/assets/icon-180.png">
 <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://konnexys.com/#org", "name": "Konnexys", "url": "https://konnexys.com/", "email": "hola@konnexys.com", "logo": "https://konnexys.com/assets/icon-512.png"}, {"@type": "WebSite", "@id": "https://konnexys.com/#site", "url": "https://konnexys.com/", "name": "Konnexys", "inLanguage": "es", "publisher": {"@id": "https://konnexys.com/#org"}}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "¿Necesito saber programar?", "acceptedAnswer": {"@type": "Answer", "text": "No. Describes el proceso en español y Konnexys arma la app. Después ajustas formularios, reglas y plazos desde el editor, sin escribir código."}}, {"@type": "Question", "name": "¿Cuánto tarda en estar funcionando?", "acceptedAnswer": {"@type": "Answer", "text": "El programa piloto apunta a tenerlo en marcha en semanas, no en meses."}}, {"@type": "Question", "name": "¿Hay que instalar algo?", "acceptedAnswer": {"@type": "Answer", "text": "No. Konnexys funciona en la nube y se usa desde el navegador. En el celular se puede instalar como app y avisa con una notificación cuando alguien tiene una tarea."}}, {"@type": "Question", "name": "¿Qué incluye el piloto?", "acceptedAnswer": {"@type": "Answer", "text": "Armamos contigo tu primer proceso, de punta a punta, y te acompañamos mientras tu equipo empieza a usarlo. Para empezar, cuéntanos qué quieres automatizar en el formulario de abajo."}}]}]}</script>
 
 <link rel="preload" href="assets/fonts/DMSans-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/HankenGrotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <!--
 THESIS: Un proceso es un recorrido. La página se dibuja como un mapa de transporte: una frase sale de origen, pasa por estaciones y llega a destino. Rechaza el hero SaaS de titular + captura flotante sobre degradé.
 OWN-WORLD: papel cálido con una aurora durazno difusa en origen y destino; una línea naranja de 6-7 px con quiebres rectos y en diagonal; estaciones como círculos blancos con aro durazno que se enciende en naranja; placas blancas de borde fino, radio 14-24 y sombra cálida suave; etiquetas de pieza en tintes pastel; botones en pastilla; DM Sans en peso 600, apretada.
@@ -626,6 +628,19 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   @media (min-width:361px) and (max-width:960px){ .hero-cta .btn-primary{display:none} .hero-cta{margin-top:18px} }
   /* pantallas muy angostas: las etiquetas pasan a dos renglones en vez de cortarse */
   @media (max-width:380px){ .spec-row{grid-template-columns:74px minmax(0,1fr); gap:10px} .spec-label{white-space:normal; overflow:visible; font-size:16px; line-height:1.2} .tag{font-size:10.5px} }
+
+  /* MARCA "Encaje": símbolo + wordmark en texto */
+  @font-face{font-family:"Hanken Grotesk"; src:url("assets/fonts/HankenGrotesk-latin.woff2") format("woff2"); font-weight:800; font-style:normal; font-display:swap}
+  .brand{gap:10px; font-family:"Hanken Grotesk","DM Sans",system-ui,sans-serif; font-weight:800; font-size:23px; letter-spacing:-.02em; line-height:1; color:#3a2c22; min-height:44px}
+  .brand .mark{width:30px; height:30px; flex:none; display:block}
+  .brand .wm{display:block; padding-bottom:2px}
+  .foot .brand{color:#3a2c22}
+  @media (max-width:640px){ .brand{font-size:21px; gap:8px} .brand .mark{width:28px; height:28px} }
+  @media (max-width:400px){ .brand{font-size:20px} }
+  /* mini-íconos de la app dentro de las tarjetas: el símbolo sobre crema */
+  .m-bell b,.fk.mk{background:#F7F4EE; box-shadow:inset 0 0 0 1px var(--rule)}
+  .m-bell b .mark{width:26px; height:26px; display:block}
+  .fk.mk .mark{width:27px; height:27px; display:block}
   /* La línea ocupa el margen izquierdo en pantallas anchas */
   @media (min-width:1100px){ .wrap{padding-left:104px} .nav-in{padding-left:104px} }
   @media (max-width:1099px){ #spine,#stops{display:none} }
@@ -677,7 +692,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 <header class="nav" id="nav" data-open="false">
   <div class="nav-in">
-    <a class="brand" href="#top" translate="no"><span class="brand-mark" aria-hidden="true">K</span>Konnexys</a>
+    <a class="brand" href="/" translate="no" aria-label="Konnexys, ir al inicio"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect x="7" y="7" width="31" height="31" rx="8.5" fill="#FC954C"/><rect x="26" y="26" width="31" height="31" rx="8.5" fill="#FB5C1C"/><path d="M34.5 26H38v3.5A8.5 8.5 0 0 1 29.5 38H26v-3.5A8.5 8.5 0 0 1 34.5 26z" fill="#B23F13"/></svg><span class="wm">konnexys</span></a>
     <nav class="nav-links" id="navLinks" aria-label="Principal">
       <a href="#como">Cómo funciona</a>
       <a href="#casos">Casos</a>
@@ -818,7 +833,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
         <li class="tile"><div class="mini m-ok" aria-hidden="true"><span class="dotc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="who">Gerencia aprobó</span></div><h3>Aprobaciones</h3><p>Cada tarea llega a quien le toca, con su plazo.</p></li>
         <li class="tile"><div class="mini m-ai" aria-hidden="true"><span class="dotc"></span><span class="who">Revisando documentos</span></div><h3>Agentes de IA</h3><p>Leen documentos y resuelven pasos por su cuenta.</p></li>
         <li class="tile"><div class="mini m-pdf" aria-hidden="true"><div class="doc"><i class="ln"></i><i class="ln"></i><i class="ln"></i></div></div><h3>Documentos en PDF</h3><p>El reporte de cada caso, listo para descargar.</p></li>
-        <li class="tile"><div class="mini m-bell" aria-hidden="true"><b>K</b><span>Tienes una tarea nueva</span></div><h3>Avisos al celular</h3><p>Un aviso cuando alguien tiene una tarea.</p></li>
+        <li class="tile"><div class="mini m-bell" aria-hidden="true"><b><svg class="mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect x="7" y="7" width="31" height="31" rx="8.5" fill="#FC954C"/><rect x="26" y="26" width="31" height="31" rx="8.5" fill="#FB5C1C"/><path d="M34.5 26H38v3.5A8.5 8.5 0 0 1 29.5 38H26v-3.5A8.5 8.5 0 0 1 34.5 26z" fill="#B23F13"/></svg></b><span>Tienes una tarea nueva</span></div><h3>Avisos al celular</h3><p>Un aviso cuando alguien tiene una tarea.</p></li>
       </ul>
       <p class="mosaic-note reveal">También se conecta con las herramientas que ya usas, por API y webhooks.</p>
     </div>
@@ -852,7 +867,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
           </div>
           <div class="fd-side" aria-hidden="true">
             <div class="fd-card show" data-for="0">
-              <div class="fd-top"><span class="fk">K</span><span><span class="fl">Nuevo caso · #1042</span><span class="ft">Solicitud de crédito</span></span></div>
+              <div class="fd-top"><span class="fk mk"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect x="7" y="7" width="31" height="31" rx="8.5" fill="#FC954C"/><rect x="26" y="26" width="31" height="31" rx="8.5" fill="#FB5C1C"/><path d="M34.5 26H38v3.5A8.5 8.5 0 0 1 29.5 38H26v-3.5A8.5 8.5 0 0 1 34.5 26z" fill="#B23F13"/></svg></span><span><span class="fl">Nuevo caso · #1042</span><span class="ft">Solicitud de crédito</span></span></div>
               <ul class="fd-list"><li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Identificación oficial</li><li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Comprobante de ingresos</li><li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Comprobante de domicilio</li></ul>
             </div>
             <div class="fd-card" data-for="1">
@@ -864,7 +879,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
               <div class="fd-routes"><span class="route no">Aprobación automática</span><span class="route yes">Pasa a un analista</span></div>
             </div>
             <div class="fd-card" data-for="3">
-              <div class="fd-top"><span class="fk">K</span><span><span class="fl">Konnexys · ahora</span><span class="ft">Tienes una tarea nueva</span></span></div>
+              <div class="fd-top"><span class="fk mk"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect x="7" y="7" width="31" height="31" rx="8.5" fill="#FC954C"/><rect x="26" y="26" width="31" height="31" rx="8.5" fill="#FB5C1C"/><path d="M34.5 26H38v3.5A8.5 8.5 0 0 1 29.5 38H26v-3.5A8.5 8.5 0 0 1 34.5 26z" fill="#B23F13"/></svg></span><span><span class="fl">Konnexys · ahora</span><span class="ft">Tienes una tarea nueva</span></span></div>
               <p class="fd-sub">Aprobación · Solicitud de crédito</p>
               <div class="fd-act"><span class="a1">Aprobar</span><span class="a2">Aprobado</span></div>
             </div>
@@ -1002,7 +1017,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 <footer>
   <div class="wrap">
     <div class="foot">
-      <div><a class="brand" href="#top" translate="no"><span class="brand-mark" aria-hidden="true">K</span>Konnexys</a><p>Plataforma low-code para llevar tus procesos a una app, hecha en LATAM.</p></div>
+      <div><a class="brand" href="/" translate="no" aria-label="Konnexys, ir al inicio"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect x="7" y="7" width="31" height="31" rx="8.5" fill="#FC954C"/><rect x="26" y="26" width="31" height="31" rx="8.5" fill="#FB5C1C"/><path d="M34.5 26H38v3.5A8.5 8.5 0 0 1 29.5 38H26v-3.5A8.5 8.5 0 0 1 34.5 26z" fill="#B23F13"/></svg><span class="wm">konnexys</span></a><p>Plataforma low-code para llevar tus procesos a una app, hecha en LATAM.</p></div>
       <nav aria-label="Pie de página"><a href="#como">Cómo funciona</a><a href="#casos">Casos por área</a><a href="#plataforma">Plataforma</a><a href="#operacion">Operación</a><a href="#impacto">Resultados</a><a href="#seguridad">Seguridad</a><a href="#faq">Preguntas frecuentes</a><a href="#piloto">Solicitar piloto</a><a href="mailto:hola@konnexys.com">hola@konnexys.com</a></nav>
     </div>
     <div class="foot-meta"><span id="footCopy" translate="no">© Konnexys</span><span>Hecho en LATAM</span></div>
@@ -1344,7 +1359,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     let total=0, stops=[], ticking=false;
     function layout(){
       stopsBox.textContent=''; stops=[];
-      if(!mq.matches){ base.setAttribute('d',''); prog.setAttribute('d',''); return; }
+      if(!mq.matches){ total=0; base.setAttribute('d',''); prog.setAttribute('d',''); return; }
       const m=main.getBoundingClientRect();
       const X=el=>el.getBoundingClientRect().left-m.left, Y=el=>el.getBoundingClientRect().top-m.top;
       const term=document.getElementById('heroTerm'), out=document.getElementById('specOut');

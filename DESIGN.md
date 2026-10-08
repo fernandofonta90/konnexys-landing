@@ -17,8 +17,11 @@ Una frase sale de origen, pasa por cinco estaciones (TRIGGER, FORM, RULE, APPROV
 
 No se usa negro puro ni bordes gruesos. El único bloque oscuro es el tablero del caso (`#332C27`).
 
+## Marca
+Lockup "Encaje": símbolo (`brand/logo-mark.svg`, inline en el HTML) + la palabra "konnexys" en texto, minúscula, Hanken Grotesk 800, tracking −0.02em, tinta `#3a2c22`. Reglas en `brand/README.md`.
+
 ## Tipografía
-DM Sans, alojada en `assets/fonts/`. Titulares en 600 con interletra −0.03 a −0.04em; cuerpo en 400 a 18 px; etiquetas de pieza en 700 mayúsculas a 11.5 px. No se usa monoespaciada.
+DM Sans para todo el sitio y Hanken Grotesk 800 solo para el wordmark, ambas alojadas en `assets/fonts/`. Titulares en 600 con interletra −0.03 a −0.04em; cuerpo en 400 a 18 px; etiquetas de pieza en 700 mayúsculas a 11.5 px. No se usa monoespaciada.
 
 ## Formas
 - **Línea:** 6–7 px, extremos y uniones redondeados, solo tramos rectos y un quiebre en diagonal.
